@@ -7,6 +7,7 @@ import { NuqsAdapter } from "nuqs/adapters/next/app";
 import { Navbar } from "@/components/Navbar";
 import { UserProvider } from "@/context/UserContext";
 import { Toaster } from "sonner";
+import { cn } from "@/lib/utils";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -26,7 +27,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={cn("mx-auto max-w-7xl px-4", inter.className)}>
         <UserProvider>
           <Navbar />
           <Toaster

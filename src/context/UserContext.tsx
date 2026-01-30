@@ -3,6 +3,7 @@
 import { createContext, useContext, useState } from "react";
 
 // Mocking this until the openapi.json is generated
+// TODO
 export type User = { id: number };
 
 type UserContextValue = {

@@ -15,10 +15,10 @@ export function Navbar({ className }: NavbarProps) {
 
   return (
     <nav
-      className={cn("mb-5", className)}
-      style={{ padding: 16, borderBottom: "1px solid #eee" }}
+      className={cn("mb-5 flex min-h-20 items-center pr-1 pl-1", className)}
+      style={{ borderBottom: "1px solid #eee" }}
     >
-      <div className="flex h-full justify-between">
+      <div className="flex h-full grow-1 justify-between gap-1">
         <div className="flex items-end">
           <Link href="/">Dashboard</Link>
           {" | "}
