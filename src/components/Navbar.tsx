@@ -25,9 +25,7 @@ export function Navbar({ className }: NavbarProps) {
           <Link href="/chat">Chat</Link>
         </div>
 
-        <div className="flex items-end text-center text-xl">
-          Compliance Live
-        </div>
+        <div className="flex items-end text-center text-xl">Horizon Scan</div>
 
         <div className="flex items-end">
           {isLoggedIn ? (
