@@ -5,7 +5,7 @@ import { useState } from "react";
 import { cn } from "@/lib/utils";
 
 import Form, { type FormProps } from "@/components/Form";
-import type { FormErrors } from "@/components/FormErrors";
+import type { FormErrors } from "@/types/form-errors";
 import { FormField } from "@/components/FormField";
 
 import { NewRegisteredUser, UserCreate } from "@/features/auth/models";
