@@ -1,45 +1,39 @@
-// apiFetcher.ts
-type HTTPMethod = "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
+// src/lib/api/fetcher.ts
+const COMPLIANCE_LIVE_API_BASE_URL = (
+  process.env.NEXT_PUBLIC_COMPLIANCE_LIVE_API_BASE_URL ?? ""
+).replace(/\/$/, "");
 
-interface FetcherOptions<Body = any> {
-  method?: HTTPMethod;
-  body?: Body;
-  headers?: Record<string, string>;
-  query?: Record<string, string | number | boolean>;
+function normalizePath(path: string) {
+  return path.startsWith("/") ? path : `/${path}`;
 }
 
-/**
- * Simple lightweight fetcher for APIs with OpenAPI typing support
- */
-export async function apiFetcher<ResponseType = any, BodyType = any>(
-  url: string,
-  options: FetcherOptions<BodyType> = {},
-): Promise<ResponseType> {
-  const { method = "GET", body, headers = {}, query } = options;
+export async function apiFetch<T = unknown>(
+  path: string,
+  options: RequestInit = {},
+): Promise<T> {
+  const url = `${COMPLIANCE_LIVE_API_BASE_URL}${normalizePath(path)}`;
 
-  // Build query string if needed
-  let queryString = "";
-  if (query) {
-    const params = new URLSearchParams();
-    for (const key in query) {
-      params.append(key, String(query[key]));
-    }
-    queryString = `?${params.toString()}`;
-  }
+  const headers: HeadersInit = {
+    ...(options.body && typeof options.body === "string"
+      ? { "Content-Type": "application/json" }
+      : {}),
+    ...options.headers,
+  };
 
-  const response = await fetch(`${url}${queryString}`, {
-    method,
-    headers: {
-      "Content-Type": "application/json",
-      ...headers,
-    },
-    body: body ? JSON.stringify(body) : undefined,
+  const res = await fetch(url, {
+    credentials: "include",
+    ...options,
+    headers,
   });
 
-  if (!response.ok) {
-    const errorText = await response.text();
-    throw new Error(`API Error: ${response.status} - ${errorText}`);
+  if (!res.ok) {
+    const text = await res.text();
+    throw new Error(text || res.statusText);
   }
 
-  return (await response.json()) as ResponseType;
+  if (res.status === 204) {
+    return null as T;
+  }
+
+  return res.json();
 }
