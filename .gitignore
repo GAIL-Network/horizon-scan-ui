@@ -29,5 +29,8 @@ dist-ssr
 .next/
 next-env.d.ts
 
-# ts incremental builds
+# DATASPARTAN: ts incremental builds
 tsconfig.tsbuildinfo
+.env.dev
+.env.staging
+.env.prod

@@ -1,4 +1,61 @@
-# Agent Chat UI
+# Horizon Scan UI
+
+(Forked from Agent Chat UI, you can find the readme below, it should still be relevant but it's maintenance is not guaranteed).
+
+## Setup
+
+Install dependencies:
+
+```bash
+pnpm install
+```
+
+Run the app:
+
+```bash
+pnpm dev
+```
+
+### Deployment to AWS
+
+AWS Deployment is carried out by building locally with docker and then pushing to ECR.
+
+1. Install, configure and authenticate AWS services on your machine. Set the following environment variables or add them to your `.bashrc` file.
+   - `AWS_REGION`
+   - `AWS_ACCOUNT_ID`
+   - `ECR_REPO`
+2. Update the environment variables depending on the environment,
+   - .env.dev
+   - .env.staging
+   - .env.prod
+3. Execute the `./scripts/deploy.sh` script specifying which environment to deploy to.
+   - e.g. `./scripts/deploy.sh dev`
+
+- e.g.
+  ```bash
+  AWS_REGION=eu-north-1 \
+  AWS_ACCOUNT_ID=<your-account-id> \
+  ECR_REPO=horizon-scan-ui \
+  ./scripts/deploy.sh dev
+  ```
+  if you want to deploy it inline.
+
+4. ssh into the EC2 instance, pull the image and run the container.
+   - Setup your environment as before
+     - `AWS_REGION`
+   - `AWS_ACCOUNT_ID`
+   - `ECR_REPO`
+   - Login into the ECR repository with docker.
+   - ````aws ecr get-login-password --region "$AWS_REGION" | \
+        docker login --username AWS \
+     --password-stdin "$AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com"```
+     ````
+   - `docker pull "$AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPO:dev"`
+   - `docker stop horizon-scan-ui || true`
+   - `docker rm horizon-scan-ui || true`
+   - `docker run -d --name horizon-scan-ui -p 3000:3000 "$AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPO:dev"`
+
+# Agent Chat UI (Origin Fork)
 
 Agent Chat UI is a Next.js application which enables chatting with any LangGraph server with a `messages` key through a chat interface.
 
