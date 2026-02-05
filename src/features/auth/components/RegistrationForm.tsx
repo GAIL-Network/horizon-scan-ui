@@ -5,7 +5,7 @@ import { useState } from "react";
 import { cn } from "@/lib/utils";
 import Form, { type FormProps } from "@/components/Form";
 
-import { NewRegisteredUser, UserCreate } from "@/features/auth/models";
+import { RegisteredUser, RegistrationInput } from "@/features/auth/models";
 import { mapFormDataToUserCreate } from "../adapters/mappers";
 
 import { EmailFormField } from "@/components/EmailFormField";
@@ -16,7 +16,7 @@ import { SubmitButton } from "@/components/SubmitButton";
 interface Props extends Omit<FormProps, "onSubmit"> {
   className?: string;
   disabled: boolean;
-  onSubmit: (userCreate: UserCreate) => Promise<NewRegisteredUser>;
+  onSubmit: (userCreate: RegistrationInput) => Promise<RegisteredUser>;
 }
 
 export type RegistrationFormData = {

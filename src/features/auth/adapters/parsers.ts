@@ -1,19 +1,21 @@
 import { z } from "zod";
 
 import type {
-  UserCreateDTO,
-  NewRegisteredUserDTO,
-  LoginResponseDTO,
-  UserDTO,
+  UserRegistrationRequestDTO,
+  UserRegistrationResponseDTO,
+  UserLoginResponseDTO,
+  UserMeResponseDTO,
 } from "@/features/auth/dtos";
 import type {
-  UserCreate,
-  NewRegisteredUser,
-  LoginResponse,
-  User,
+  RegistrationInput,
+  RegisteredUser,
+  AuthSession,
+  CurrentUser,
 } from "@/features/auth/models";
 
-export function parseCreateUser(user: UserCreateDTO): UserCreate {
+export function parseCreateUser(
+  user: UserRegistrationRequestDTO,
+): RegistrationInput {
   return {
     ...user,
     email: z.email().parse(user.email),
@@ -21,8 +23,8 @@ export function parseCreateUser(user: UserCreateDTO): UserCreate {
 }
 
 export function parseNewRegisteredUserDTO(
-  user: NewRegisteredUserDTO,
-): NewRegisteredUser {
+  user: UserRegistrationResponseDTO,
+): RegisteredUser {
   return {
     ...user,
     email: z.email().parse(user.email),
@@ -30,15 +32,15 @@ export function parseNewRegisteredUserDTO(
 }
 
 export function parseLoginResponseDTO(
-  loginResponseDTO: LoginResponseDTO,
-): LoginResponse {
+  loginResponseDTO: UserLoginResponseDTO,
+): AuthSession {
   return {
     accessToken: z.string().parse(loginResponseDTO.access_token),
     tokenType: z.string().parse(loginResponseDTO.token_type),
   };
 }
 
-export function parseUserDTO(userDTO: UserDTO): User {
+export function parseUserDTO(userDTO: UserMeResponseDTO): CurrentUser {
   return {
     id: z.uuidv4().parse(userDTO.id),
     email: z.email().parse(userDTO.email),

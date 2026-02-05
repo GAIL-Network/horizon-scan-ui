@@ -44,8 +44,8 @@ aws ecr get-login-password --region "$AWS_REGION" \
     --username AWS \
     --password-stdin "$AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com"
 
-# ---- Build image ----
 docker build \
+  --build-arg NEXT_PUBLIC_COMPLIANCE_LIVE_API_BASE_URL="$NEXT_PUBLIC_COMPLIANCE_LIVE_API_BASE_URL" \
   -t "$ECR_REPO:$IMAGE_TAG" \
   "$PROJECT_ROOT"
 

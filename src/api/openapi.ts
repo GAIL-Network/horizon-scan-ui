@@ -4,7 +4,7 @@
  */
 
 export interface paths {
-    "/users/": {
+    "/auth/register": {
         parameters: {
             query?: never;
             header?: never;
@@ -17,14 +17,14 @@ export interface paths {
          * Create a new user
          * @description Create a new user.
          */
-        post: operations["create_user_users__post"];
+        post: operations["create_user_auth_register_post"];
         delete?: never;
         options?: never;
         head?: never;
         patch?: never;
         trace?: never;
     };
-    "/users/login": {
+    "/auth/login": {
         parameters: {
             query?: never;
             header?: never;
@@ -37,14 +37,14 @@ export interface paths {
          * Login a user
          * @description Login a user
          */
-        post: operations["login_user_users_login_post"];
+        post: operations["login_user_auth_login_post"];
         delete?: never;
         options?: never;
         head?: never;
         patch?: never;
         trace?: never;
     };
-    "/users/me": {
+    "/auth/me": {
         parameters: {
             query?: never;
             header?: never;
@@ -52,7 +52,7 @@ export interface paths {
             cookie?: never;
         };
         /** Me */
-        get: operations["me_users_me_get"];
+        get: operations["me_auth_me_get"];
         put?: never;
         post?: never;
         delete?: never;
@@ -126,20 +126,6 @@ export interface paths {
 export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
-        /**
-         * CreateUserRequest
-         * @description Request model for creating a new user.
-         */
-        CreateUserRequest: {
-            /**
-             * Email
-             * Format: email
-             * @description Email address of the person being creating the account.
-             */
-            email: string;
-            /** Password */
-            password: string;
-        };
         /** HTTPValidationError */
         HTTPValidationError: {
             /** Detail */
@@ -152,40 +138,6 @@ export interface components {
         HealthCheckResponse: {
             /** Status */
             status: string;
-        };
-        /**
-         * LoginUserRequest
-         * @description Request model for logging in a user.
-         */
-        LoginUserRequest: {
-            /**
-             * Email
-             * Format: email
-             * @description Email address of the user logging in.
-             */
-            email: string;
-            /**
-             * Password
-             * @description Password of the user logging in.
-             */
-            password: string;
-        };
-        /**
-         * LoginUserResponse
-         * @description Request model for logging in a user.
-         */
-        LoginUserResponse: {
-            /**
-             * Access Token
-             * @description JWT token response.
-             */
-            access_token: string;
-            /**
-             * Token Type
-             * @description Token type, e.g. Bearer
-             * @default bearer
-             */
-            token_type: string;
         };
         /**
          * RegulatoryProgramCreateRequest
@@ -212,6 +164,40 @@ export interface components {
             /** Description */
             description: string | null;
         };
+        /**
+         * UserLoginRequest
+         * @description Request model for logging in a user.
+         */
+        UserLoginRequest: {
+            /**
+             * Email
+             * Format: email
+             * @description Email address of the user logging in.
+             */
+            email: string;
+            /**
+             * Password
+             * @description Password of the user logging in.
+             */
+            password: string;
+        };
+        /**
+         * UserLoginResponse
+         * @description Request model for logging in a user.
+         */
+        UserLoginResponse: {
+            /**
+             * Access Token
+             * @description JWT token response.
+             */
+            access_token: string;
+            /**
+             * Token Type
+             * @description Token type, e.g. Bearer
+             * @default bearer
+             */
+            token_type: string;
+        };
         /** UserMeResponse */
         UserMeResponse: {
             /**
@@ -228,14 +214,31 @@ export interface components {
             is_active: boolean;
             /** Is Verified */
             is_verified: boolean;
-            /** Created At */
-            created_at: string | null;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
         };
         /**
-         * UserResponse
+         * UserRegistrationRequest
+         * @description Request model for creating a new user.
+         */
+        UserRegistrationRequest: {
+            /**
+             * Email
+             * Format: email
+             * @description Email address of the person being creating the account.
+             */
+            email: string;
+            /** Password */
+            password: string;
+        };
+        /**
+         * UserRegistrationResponse
          * @description Response model for a create user request.
          */
-        UserResponse: {
+        UserRegistrationResponse: {
             /**
              * Id
              * Format: uuid
@@ -266,7 +269,7 @@ export interface components {
 }
 export type $defs = Record<string, never>;
 export interface operations {
-    create_user_users__post: {
+    create_user_auth_register_post: {
         parameters: {
             query?: never;
             header?: never;
@@ -275,7 +278,7 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "application/json": components["schemas"]["CreateUserRequest"];
+                "application/json": components["schemas"]["UserRegistrationRequest"];
             };
         };
         responses: {
@@ -285,7 +288,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["UserResponse"];
+                    "application/json": components["schemas"]["UserRegistrationResponse"];
                 };
             };
             /** @description Validation Error */
@@ -299,7 +302,7 @@ export interface operations {
             };
         };
     };
-    login_user_users_login_post: {
+    login_user_auth_login_post: {
         parameters: {
             query?: never;
             header?: never;
@@ -308,7 +311,7 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "application/json": components["schemas"]["LoginUserRequest"];
+                "application/json": components["schemas"]["UserLoginRequest"];
             };
         };
         responses: {
@@ -318,7 +321,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["LoginUserResponse"];
+                    "application/json": components["schemas"]["UserLoginResponse"];
                 };
             };
             /** @description Validation Error */
@@ -332,7 +335,7 @@ export interface operations {
             };
         };
     };
-    me_users_me_get: {
+    me_auth_me_get: {
         parameters: {
             query?: never;
             header?: never;

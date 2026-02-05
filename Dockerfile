@@ -10,11 +10,17 @@ RUN pnpm install --frozen-lockfile
 
 # -------- Build --------
 FROM base AS builder
+
+ARG NEXT_PUBLIC_COMPLIANCE_LIVE_API_BASE_URL
+ENV NEXT_PUBLIC_COMPLIANCE_LIVE_API_BASE_URL=$NEXT_PUBLIC_COMPLIANCE_LIVE_API_BASE_URL
+RUN test -n "$NEXT_PUBLIC_COMPLIANCE_LIVE_API_BASE_URL"
+RUN echo "API URL=$NEXT_PUBLIC_COMPLIANCE_LIVE_API_BASE_URL"
+ 
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 RUN pnpm build
 
-# -------- Runtime --------
+# -------- runtime --------
 FROM node:18-alpine AS runner
 WORKDIR /app
 

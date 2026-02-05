@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { toast } from "sonner";
 
-import { NewRegisteredUser, UserCreate } from "@/features/auth/models";
+import { RegisteredUser, RegistrationInput } from "@/features/auth/models";
 import { useNewUser } from "@/features/auth/hooks/useNewUser";
 import RegistrationForm from "@/features/auth/components/RegistrationForm";
 import { Container } from "@/components/Container";
@@ -13,7 +13,9 @@ export default function Registration() {
   const { actions: newUserActions } = useNewUser();
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const handleSubmit = async (user: UserCreate): Promise<NewRegisteredUser> => {
+  const handleSubmit = async (
+    user: RegistrationInput,
+  ): Promise<RegisteredUser> => {
     setIsLoading(true);
     const promise = newUserActions.createNewUser(user);
 

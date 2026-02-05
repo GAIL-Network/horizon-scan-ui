@@ -1,11 +1,11 @@
 import { z } from "zod";
 import { RegistrationFormData } from "../components/RegistrationForm";
-import { LoginCredentials, UserCreate } from "../models";
+import { LoginCredentials, RegistrationInput } from "../models";
 import { LoginFormData } from "../components/LoginForm";
 
 export function mapFormDataToUserCreate(
   formData: RegistrationFormData,
-): UserCreate {
+): RegistrationInput {
   return {
     email: z.email().parse(formData.email),
     password: formData.password,

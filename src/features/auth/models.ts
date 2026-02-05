@@ -1,22 +1,25 @@
 import type {
-  LoginCredentialsDTO,
-  UserCreateDTO,
-  NewRegisteredUserDTO,
-  LoginResponseDTO,
-  UserDTO,
+  UserLoginRequestDTO,
+  UserRegistrationRequestDTO,
+  UserRegistrationResponseDTO,
+  UserLoginResponseDTO,
+  UserMeResponseDTO,
 } from "@/features/auth/dtos";
 
-export type UserCreate = UserCreateDTO;
-export type NewRegisteredUser = NewRegisteredUserDTO;
-export type LoginCredentials = LoginCredentialsDTO;
-export type LoginResponse = Omit<
-  LoginResponseDTO,
+export type RegistrationInput = UserRegistrationRequestDTO;
+export type RegisteredUser = UserRegistrationResponseDTO;
+export type LoginCredentials = UserLoginRequestDTO;
+export type AuthSession = Omit<
+  UserLoginResponseDTO,
   "access_token" | "token_type"
 > & {
   accessToken: string;
   tokenType: string;
 };
-export type User = Omit<UserDTO, "is_active" | "is_verified" | "created_at"> & {
+export type CurrentUser = Omit<
+  UserMeResponseDTO,
+  "is_active" | "is_verified" | "created_at"
+> & {
   isActive: boolean;
   isVerified: boolean;
   createdAt: Date;

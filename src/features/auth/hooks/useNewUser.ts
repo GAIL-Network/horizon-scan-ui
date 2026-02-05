@@ -1,11 +1,13 @@
 import { useState } from "react";
-import type { UserCreate, NewRegisteredUser } from "../models";
+import type { RegistrationInput, RegisteredUser } from "../models";
 import { createNewUser } from "../api";
 
 export function useNewUser() {
-  const [state, setState] = useState<NewRegisteredUser | null>(null);
+  const [state, setState] = useState<RegisteredUser | null>(null);
   const actions = {
-    createNewUser: async (newUser: UserCreate): Promise<NewRegisteredUser> => {
+    createNewUser: async (
+      newUser: RegistrationInput,
+    ): Promise<RegisteredUser> => {
       const newRegisteredUser = await createNewUser(newUser);
       setState(newRegisteredUser);
       return newRegisteredUser;
