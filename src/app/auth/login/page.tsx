@@ -22,7 +22,7 @@ export default function Page() {
     setIsLoading(true);
     try {
       await userActions.login(credentials);
-      router.replace("/"); // replace avoids back button to login
+      router.replace("/command-center"); // replace avoids back button to login
       return true;
     } catch (error) {
       toast.error("There was an error.");

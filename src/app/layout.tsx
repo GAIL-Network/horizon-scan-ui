@@ -25,9 +25,17 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const isUseMaxWidth = true;
+
   return (
     <html lang="en">
-      <body className={cn("mx-auto max-w-7xl px-4", inter.className)}>
+      <body
+        className={cn(
+          "mx-auto bg-gray-50",
+          inter.className,
+          !isUseMaxWidth && "max-w-7xl",
+        )}
+      >
         <UserProvider>
           <Navbar />
           <Toaster
