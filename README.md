@@ -40,20 +40,42 @@ AWS Deployment is carried out by building locally with docker and then pushing t
   ```
   if you want to deploy it inline.
 
-4. ssh into the EC2 instance, pull the image and run the container.
-   - Setup your environment as before
+4. SSH into the EC2 instance, pull the image, and run the container.
+
+   - Set up your environment as before:
      - `AWS_REGION`
-   - `AWS_ACCOUNT_ID`
-   - `ECR_REPO`
-   - Login into the ECR repository with docker.
-   - ````aws ecr get-login-password --region "$AWS_REGION" | \
-        docker login --username AWS \
-     --password-stdin "$AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com"```
-     ````
-   - `docker pull "$AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPO:dev"`
-   - `docker stop horizon-scan-ui || true`
-   - `docker rm horizon-scan-ui || true`
-   - `docker run -d --name horizon-scan-ui -p 3000:3000 "$AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPO:dev"`
+     - `AWS_ACCOUNT_ID`
+     - `ECR_REPO`
+
+   - Log in to the ECR repository with Docker:
+
+     ```bash
+     aws ecr get-login-password --region "$AWS_REGION" | \
+       docker login --username AWS \
+       --password-stdin "$AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com"
+     ```
+
+   - Pull the image:
+
+     ```bash
+     docker pull "$AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPO:dev"
+     ```
+
+   - Stop and remove any existing container:
+
+     ```bash
+     docker stop horizon-scan-ui || true
+     docker rm horizon-scan-ui || true
+     ```
+
+   - Run the container:
+
+     ```bash
+     docker run -d \
+       --name horizon-scan-ui \
+       -p 3000:3000 \
+       "$AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPO:dev"
+     ```
 
 # Agent Chat UI (Origin Fork)
 
