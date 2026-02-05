@@ -2,12 +2,9 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { Inter } from "next/font/google";
 import React from "react";
-import { NuqsAdapter } from "nuqs/adapters/next/app";
 
-import { Navbar } from "@/components/Navbar";
-import { UserProvider } from "@/context/UserProvider";
-import { Toaster } from "sonner";
 import { cn } from "@/lib/utils";
+import { AppShell } from "@/components/AppShell";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -36,14 +33,7 @@ export default function RootLayout({
           !isUseMaxWidth && "max-w-7xl",
         )}
       >
-        <UserProvider>
-          <Navbar />
-          <Toaster
-            richColors
-            position="top-right"
-          />
-          <NuqsAdapter>{children}</NuqsAdapter>
-        </UserProvider>
+        <AppShell>{children}</AppShell>
       </body>
     </html>
   );
