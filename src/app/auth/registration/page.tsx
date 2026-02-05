@@ -8,6 +8,7 @@ import { useNewUser } from "@/features/auth/hooks/useNewUser";
 import RegistrationForm from "@/features/auth/components/RegistrationForm";
 import { Container } from "@/components/Container";
 import { Header } from "@/components/Header";
+import { Panel } from "@/components/Panel";
 
 export default function Registration() {
   const { actions: newUserActions } = useNewUser();
@@ -35,7 +36,9 @@ export default function Registration() {
 
   return (
     <Container>
-      <Header>Create an account</Header>
+      <Panel>
+        <Header className="mb-0 flex">Create an account</Header>
+      </Panel>
       <RegistrationForm
         disabled={isLoading}
         onSubmit={handleSubmit}

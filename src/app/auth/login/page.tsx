@@ -10,6 +10,7 @@ import { LoginCredentials } from "@/features/auth/models";
 import { useState } from "react";
 import { toast } from "sonner";
 import { useUser } from "@/hooks/useUser";
+import { Panel } from "@/components/Panel";
 
 export default function Page() {
   const router = useRouter();
@@ -35,7 +36,9 @@ export default function Page() {
 
   return (
     <Container>
-      <Header>Login</Header>
+      <Panel>
+        <Header className="mb-0 flex">Login</Header>
+      </Panel>
       <LoginForm
         disabled={isLoading}
         onSubmit={handleSubmit}

@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
 
-type PanelProps = React.ComponentPropsWithoutRef<"div">;
+export type PanelProps = React.ComponentPropsWithoutRef<"div">;
 
 export function Panel({ className, ...rest }: PanelProps) {
   return (

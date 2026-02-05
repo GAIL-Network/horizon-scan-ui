@@ -16,6 +16,7 @@ const LEFT_NAV_LINKS = [
   { href: "/command-center", label: "Command Center", exact: true },
   { href: "/changes", label: "Changes" },
   { href: "/programmes", label: "Programmes" },
+  { href: "/work", label: "Work" },
   { href: "/reports", label: "Reports" },
   { href: "/chat", label: "Chat" },
 ];
