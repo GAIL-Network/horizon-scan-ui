@@ -1,15 +1,21 @@
-import { useState } from "react";
+import { useContext } from "react";
 import { Signal } from "../models";
+import { SignalsContext } from "@/context/SignalsContext";
 
 export function useSignals() {
-  const [state, setState] = useState<Signal[]>([]);
+  const ctx = useContext(SignalsContext);
+  if (!ctx) {
+    throw new Error("useSignals must be used inside <SignalsProvider>");
+  }
 
-  const set = (signals: Signal[]): void => {
+  const { state, setState } = ctx;
+
+  const setSignals = (signals: Signal[]): void => {
     setState(signals);
   };
 
   return {
     state,
-    actions: { set },
+    actions: { setSignals },
   };
 }

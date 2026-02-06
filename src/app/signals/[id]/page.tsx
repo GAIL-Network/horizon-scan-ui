@@ -12,7 +12,7 @@ export default async function Page({
   return (
     <Container>
       <Panel>
-        <Header className="mb-0 flex">Signal {id}</Header>
+        <Header className="mb-0 flex">Signal: {id}</Header>
       </Panel>
 
       <div className="grid grid-cols-12 gap-2">
