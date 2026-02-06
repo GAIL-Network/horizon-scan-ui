@@ -1,4 +1,4 @@
-import { SignalDTO } from "@/app/signals/dtos";
+import { SignalDTO } from "@/features/signals/dtos";
 import { Signal } from "../models";
 import z from "zod";
 
