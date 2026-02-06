@@ -16,7 +16,7 @@ export default function Page() {
 
   useEffect(() => {
     signalActions.setSignals(mockData.map(parseSignalDTO));
-  }, []);
+  }, [signalActions.setSignals]);
 
   return (
     <Container>

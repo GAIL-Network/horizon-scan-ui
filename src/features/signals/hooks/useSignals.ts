@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useCallback, useContext, useMemo } from "react";
 import { Signal } from "../models";
 import { SignalsContext } from "@/context/SignalsContext";
 
@@ -10,12 +10,17 @@ export function useSignals() {
 
   const { state, setState } = ctx;
 
-  const setSignals = (signals: Signal[]): void => {
-    setState(signals);
-  };
+  const setSignals = useCallback(
+    (signals: Signal[]): void => {
+      setState(signals);
+    },
+    [setState],
+  );
+
+  const actions = useMemo(() => ({ setSignals }), [setSignals]);
 
   return {
     state,
-    actions: { setSignals },
+    actions,
   };
 }
