@@ -17,7 +17,8 @@
     "lint:fix": "next lint --fix",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "generate": "openapi-typescript http://localhost:5000/openapi.json --output ./src/api/openapi.ts"
+    "generate": "openapi-typescript http://localhost:5000/openapi.json --output ./src/api/openapi.ts",
+    "generate:horizon-scan": "openapi-typescript http://13.61.35.87:8001/api/v1/openapi.json --output ./src/api/openapi-horizon-scan.ts"
   },
   "dependencies": {
     "@langchain/core": "^1.0.2",

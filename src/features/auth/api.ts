@@ -25,6 +25,7 @@ export async function createNewUser(
   newUser: RegistrationInput,
 ): Promise<RegisteredUser> {
   const newRegisteredUserDTO = await apiFetch<UserRegistrationResponseDTO>(
+    "compliance",
     "/auth/register",
     {
       method: "POST",
@@ -39,16 +40,20 @@ export async function createNewUser(
 export async function loginUser(
   loginCredentials: LoginCredentials,
 ): Promise<AuthSession> {
-  const loginResponseDTO = await apiFetch<UserLoginResponseDTO>("/auth/login", {
-    method: "POST",
-    body: JSON.stringify(serializeLoginCredentials(loginCredentials)),
-  });
+  const loginResponseDTO = await apiFetch<UserLoginResponseDTO>(
+    "compliance",
+    "/auth/login",
+    {
+      method: "POST",
+      body: JSON.stringify(serializeLoginCredentials(loginCredentials)),
+    },
+  );
   const loginResponse = parseLoginResponseDTO(loginResponseDTO);
   return loginResponse;
 }
 
 export async function getMe(): Promise<CurrentUser> {
-  const meDTO = await apiFetch<UserMeResponseDTO>("/auth/me", {
+  const meDTO = await apiFetch<UserMeResponseDTO>("compliance", "/auth/me", {
     method: "GET",
   });
   return parseUserDTO(meDTO);

@@ -1,11 +1,5 @@
-export type SignalDTO = {
-  id: string;
-  title: string;
-  object_type: string;
-  type: string;
-  description: string;
-  tags: string[];
-  obligations: string[];
-  created_at: string;
-  updated_at: string;
-};
+import { components } from "@/api/openapi-horizon-scan";
+
+type schemas = components["schemas"];
+
+export type SignalDTO = schemas["SignalInDB"];

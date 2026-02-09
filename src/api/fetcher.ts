@@ -1,19 +1,23 @@
-import { authToken } from "@/features/auth/authToken";
-
 // src/lib/api/fetcher.ts
-const COMPLIANCE_LIVE_API_BASE_URL = (
-  process.env.NEXT_PUBLIC_COMPLIANCE_LIVE_API_BASE_URL ?? ""
-).replace(/\/$/, "");
+import { authToken } from "@/features/auth/authToken";
+import { API_BASES, type ApiBaseKey } from "@/lib/api/bases";
 
 function normalizePath(path: string) {
   return path.startsWith("/") ? path : `/${path}`;
 }
 
 export async function apiFetch<T = unknown>(
+  base: ApiBaseKey,
   path: string,
   options: RequestInit = {},
 ): Promise<T> {
-  const url = `${COMPLIANCE_LIVE_API_BASE_URL}${normalizePath(path)}`;
+  const baseUrl = API_BASES[base];
+
+  if (!baseUrl) {
+    throw new Error(`API base URL not configured for "${base}"`);
+  }
+
+  const url = `${baseUrl}${normalizePath(path)}`;
 
   const headers = new Headers(options.headers);
 

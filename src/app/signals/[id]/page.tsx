@@ -1,13 +1,15 @@
+"use client";
+
 import { Container } from "@/components/Container";
 import { Header } from "@/components/Header";
 import { Panel } from "@/components/Panel";
+import { useSignal } from "@/features/signals/hooks/useSignal";
+import { useParams } from "next/navigation";
 
-export default async function Page({
-  params,
-}: {
-  params: Promise<{ id: string }>;
-}) {
-  const { id } = await params;
+export default function Page() {
+  const params = useParams<{ id: string }>();
+  const { id } = params;
+  const { state: signal, actions: signalActions } = useSignal({ id });
 
   return (
     <Container>
