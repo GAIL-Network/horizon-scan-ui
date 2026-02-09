@@ -2,9 +2,20 @@
 
 import { Container } from "@/components/Container";
 import { Header } from "@/components/Header";
+import { List } from "@/components/List";
+import { ListItem } from "@/components/ListItem";
 import { Panel } from "@/components/Panel";
 import { useSignal } from "@/features/signals/hooks/useSignal";
 import { useParams } from "next/navigation";
+
+function Field({ label, value }: { label: string; value: React.ReactNode }) {
+  return (
+    <div className="flex flex-col gap-1 sm:flex-row sm:gap-2">
+      <span className="font-bold sm:w-40 sm:shrink-0">{label}:</span>
+      <span className="break-words sm:leading-6">{value ?? "—"}</span>
+    </div>
+  );
+}
 
 export default function Page() {
   const params = useParams<{ id: string }>();
@@ -14,7 +25,109 @@ export default function Page() {
   return (
     <Container>
       <Panel>
-        <Header className="mb-0 flex">Signal: {id}</Header>
+        <Header className="mt-4 mb-8">Signal: {signal?.title}</Header>
+
+        {signal && (
+          <div className="flex flex-col gap-2">
+            <Field
+              label="Description"
+              value={signal.description}
+            />
+
+            <Field
+              label={"Object type"}
+              value={signal.objectType}
+            />
+
+            <Field
+              label="Signal type"
+              value={signal.type}
+            />
+
+            <Field
+              label="Temporal type"
+              value={signal.temporal}
+            />
+
+            <Field
+              label="Normalized status"
+              value={signal.normalizedStatus}
+            />
+
+            <Field
+              label="SOP"
+              value={signal.sop}
+            />
+
+            <Field
+              label="Certainty"
+              value={signal.certainty}
+            />
+
+            <Field
+              label="Magnitude"
+              value={signal.magnitude}
+            />
+
+            <Field
+              label="Risk Rag"
+              value={signal.riskRag}
+            />
+
+            <Field
+              label="Readiness Score"
+              value={signal.readinessScore}
+            />
+
+            <Field
+              label="Source"
+              value={signal.source}
+            />
+
+            <Field
+              label="Sources"
+              value={signal.sources
+                .flatMap((source) =>
+                  Object.entries(source).map(([k, v]) => `${k}: ${v}`),
+                )
+                .join(", ")}
+            />
+
+            <Field
+              label="Tags"
+              value={signal.tags.join(", ")}
+            />
+
+            <Field
+              label="Obligations"
+              value={
+                <List>
+                  {signal.obligations.map((obligation) => (
+                    <ListItem key={obligation}>{obligation}</ListItem>
+                  ))}
+                </List>
+              }
+            />
+
+            <Field
+              label="Metadata"
+              value={Object.entries(signal.signalMetadata)
+                .map(([key, value]) => `${key}: ${String(value)}`)
+                .join(", ")}
+            />
+
+            <div className="text-small flex justify-between">
+              <div>
+                <label className="font-bold">Created at: </label>
+                {signal.createdAt.toLocaleString()}
+              </div>
+              <div>
+                <label className="font-bold">Updated at: </label>
+                {signal.updatedAt.toLocaleString()}
+              </div>
+            </div>
+          </div>
+        )}
       </Panel>
 
       <div className="grid grid-cols-12 gap-2">
