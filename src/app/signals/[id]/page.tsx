@@ -20,7 +20,7 @@ function Field({ label, value }: { label: string; value: React.ReactNode }) {
 export default function Page() {
   const params = useParams<{ id: string }>();
   const { id } = params;
-  const { state: signal, actions: signalActions } = useSignal({ id });
+  const { state: signal } = useSignal({ id });
 
   return (
     <Container>

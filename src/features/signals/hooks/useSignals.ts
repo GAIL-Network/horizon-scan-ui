@@ -1,6 +1,7 @@
-import { useCallback, useContext, useMemo } from "react";
+import { useCallback, useContext, useEffect, useMemo } from "react";
 import { Signal } from "../models";
 import { SignalsContext } from "@/context/SignalsContext";
+import { listSignals } from "../api";
 
 export function useSignals() {
   const ctx = useContext(SignalsContext);
@@ -10,6 +11,10 @@ export function useSignals() {
 
   const { state, setState } = ctx;
 
+  const refreshSignals = useCallback(async () => {
+    setState(await listSignals());
+  }, [setState]);
+
   const setSignals = useCallback(
     (signals: Signal[]): void => {
       setState(signals);
@@ -17,7 +22,14 @@ export function useSignals() {
     [setState],
   );
 
-  const actions = useMemo(() => ({ setSignals }), [setSignals]);
+  useEffect(() => {
+    refreshSignals();
+  }, [refreshSignals]);
+
+  const actions = useMemo(
+    () => ({ refreshSignals, setSignals }),
+    [refreshSignals, setSignals],
+  );
 
   return {
     state,

@@ -2,23 +2,23 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Signal } from "../models";
-import { get } from "../api";
+import { getSignal } from "../api";
 
 type Props = { id: string };
 
 export function useSignal({ id }: Props) {
   const [state, setState] = useState<Signal | null>(null);
 
-  const getSignal = useCallback(async ({ id }: { id: string }) => {
-    setState(await get({ id }));
+  const refreshSignal = useCallback(async ({ id }: { id: string }) => {
+    setState(await getSignal({ id }));
   }, []);
 
   useEffect(() => {
     if (id === "") return;
-    getSignal({ id });
-  }, [id, getSignal]);
+    refreshSignal({ id });
+  }, [id, refreshSignal]);
 
-  const actions = useMemo(() => ({ getSignal }), [getSignal]);
+  const actions = useMemo(() => ({ refreshSignal }), [refreshSignal]);
 
   return { state, actions };
 }

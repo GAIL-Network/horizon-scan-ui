@@ -7,16 +7,9 @@ import { ListItem } from "@/components/ListItem";
 import { Panel } from "@/components/Panel";
 import { useSignals } from "@/features/signals/hooks/useSignals";
 import Link from "next/link";
-import mockData from "@/features/signals/mock-data/data.json";
-import { parseSignalDTO } from "@/features/signals/adapters/parsers";
-import { useEffect } from "react";
 
 export default function Page() {
-  const { state: signals, actions: signalActions } = useSignals();
-
-  useEffect(() => {
-    signalActions.setSignals(mockData.map(parseSignalDTO));
-  }, [signalActions.setSignals]);
+  const { state: signals } = useSignals();
 
   return (
     <Container>
