@@ -1,3 +1,4 @@
+import { cn } from "@/lib/utils";
 import { EnumBadge } from "@/components/EnumBadge";
 import {
   OBJECT_TYPE_STYLES,
@@ -17,13 +18,15 @@ import {
 
 export function ObjectTypeBadge({
   value,
+  className,
 }: {
   value: (typeof SIGNAL_OBJECT_TYPES)[number];
+  className?: string;
 }) {
   return (
     <EnumBadge
       value={value}
-      className={OBJECT_TYPE_STYLES[value]}
+      className={cn(OBJECT_TYPE_STYLES[value], className)}
       title={`Object type: ${value}`}
     />
   );
@@ -33,13 +36,15 @@ export function ObjectTypeBadge({
 
 export function SignalTypeBadge({
   value,
+  className,
 }: {
   value: (typeof SIGNAL_TYPES)[number];
+  className?: string;
 }) {
   return (
     <EnumBadge
       value={value}
-      className={SIGNAL_TYPE_STYLES[value]}
+      className={cn(SIGNAL_TYPE_STYLES[value], className)}
       title={`Signal type: ${value}`}
     />
   );
@@ -49,13 +54,15 @@ export function SignalTypeBadge({
 
 export function TemporalStatusBadge({
   value,
+  className,
 }: {
   value: (typeof SIGNAL_TEMPORAL_STATUSES)[number];
+  className?: string;
 }) {
   return (
     <EnumBadge
       value={value}
-      className={TEMPORAL_STATUS_STYLES[value]}
+      className={cn(TEMPORAL_STATUS_STYLES[value], className)}
       title={`Temporal status: ${value}`}
     />
   );
@@ -65,13 +72,15 @@ export function TemporalStatusBadge({
 
 export function RiskRagBadge({
   value,
+  className,
 }: {
   value: (typeof SIGNAL_RISK_RAG)[number];
+  className?: string;
 }) {
   return (
     <EnumBadge
       value={value}
-      className={RISK_RAG_STYLES[value]}
+      className={cn(RISK_RAG_STYLES[value], className)}
       title={`Risk level: ${value}`}
     />
   );
