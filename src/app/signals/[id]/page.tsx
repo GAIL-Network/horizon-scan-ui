@@ -9,12 +9,15 @@ import { ListItem } from "@/components/ListItem";
 import { Panel } from "@/components/Panel";
 import { useSignal } from "@/features/signals/hooks/useSignal";
 import { useParams } from "next/navigation";
+import MasonryColumns from "@/components/MasonryColumns";
 
 function Field({ label, value }: { label: string; value: React.ReactNode }) {
   return (
-    <div className="flex flex-col gap-1 sm:flex-row sm:gap-2">
-      <span className="font-bold sm:w-40 sm:shrink-0">{label}:</span>
-      <span className="break-words sm:leading-6">{value ?? "—"}</span>
+    <div className="flex flex-col gap-1">
+      <span className="text-sm font-medium text-slate-500 sm:w-40 sm:shrink-0">
+        {label}
+      </span>
+      <span className="text-sm break-words text-slate-900">{value ?? "—"}</span>
     </div>
   );
 }
@@ -37,100 +40,108 @@ export default function Page() {
 
         {signal && (
           <div className="flex flex-col gap-2">
-            <Field
-              label="Description"
-              value={signal.description}
-            />
+            <MasonryColumns gap={25}>
+              <Field
+                label="Description"
+                value={signal.description}
+              />
 
-            <Field
-              label={"Object type"}
-              value={signal.objectType}
-            />
+              <Field
+                label={"Object type"}
+                value={signal.objectType}
+              />
 
-            <Field
-              label="Signal type"
-              value={signal.type}
-            />
+              <Field
+                label="Signal type"
+                value={signal.type}
+              />
 
-            <Field
-              label="Temporal type"
-              value={signal.temporal}
-            />
+              <Field
+                label="Temporal type"
+                value={signal.temporal}
+              />
 
-            <Field
-              label="Normalized status"
-              value={signal.normalizedStatus}
-            />
+              <Field
+                label="Normalized status"
+                value={signal.normalizedStatus}
+              />
 
-            <Field
-              label="SOP"
-              value={signal.sop}
-            />
+              <Field
+                label="SOP"
+                value={signal.sop}
+              />
 
-            <Field
-              label="Certainty"
-              value={signal.certainty}
-            />
+              <Field
+                label="Certainty"
+                value={signal.certainty}
+              />
 
-            <Field
-              label="Magnitude"
-              value={signal.magnitude}
-            />
+              <Field
+                label="Magnitude"
+                value={signal.magnitude}
+              />
 
-            <Field
-              label="Risk Rag"
-              value={signal.riskRag}
-            />
+              <Field
+                label="Risk Rag"
+                value={signal.riskRag}
+              />
 
+              {/*
             <Field
               label="Readiness Score"
               value={signal.readinessScore}
             />
+	    */}
 
-            <Field
-              label="Source"
-              value={signal.source}
-            />
+              <Field
+                label="Source"
+                value={signal.source}
+              />
 
-            <Field
-              label="Sources"
-              value={signal.sources
-                .flatMap((source) =>
-                  Object.entries(source).map(([k, v]) => `${k}: ${v}`),
-                )
-                .join(", ")}
-            />
+              <Field
+                label="Sources"
+                value={signal.sources
+                  .flatMap((source) =>
+                    Object.entries(source).map(([k, v]) => `${k}: ${v}`),
+                  )
+                  .join(", ")}
+              />
 
-            <Field
-              label="Tags"
-              value={signal.tags.join(", ")}
-            />
+              <Field
+                label="Tags"
+                value={signal.tags.join(", ")}
+              />
 
-            <Field
-              label="Obligations"
-              value={
-                <List>
-                  {signal.obligations.map((obligation) => (
-                    <ListItem key={obligation}>{obligation}</ListItem>
-                  ))}
-                </List>
-              }
-            />
+              <Field
+                label="Obligations"
+                value={
+                  <List>
+                    {signal.obligations.map((obligation) => (
+                      <ListItem key={obligation}>{obligation}</ListItem>
+                    ))}
+                  </List>
+                }
+              />
 
-            <Field
-              label="Metadata"
-              value={Object.entries(signal.signalMetadata)
-                .map(([key, value]) => `${key}: ${String(value)}`)
-                .join(", ")}
-            />
+              <Field
+                label="Metadata"
+                value={Object.entries(signal.signalMetadata)
+                  .map(([key, value]) => `${key}: ${String(value)}`)
+                  .join(", ")}
+              />
+            </MasonryColumns>
 
-            <div className="text-small flex justify-between">
+            <div className="text-small flex flex-col">
               <div>
-                <label className="font-bold">Created at: </label>
+                <label className="text-sm font-medium text-slate-500">
+                  Created at:{" "}
+                </label>
                 {signal.createdAt.toLocaleString()}
               </div>
               <div>
-                <label className="font-bold">Updated at: </label>
+                <label className="text-sm font-medium text-slate-500">
+                  Updated at:{" "}
+                </label>
                 {signal.updatedAt.toLocaleString()}
               </div>
             </div>
@@ -152,7 +163,10 @@ export default function Page() {
         </div>
 
         <div className="col-span-12 flex flex-col gap-2 md:col-span-3">
-          <Panel>Triage Decision</Panel>
+          <Panel>
+            <div>Triage Decision</div>
+            <Button>Start Impact Assessment</Button>
+          </Panel>
           <Panel>Agent Evidence</Panel>
           <Panel>Activity</Panel>
         </div>
