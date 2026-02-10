@@ -1,22 +1,24 @@
+import * as React from "react";
 import { cn } from "@/lib/utils";
+import { buttonVariants } from "./Button.variants";
+import type { VariantProps } from "class-variance-authority";
 
-export interface ButtonProps extends React.ComponentPropsWithoutRef<"button"> {
-  className?: string;
-}
+export interface ButtonProps
+  extends
+    React.ComponentPropsWithoutRef<"button">,
+    VariantProps<typeof buttonVariants> {}
 
-export default function Button({ className, ...rest }: ButtonProps) {
+export default function Button({
+  className,
+  variant,
+  size,
+  type = "button",
+  ...props
+}: ButtonProps) {
   return (
     <button
-      {...rest}
-      className={cn(
-        "rounded border px-3 py-2",
-        "border-slate-600 bg-slate-600 text-white",
-        "hover:bg-slate-700 active:bg-slate-800",
-        "transition-colors",
-        "disabled:cursor-not-allowed disabled:opacity-50",
-        "cursor-pointer",
-        className,
-      )}
+      {...props}
+      className={cn(buttonVariants({ variant, size }), className)}
     />
   );
 }

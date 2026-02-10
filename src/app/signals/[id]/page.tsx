@@ -1,5 +1,7 @@
 "use client";
+import { Flag } from "lucide-react";
 
+import Button from "@/components/Button";
 import { Container } from "@/components/Container";
 import { Header } from "@/components/Header";
 import { List } from "@/components/List";
@@ -24,6 +26,12 @@ export default function Page() {
 
   return (
     <Container>
+      <div className="flex justify-end gap-2">
+        <Button variant="default">
+          <Flag className="h-4 w-4" /> Set Priority
+        </Button>
+        <Button variant="outline">Ignore</Button>
+      </div>
       <Panel>
         <Header className="mt-4 mb-8">Signal: {signal?.title}</Header>
 
