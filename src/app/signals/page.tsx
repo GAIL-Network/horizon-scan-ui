@@ -1,5 +1,6 @@
 "use client";
 
+import { cn } from "@/lib/utils";
 import { Container } from "@/components/Container";
 import { Header } from "@/components/Header";
 import { Panel } from "@/components/Panel";
@@ -29,7 +30,15 @@ export default function Page() {
               href={`/signals/${signal.id}`}
               className="group"
             >
-              <Panel className="h-60 cursor-pointer transition-shadow hover:shadow-md">
+              <Panel
+                className={cn(
+                  "h-60 cursor-pointer border border-gray-300",
+                  "transition-all duration-200 ease-out",
+                  "hover:-translate-y-0.5",
+                  "hover:shadow-lg",
+                  "hover:ring-2 hover:ring-slate-400",
+                )}
+              >
                 <div className="flex h-full flex-col">
                   {/* Header */}
                   <div className="flex flex-col gap-2">
