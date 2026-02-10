@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 import { Flag } from "lucide-react";
 
 import Button from "@/components/Button";
@@ -17,6 +18,9 @@ import {
   TemporalStatusBadge,
 } from "@/features/signals/ui/signalBadges";
 import { CheckboxListItem } from "@/components/CheckboxListItem";
+import { useState } from "react";
+import { Modal } from "@/components/Modal";
+import { ModalHeader, ModalBody, ModalFooter } from "@/components/ModalParts";
 
 function Field({ label, value }: { label: string; value: React.ReactNode }) {
   return (
@@ -33,14 +37,26 @@ export default function Page() {
   const params = useParams<{ id: string }>();
   const { id } = params;
   const { state: signal } = useSignal({ id });
+  const [isPriorityOpen, setPriorityOpen] = useState(false);
+  const [isIgnoreOpen, setIgnoreOpen] = useState(false);
 
   return (
     <Container>
       <div className="flex justify-end gap-2">
-        <Button variant="default">
-          <Flag className="h-4 w-4" /> Set Priority
+        <Button
+          variant="default"
+          onClick={() => setPriorityOpen(true)}
+        >
+          <Flag className="h-4 w-4" />
+          Set Priority
         </Button>
-        <Button variant="outline">Ignore</Button>
+
+        <Button
+          variant="outline"
+          onClick={() => setIgnoreOpen(true)}
+        >
+          Ignore
+        </Button>
       </div>
       <Panel>
         <Header className="mt-4 mb-8">Signal: {signal?.title}</Header>
@@ -183,12 +199,76 @@ export default function Page() {
         <div className="col-span-12 flex flex-col gap-2 md:col-span-3">
           <Panel className="flex items-center justify-between">
             <div>Triage Decision</div>
-            <Button>Start Impact Assessment</Button>
+            <Link href="/impact-assessments/start">
+              <Button>Start Impact Assessment</Button>
+            </Link>
           </Panel>
           <Panel>Agent Evidence</Panel>
           <Panel>Activity</Panel>
         </div>
       </div>
+
+      <Modal
+        isShow={isPriorityOpen}
+        onClose={() => setPriorityOpen(false)}
+      >
+        <ModalHeader className="flex items-center gap-2">
+          <Flag className="h-4 w-4 text-slate-500" />
+          Set Priority
+        </ModalHeader>
+
+        <ModalBody className="space-y-3">
+          <p className="text-sm text-slate-600">
+            Priority controls how this signal is triaged and escalated.
+          </p>
+
+          <div className="rounded border border-dashed p-3 text-sm text-slate-400">
+            Priority selection coming soon.
+          </div>
+        </ModalBody>
+
+        <ModalFooter>
+          <Button
+            variant="outline"
+            onClick={() => setPriorityOpen(false)}
+          >
+            Close
+          </Button>
+        </ModalFooter>
+      </Modal>
+
+      <Modal
+        isShow={isIgnoreOpen}
+        onClose={() => setIgnoreOpen(false)}
+      >
+        <ModalHeader>Ignore Signal</ModalHeader>
+
+        <ModalBody className="space-y-3">
+          <p className="text-sm text-slate-600">
+            Ignoring a signal removes it from active triage and follow-up.
+          </p>
+
+          <div className="rounded border border-dashed p-3 text-sm text-slate-400">
+            Ignore behavior configuration coming soon.
+          </div>
+        </ModalBody>
+
+        <ModalFooter>
+          <Button
+            variant="outline"
+            onClick={() => setIgnoreOpen(false)}
+          >
+            Cancel
+          </Button>
+
+          <Button
+            variant="destructive"
+            disabled
+          >
+            Ignore
+          </Button>
+        </ModalFooter>
+      </Modal>
     </Container>
   );
 }
