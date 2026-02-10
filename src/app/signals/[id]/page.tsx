@@ -10,6 +10,13 @@ import { Panel } from "@/components/Panel";
 import { useSignal } from "@/features/signals/hooks/useSignal";
 import { useParams } from "next/navigation";
 import MasonryColumns from "@/components/MasonryColumns";
+import {
+  ObjectTypeBadge,
+  RiskRagBadge,
+  SignalTypeBadge,
+  TemporalStatusBadge,
+} from "@/features/signals/ui/signalBadges";
+import { CheckboxListItem } from "@/components/CheckboxListItem";
 
 function Field({ label, value }: { label: string; value: React.ReactNode }) {
   return (
@@ -48,17 +55,17 @@ export default function Page() {
 
               <Field
                 label={"Object type"}
-                value={signal.objectType}
+                value={<ObjectTypeBadge value={signal.objectType} />}
               />
 
               <Field
                 label="Signal type"
-                value={signal.type}
+                value={<SignalTypeBadge value={signal.type} />}
               />
 
               <Field
                 label="Temporal type"
-                value={signal.temporal}
+                value={<TemporalStatusBadge value={signal.temporal} />}
               />
 
               <Field
@@ -82,8 +89,8 @@ export default function Page() {
               />
 
               <Field
-                label="Risk Rag"
-                value={signal.riskRag}
+                label="Risk RAG"
+                value={<RiskRagBadge value={signal.riskRag} />}
               />
 
               {/*
@@ -117,7 +124,9 @@ export default function Page() {
                 value={
                   <List>
                     {signal.obligations.map((obligation) => (
-                      <ListItem key={obligation}>{obligation}</ListItem>
+                      <CheckboxListItem key={obligation}>
+                        {obligation}
+                      </CheckboxListItem>
                     ))}
                   </List>
                 }
@@ -163,7 +172,7 @@ export default function Page() {
         </div>
 
         <div className="col-span-12 flex flex-col gap-2 md:col-span-3">
-          <Panel>
+          <Panel className="flex items-center justify-between">
             <div>Triage Decision</div>
             <Button>Start Impact Assessment</Button>
           </Panel>

@@ -6,6 +6,7 @@ import {
   SIGNAL_OBJECT_TYPES,
   SIGNAL_TYPES,
   SIGNAL_TEMPORAL_STATUSES,
+  SIGNAL_RISK_RAG,
 } from "../models";
 
 export const SignalDTOSchema: z.ZodType<SignalDTO> = z
@@ -19,7 +20,7 @@ export const SignalDTOSchema: z.ZodType<SignalDTO> = z
     sop: z.string(),
     certainty: z.number(),
     magnitude: z.number(),
-    riskRag: z.enum(["Red", "Amber", "Green"]),
+    riskRag: z.enum(SIGNAL_RISK_RAG),
     readinessScore: z.number().optional().nullable(),
     description: z.string().optional().nullable(),
     source: z.string().optional().nullable(),

@@ -20,6 +20,8 @@ export const SIGNAL_TEMPORAL_STATUSES = [
   "Ending",
 ] as const;
 
+export const SIGNAL_RISK_RAG = ["Red", "Amber", "Green"] as const;
+
 /* =======================
    Domain types
    ======================= */
