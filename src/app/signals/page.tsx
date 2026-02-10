@@ -1,10 +1,15 @@
 "use client";
 
-import Button from "@/components/Button";
 import { Container } from "@/components/Container";
 import { Header } from "@/components/Header";
 import { Panel } from "@/components/Panel";
 import { useSignals } from "@/features/signals/hooks/useSignals";
+import {
+  ObjectTypeBadge,
+  RiskRagBadge,
+  SignalTypeBadge,
+  TemporalStatusBadge,
+} from "@/features/signals/ui/signalBadges";
 import Link from "next/link";
 
 export default function Page() {
@@ -24,17 +29,31 @@ export default function Page() {
               href={`/signals/${signal.id}`}
               className="group"
             >
-              <Panel className="h-40 cursor-pointer transition-shadow hover:shadow-md">
-                <div className="flex h-full flex-col justify-between">
-                  <div className="line-clamp-2 font-medium">{signal.title}</div>
+              <Panel className="h-60 cursor-pointer transition-shadow hover:shadow-md">
+                <div className="flex h-full flex-col">
+                  {/* Header */}
+                  <div className="flex flex-col gap-2">
+                    <div className="line-clamp-2 font-medium">
+                      {signal.title}
+                    </div>
 
-                  <div>
-                    <p className="line-clamp-3 text-sm text-slate-700">
+                    <div className="flex flex-wrap gap-1">
+                      <ObjectTypeBadge value={signal.objectType} />
+                      <SignalTypeBadge value={signal.type} />
+                      <RiskRagBadge value={signal.riskRag} />
+                      <TemporalStatusBadge value={signal.temporal} />
+                    </div>
+                  </div>
+
+                  {/* Body (fills remaining space) */}
+                  <div className="mt-2 flex-1 overflow-hidden">
+                    <p className="line-clamp-5 text-sm text-slate-700">
                       {signal.description}
                     </p>
                   </div>
 
-                  <div className="text-sm text-slate-500">
+                  {/* Footer (pinned to bottom) */}
+                  <div className="pt-2 text-sm text-slate-500">
                     {signal.createdAt.toLocaleString()}
                   </div>
                 </div>
