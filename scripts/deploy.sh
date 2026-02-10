@@ -31,21 +31,25 @@ echo "▶ Deploying environment: $ENVIRONMENT"
 echo "▶ Using env file: $ENV_FILE"
 echo "▶ Target ECR repo: $ECR_URI:$IMAGE_TAG"
 
-# ---- Load build-time env ----
+# ---- Load env vars ----
 set -a
 . "$ENV_FILE"
 set +a
 
+# ---- Fail fast on required NEXT_PUBLIC vars ----
 : "${NEXT_PUBLIC_COMPLIANCE_LIVE_API_BASE_URL:?Missing NEXT_PUBLIC_COMPLIANCE_LIVE_API_BASE_URL}"
+: "${NEXT_PUBLIC_HORIZON_SCAN_API_BASE_URL:?Missing NEXT_PUBLIC_HORIZON_SCAN_API_BASE_URL}"
 
-# ---- Login to ECR (idempotent) ----
+# ---- Login to ECR ----
 aws ecr get-login-password --region "$AWS_REGION" \
   | docker login \
     --username AWS \
     --password-stdin "$AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com"
 
+# ---- Build image ----
 docker build \
   --build-arg NEXT_PUBLIC_COMPLIANCE_LIVE_API_BASE_URL="$NEXT_PUBLIC_COMPLIANCE_LIVE_API_BASE_URL" \
+  --build-arg NEXT_PUBLIC_HORIZON_SCAN_API_BASE_URL="$NEXT_PUBLIC_HORIZON_SCAN_API_BASE_URL" \
   -t "$ECR_REPO:$IMAGE_TAG" \
   "$PROJECT_ROOT"
 
