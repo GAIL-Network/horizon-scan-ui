@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { Flag } from "lucide-react";
 
+import { cn } from "@/lib/utils";
 import Button from "@/components/Button";
 import { Container } from "@/components/Container";
 import { Header } from "@/components/Header";
@@ -33,12 +34,59 @@ function Field({ label, value }: { label: string; value: React.ReactNode }) {
   );
 }
 
+function ComingSoonModal({
+  isShow,
+  onClose,
+  title,
+}: {
+  isShow: boolean;
+  onClose: () => void;
+  title: string;
+}) {
+  return (
+    <Modal
+      isShow={isShow}
+      onClose={onClose}
+    >
+      <ModalHeader>{title}</ModalHeader>
+
+      <ModalBody>
+        <div className="rounded border border-dashed p-4 text-sm text-slate-400">
+          This section is coming soon.
+        </div>
+      </ModalBody>
+
+      <ModalFooter>
+        <Button
+          variant="outline"
+          onClick={onClose}
+        >
+          Close
+        </Button>
+      </ModalFooter>
+    </Modal>
+  );
+}
+
+const comingSoonPanelClass =
+  "relative cursor-pointer border border-orange-300 bg-orange-50/40 " +
+  "hover:bg-orange-50 transition";
+
+function ComingSoonBadge() {
+  return (
+    <span className="absolute top-2 right-2 rounded bg-orange-100 px-2 py-0.5 text-xs font-medium text-orange-700">
+      Coming soon
+    </span>
+  );
+}
+
 export default function Page() {
   const params = useParams<{ id: string }>();
   const { id } = params;
   const { state: signal } = useSignal({ id });
   const [isPriorityOpen, setPriorityOpen] = useState(false);
   const [isIgnoreOpen, setIgnoreOpen] = useState(false);
+  const [openSection, setOpenSection] = useState<string | null>(null);
 
   return (
     <Container>
@@ -185,26 +233,81 @@ export default function Page() {
 
       <div className="grid grid-cols-12 gap-2">
         <div className="col-span-12 flex flex-col gap-2 md:col-span-3">
-          <Panel>Review Sections</Panel>
+          <Panel
+            onClick={() => setOpenSection("Review Sections")}
+            className={comingSoonPanelClass}
+          >
+            <ComingSoonBadge />
+            Review Sections
+          </Panel>
         </div>
 
         <div className="col-span-12 flex flex-col gap-2 md:col-span-6">
-          <Panel>Summary Strip</Panel>
-          <Panel>Provenance and what changed</Panel>
-          <Panel>Why it matters</Panel>
-          <Panel>Program and Stance Impact</Panel>
-          <Panel>Obligations and Execution Implications</Panel>
+          <div className="flex flex-col gap-2">
+            <Panel
+              onClick={() => setOpenSection("Summary Strip")}
+              className={comingSoonPanelClass}
+            >
+              <ComingSoonBadge />
+              Summary Strip
+            </Panel>
+
+            <Panel
+              onClick={() => setOpenSection("Provenance and what changed")}
+              className={comingSoonPanelClass}
+            >
+              <ComingSoonBadge />
+              Provenance and what changed
+            </Panel>
+
+            <Panel
+              onClick={() => setOpenSection("Why it matters")}
+              className={comingSoonPanelClass}
+            >
+              <ComingSoonBadge />
+              Why it matters
+            </Panel>
+
+            <Panel
+              onClick={() => setOpenSection("Program and Stance Impact")}
+              className={comingSoonPanelClass}
+            >
+              <ComingSoonBadge />
+              Program and Stance Impact
+            </Panel>
+
+            <Panel
+              onClick={() =>
+                setOpenSection("Obligations and Execution Implications")
+              }
+              className={comingSoonPanelClass}
+            >
+              <ComingSoonBadge />
+              Obligations and Execution Implications
+            </Panel>
+          </div>
         </div>
 
         <div className="col-span-12 flex flex-col gap-2 md:col-span-3">
-          <Panel className="flex items-center justify-between">
-            <div>Triage Decision</div>
-            <Link href="/impact-assessments/start">
-              <Button>Start Impact Assessment</Button>
-            </Link>
+          <Link href="/impact-assessments/start">
+            <Button className="w-full">Start Impact Assessment</Button>
+          </Link>
+
+          <Panel
+            onClick={() => setOpenSection("Agent Evidence")}
+            className={comingSoonPanelClass}
+          >
+            <ComingSoonBadge />
+            Agent Evidence
           </Panel>
-          <Panel>Agent Evidence</Panel>
-          <Panel>Activity</Panel>
+
+          <Panel
+            onClick={() => setOpenSection("Activity")}
+            className={comingSoonPanelClass}
+          >
+            <ComingSoonBadge />
+            Activity
+          </Panel>
         </div>
       </div>
 
@@ -269,6 +372,12 @@ export default function Page() {
           </Button>
         </ModalFooter>
       </Modal>
+
+      <ComingSoonModal
+        isShow={openSection !== null}
+        title={openSection ?? ""}
+        onClose={() => setOpenSection(null)}
+      />
     </Container>
   );
 }

@@ -14,12 +14,17 @@ interface NavbarProps {
 }
 
 const LEFT_NAV_LINKS = [
-  { href: "/command-center", label: "Command Center", exact: true },
-  { href: "/changes", label: "Changes" },
+  {
+    href: "/command-center",
+    label: "Command Center",
+    exact: true,
+    comingSoon: true,
+  },
+  { href: "/changes", label: "Changes", comingSoon: true },
   { href: "/signals", label: "Signals" },
-  { href: "/programmes", label: "Programmes" },
-  { href: "/work", label: "Work" },
-  { href: "/reports", label: "Reports" },
+  { href: "/programmes", label: "Programmes", comingSoon: true },
+  { href: "/work", label: "Work", comingSoon: true },
+  { href: "/reports", label: "Reports", comingSoon: true },
   { href: "/chat", label: "Chat" },
 ];
 
