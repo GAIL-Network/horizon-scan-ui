@@ -18,15 +18,19 @@ const LEFT_NAV_LINKS = [
     href: "/command-center",
     label: "Command Center",
     exact: true,
-    comingSoon: true,
+    isComingSoon: true,
   },
-  { href: "/changes", label: "Changes", comingSoon: true },
-  { href: "/signals", label: "Signals" },
-  { href: "/programmes", label: "Programmes", comingSoon: true },
-  { href: "/work", label: "Work", comingSoon: true },
-  { href: "/reports", label: "Reports", comingSoon: true },
-  { href: "/chat", label: "Chat" },
+  { href: "/changes", label: "Changes", isComingSoon: true },
+  { href: "/signals", label: "Signals", isComingSoon: false },
+  { href: "/programmes", label: "Programmes", isComingSoon: true },
+  { href: "/work", label: "Work", isComingSoon: true },
+  { href: "/reports", label: "Reports", isComingSoon: true },
+  { href: "/chat", label: "Chat", isComingSoon: true },
 ];
+
+const comingSoonPanelClass =
+  "relative cursor-pointer border border-orange-300 bg-orange-50/40 " +
+  "hover:bg-orange-50 transition";
 
 export function Navbar({ className }: NavbarProps) {
   const pathname = usePathname();
@@ -81,8 +85,9 @@ export function Navbar({ className }: NavbarProps) {
           )}
         >
           {/* Left nav */}
-          {LEFT_NAV_LINKS.map(({ href, label, exact }) => (
+          {LEFT_NAV_LINKS.map(({ href, label, exact, isComingSoon }) => (
             <NavLink
+              className={cn(isComingSoon && comingSoonPanelClass)}
               key={href}
               href={href}
               isSelected={isSelected(href, exact)}
