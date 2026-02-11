@@ -89,7 +89,7 @@ export default function Page() {
   const [openSection, setOpenSection] = useState<string | null>(null);
 
   return (
-    <Container>
+    <Container className="gap-4">
       <div className="flex justify-end gap-2">
         <Button
           variant="default"
@@ -231,6 +231,14 @@ export default function Page() {
         )}
       </Panel>
 
+      <Panel
+        onClick={() => setOpenSection("Summary Strip")}
+        className={comingSoonPanelClass}
+      >
+        <ComingSoonBadge />
+        Summary Strip
+      </Panel>
+
       <div className="grid grid-cols-12 gap-2">
         <div className="col-span-12 flex flex-col gap-2 md:col-span-3">
           <Panel
@@ -244,14 +252,6 @@ export default function Page() {
 
         <div className="col-span-12 flex flex-col gap-2 md:col-span-6">
           <div className="flex flex-col gap-2">
-            <Panel
-              onClick={() => setOpenSection("Summary Strip")}
-              className={comingSoonPanelClass}
-            >
-              <ComingSoonBadge />
-              Summary Strip
-            </Panel>
-
             <Panel
               onClick={() => setOpenSection("Provenance and what changed")}
               className={comingSoonPanelClass}
