@@ -23,7 +23,11 @@ export function ModalBody({
   children: ReactNode;
   className?: string;
 }) {
-  return <div className={cn("px-4 py-3", className)}>{children}</div>;
+  return (
+    <div className={cn("flex-1 overflow-y-auto p-4", className)}>
+      {children}
+    </div>
+  );
 }
 
 export function ModalFooter({

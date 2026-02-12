@@ -72,7 +72,8 @@ export function Modal({
         className={cn(
           "relative z-10 w-full bg-white shadow-xl",
           "animate-in fade-in zoom-in-95",
-          size === "full" ? "rounded-none" : "rounded-lg",
+          "flex flex-col overflow-hidden",
+          size === "full" ? "h-screen rounded-none" : "max-h-[90vh] rounded-lg",
           MODAL_SIZES[size],
           className,
         )}
