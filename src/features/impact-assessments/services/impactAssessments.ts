@@ -1,11 +1,11 @@
-import { ImpactAssessment } from "../models";
+import { ImpactAssessment, ImpactAssessmentSchema } from "../models";
 import { mockImpactAssessments } from "../mocks/impactAssessments";
 
 const USE_MOCKS = process.env.NEXT_PUBLIC_USE_MOCK_IA === "true";
 
 export async function fetchImpactAssessments(): Promise<ImpactAssessment[]> {
   if (USE_MOCKS) {
-    return mockImpactAssessments;
+    return ImpactAssessmentSchema.array().parse(mockImpactAssessments);
   }
 
   // later: real API

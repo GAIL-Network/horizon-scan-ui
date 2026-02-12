@@ -39,6 +39,13 @@ set +a
 # ---- Fail fast on required NEXT_PUBLIC vars ----
 : "${NEXT_PUBLIC_COMPLIANCE_LIVE_API_BASE_URL:?Missing NEXT_PUBLIC_COMPLIANCE_LIVE_API_BASE_URL}"
 : "${NEXT_PUBLIC_HORIZON_SCAN_API_BASE_URL:?Missing NEXT_PUBLIC_HORIZON_SCAN_API_BASE_URL}"
+: "${NEXT_PUBLIC_USE_MOCK_IA:?Missing NEXT_PUBLIC_USE_MOCK_IA}"
+
+# ---- Safety: never allow mocks in prod ----
+if [ "$ENVIRONMENT" = "prod" ] && [ "$NEXT_PUBLIC_USE_MOCK_IA" = "true" ]; then
+  echo "❌ NEXT_PUBLIC_USE_MOCK_IA must be false in prod"
+  exit 1
+fi
 
 # ---- Login to ECR ----
 aws ecr get-login-password --region "$AWS_REGION" \
@@ -50,6 +57,7 @@ aws ecr get-login-password --region "$AWS_REGION" \
 docker build \
   --build-arg NEXT_PUBLIC_COMPLIANCE_LIVE_API_BASE_URL="$NEXT_PUBLIC_COMPLIANCE_LIVE_API_BASE_URL" \
   --build-arg NEXT_PUBLIC_HORIZON_SCAN_API_BASE_URL="$NEXT_PUBLIC_HORIZON_SCAN_API_BASE_URL" \
+  --build-arg NEXT_PUBLIC_USE_MOCK_IA="$NEXT_PUBLIC_USE_MOCK_IA" \
   -t "$ECR_REPO:$IMAGE_TAG" \
   "$PROJECT_ROOT"
 
