@@ -6,19 +6,31 @@ import { getSignal } from "../api";
 
 type Props = { id: string };
 
-export function useSignal({ id }: Props) {
+export function useSignal(props: Props | null) {
   const [state, setState] = useState<Signal | null>(null);
 
-  const refreshSignal = useCallback(async ({ id }: { id: string }) => {
-    setState(await getSignal({ id }));
+  const id = props?.id;
+
+  const refresh = useCallback(async (id: string) => {
+    const signal = await getSignal({ id });
+    setState(signal);
   }, []);
 
   useEffect(() => {
-    if (id === "") return;
-    refreshSignal({ id });
-  }, [id, refreshSignal]);
+    if (!id) {
+      setState(null);
+      return;
+    }
 
-  const actions = useMemo(() => ({ refreshSignal }), [refreshSignal]);
+    refresh(id);
+  }, [id, refresh]);
+
+  const actions = useMemo(
+    () => ({
+      refresh,
+    }),
+    [refresh],
+  );
 
   return { state, actions };
 }

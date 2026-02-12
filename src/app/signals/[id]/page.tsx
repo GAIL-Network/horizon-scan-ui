@@ -377,11 +377,14 @@ export default function Page() {
         onClose={() => setOpenSection(null)}
       />
 
-      <LinkCreateIAModal
-        ias={iAs}
-        isShow={isShowIAs}
-        onClose={() => setIsShowIAs(false)}
-      />
+      {signal && (
+        <LinkCreateIAModal
+          signal={signal}
+          ias={iAs}
+          isShow={isShowIAs}
+          onClose={() => setIsShowIAs(false)}
+        />
+      )}
     </Container>
   );
 }
