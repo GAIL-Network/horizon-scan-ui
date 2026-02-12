@@ -10,6 +10,7 @@ import { TagPill } from "@/components/TagPill";
 
 import { useSignal } from "@/features/signals/hooks/useSignal";
 import { useEffect, useState } from "react";
+import { cn } from "@/lib/utils";
 
 function Section({
   title,
@@ -19,8 +20,8 @@ function Section({
   children: React.ReactNode;
 }) {
   return (
-    <Panel className="flex flex-col gap-3">
-      <h3 className="text-sm font-medium text-slate-700">{title}</h3>
+    <Panel className="flex flex-col gap-4">
+      <h3 className="text-sm font-semibold text-slate-800">{title}</h3>
       {children}
     </Panel>
   );
@@ -70,62 +71,77 @@ export default function NewImpactAssessmentClient() {
     );
   }
 
+  if (!signal) return null;
+
   return (
     <Container className="gap-4">
-      <Header className="mt-4 mb-8">New Impact Assessment</Header>
+      <div className="mx-auto w-full max-w-3xl">
+        <Header className="mt-4 mb-8">New Impact Assessment</Header>
 
-      {/* Linked Signal (read-only) */}
-      <Section title="Linked Signal">
-        {!signal ? (
-          <div className="rounded border border-dashed p-4 text-sm text-slate-400">
-            Loading signal…
-          </div>
-        ) : (
+        <div className="flex items-center gap-2">
           <TagPill value={signal.title} />
-        )}
-      </Section>
-
-      {/* Impact Assessment Details */}
-      <Section title="Impact Assessment Details">
-        <div className="flex flex-col gap-2">
-          <label className="text-sm font-medium text-slate-500">Title</label>
-          <input
-            className="rounded border px-3 py-2 text-sm"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            placeholder="Enter a title"
-          />
+          <span className="text-xs text-slate-500">linked automatically</span>
         </div>
 
-        <div className="flex flex-col gap-2">
-          <label className="text-sm font-medium text-slate-500">
-            Description
-          </label>
-          <textarea
-            className="min-h-[80px] rounded border px-3 py-2 text-sm"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            placeholder="Optional description"
-          />
+        {/* Impact Assessment Details */}
+        <Section title="Impact Assessment Details">
+          <div className="flex flex-col gap-2">
+            <label className="text-sm font-medium text-slate-500">Title</label>
+
+            <input
+              className={cn(
+                "rounded-md border px-3 py-2",
+                "text-sm font-medium",
+                "focus:ring-2 focus:ring-slate-300 focus:outline-none",
+              )}
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              placeholder="Short, descriptive title"
+            />
+          </div>
+
+          <div className="flex flex-col gap-2">
+            <label className="text-sm font-medium text-slate-500">
+              Description
+            </label>
+
+            <textarea
+              className={cn(
+                "min-h-[180px] resize-y rounded-md border",
+                "px-3 py-2 text-sm leading-relaxed",
+                "focus:ring-2 focus:ring-slate-300 focus:outline-none",
+              )}
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              placeholder="Describe the regulatory, operational, or compliance impact in more detail…"
+              onInput={(e) => {
+                const el = e.currentTarget;
+                el.style.height = "auto";
+                el.style.height = `${el.scrollHeight}px`;
+              }}
+            />
+          </div>
+        </Section>
+
+        {/* Footer actions */}
+        <div className="mt-8 border-t pt-6">
+          <div className="flex justify-end gap-2">
+            <Button
+              variant="secondary"
+              onClick={handleCancel}
+            >
+              Cancel
+            </Button>
+
+            <Button
+              variant="primary"
+              onClick={handleCreate}
+              disabled={!title || !signal}
+            >
+              Create Impact Assessment
+            </Button>
+          </div>
         </div>
-      </Section>
-
-      {/* Footer actions */}
-      <div className="flex justify-end gap-2">
-        <Button
-          variant="secondary"
-          onClick={handleCancel}
-        >
-          Cancel
-        </Button>
-
-        <Button
-          variant="primary"
-          onClick={handleCreate}
-          disabled={!title || !signal}
-        >
-          Create Impact Assessment
-        </Button>
       </div>
     </Container>
   );
