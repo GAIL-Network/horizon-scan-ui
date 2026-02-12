@@ -173,21 +173,17 @@ export default function Page() {
             href={`/signals/${signal.id}`}
           >
             <GridPanel.Header>
-              <div className="line-clamp-2 font-medium">{signal.title}</div>
+              <GridPanel.Title>{signal.title}</GridPanel.Title>
 
-              <div className="flex flex-wrap gap-1">
+              <GridPanel.Meta>
                 <ObjectTypeBadge value={signal.objectType} />
                 <SignalTypeBadge value={signal.type} />
                 <RiskRagBadge value={signal.riskRag} />
                 <TemporalStatusBadge value={signal.temporal} />
-              </div>
+              </GridPanel.Meta>
             </GridPanel.Header>
 
-            <GridPanel.Body>
-              <p className="line-clamp-5 text-sm text-slate-700">
-                {signal.description}
-              </p>
-            </GridPanel.Body>
+            <GridPanel.Body>{signal.description}</GridPanel.Body>
 
             <GridPanel.Footer>
               {signal.createdAt.toLocaleString()}

@@ -17,7 +17,7 @@ import {
   TemporalStatusBadge,
 } from "@/features/signals/ui/signalBadges";
 import { CheckboxListItem } from "@/components/CheckboxListItem";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Modal } from "@/components/Modal";
 import { ModalHeader, ModalBody, ModalFooter } from "@/components/ModalParts";
 import { LinkCreateIAModal } from "@/features/impact-assessments/components/LinkCreateIAModal";
@@ -90,6 +90,10 @@ export default function Page() {
   const [isShowIAs, setIsShowIAs] = useState<boolean>(false);
 
   const { state: iAs, actions: iAActions } = useIAs();
+
+  useEffect(() => {
+    iAActions.refresh();
+  }, [iAActions]);
 
   return (
     <Container className="gap-4">
