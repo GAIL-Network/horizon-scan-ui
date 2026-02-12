@@ -26,8 +26,9 @@ export function LinkCreateIAModal({ signal, ias, onClose, ...rest }: Props) {
 
   return (
     <Modal
-      onClose={onClose}
       {...rest}
+      size="xxl"
+      onClose={onClose}
     >
       <ModalHeader>Link to or Create an Impact Assessment</ModalHeader>
 
