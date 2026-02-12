@@ -34,7 +34,15 @@ export function Modal({
     if (!open) return;
 
     const originalOverflow = document.body.style.overflow;
+    const originalPaddingRight = document.body.style.paddingRight;
+
+    // Measure scrollbar width
+    const scrollbarWidth =
+      window.innerWidth - document.documentElement.clientWidth;
+
+    // Lock scroll + compensate
     document.body.style.overflow = "hidden";
+    document.body.style.paddingRight = `${scrollbarWidth}px`;
 
     function onKeyDown(e: KeyboardEvent) {
       if (e.key === "Escape") onClose();
@@ -44,6 +52,7 @@ export function Modal({
 
     return () => {
       document.body.style.overflow = originalOverflow;
+      document.body.style.paddingRight = originalPaddingRight;
       document.removeEventListener("keydown", onKeyDown);
     };
   }, [open, onClose]);
@@ -53,9 +62,9 @@ export function Modal({
   return (
     <div
       className={cn(
-        "fixed inset-0 z-50 flex",
+        "fixed inset-0 z-50 flex p-3 sm:p-6",
         size === "full"
-          ? "items-stretch justify-stretch"
+          ? "items-stretch justify-stretch p-0"
           : "items-center justify-center",
       )}
       aria-modal="true"

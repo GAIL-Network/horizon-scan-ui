@@ -1,5 +1,14 @@
 import { z } from "zod";
 
+export const ImpactAssessmentObligationInputSchema = z.object({
+  id: z.uuid(),
+  text: z.string(),
+});
+
+export type ImpactAssessmentObligation = z.infer<
+  typeof ImpactAssessmentObligationInputSchema
+>;
+
 export const ImpactAssessmentInputSchema = z
   .object({
     id: z.uuid(),
@@ -7,7 +16,7 @@ export const ImpactAssessmentInputSchema = z
     description: z.string(),
     provenance: z.string(),
     why_matters: z.string(),
-    obligations: z.array(z.string()),
+    obligations: z.array(ImpactAssessmentObligationInputSchema),
   })
   .strict();
 
