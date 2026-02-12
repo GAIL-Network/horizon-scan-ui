@@ -28,7 +28,7 @@ export function LinkCreateIAModal({ signal, ias, onClose, ...rest }: Props) {
     >
       <ModalHeader>Link / Create Impact Assessment</ModalHeader>
 
-      <ModalBody>body</ModalBody>
+      <ModalBody>List of Impact Assessments</ModalBody>
 
       <ModalFooter>
         <Button

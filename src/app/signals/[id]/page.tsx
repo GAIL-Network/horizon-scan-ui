@@ -20,8 +20,8 @@ import { CheckboxListItem } from "@/components/CheckboxListItem";
 import { useState } from "react";
 import { Modal } from "@/components/Modal";
 import { ModalHeader, ModalBody, ModalFooter } from "@/components/ModalParts";
-import { LinkCreateIAModal } from "@/app/impact-assessments/components/LinkCreateIAModal";
-import { useIAs } from "@/app/impact-assessments/hooks/useIAs";
+import { LinkCreateIAModal } from "@/features/impact-assessments/components/LinkCreateIAModal";
+import { useIAs } from "@/features/impact-assessments/hooks/useIAs";
 
 function Field({ label, value }: { label: string; value: React.ReactNode }) {
   return (
