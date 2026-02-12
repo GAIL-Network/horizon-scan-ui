@@ -7,6 +7,8 @@ export const buttonVariants = cva(
       variant: {
         default:
           "border-slate-600 bg-slate-600 text-white hover:bg-slate-700 active:bg-slate-800",
+        secondary:
+          "border-slate-300 bg-slate-100 text-slate-800 hover:bg-slate-200 active:bg-slate-300",
         outline: "border-slate-600 text-slate-700 hover:bg-slate-100",
         ghost: "border-transparent hover:bg-slate-100",
         destructive: "border-red-600 bg-red-600 text-white hover:bg-red-700",

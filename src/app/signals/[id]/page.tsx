@@ -1,8 +1,6 @@
 "use client";
-import Link from "next/link";
 import { Flag } from "lucide-react";
 
-import { cn } from "@/lib/utils";
 import Button from "@/components/Button";
 import { Container } from "@/components/Container";
 import { Header } from "@/components/Header";
@@ -22,6 +20,8 @@ import { CheckboxListItem } from "@/components/CheckboxListItem";
 import { useState } from "react";
 import { Modal } from "@/components/Modal";
 import { ModalHeader, ModalBody, ModalFooter } from "@/components/ModalParts";
+import { LinkCreateIAModal } from "@/app/impact-assessments/components/LinkCreateIAModal";
+import { useIAs } from "@/app/impact-assessments/hooks/useIAs";
 
 function Field({ label, value }: { label: string; value: React.ReactNode }) {
   return (
@@ -87,6 +87,9 @@ export default function Page() {
   const [isPriorityOpen, setPriorityOpen] = useState(false);
   const [isIgnoreOpen, setIgnoreOpen] = useState(false);
   const [openSection, setOpenSection] = useState<string | null>(null);
+  const [isShowIAs, setIsShowIAs] = useState<boolean>(false);
+
+  const { state: iAs, actions: iAActions } = useIAs();
 
   return (
     <Container className="gap-4">
@@ -240,16 +243,6 @@ export default function Page() {
       </Panel>
 
       <div className="grid grid-cols-12 gap-2">
-        <div className="col-span-12 flex flex-col gap-2 md:col-span-3">
-          <Panel
-            onClick={() => setOpenSection("Review Sections")}
-            className={comingSoonPanelClass}
-          >
-            <ComingSoonBadge />
-            Review Sections
-          </Panel>
-        </div>
-
         <div className="col-span-12 flex flex-col gap-2 md:col-span-6">
           <div className="flex flex-col gap-2">
             <Panel
@@ -288,10 +281,15 @@ export default function Page() {
           </div>
         </div>
 
-        <div className="col-span-12 flex flex-col gap-2 md:col-span-3">
-          <Link href="/impact-assessments/start">
-            <Button className="w-full">Start Impact Assessment</Button>
-          </Link>
+        <div className="col-span-12 flex flex-col gap-2 md:col-span-6">
+          <div>
+            <Button
+              className="w-full"
+              onClick={() => setIsShowIAs(true)}
+            >
+              Start Impact Assessment
+            </Button>
+          </div>
 
           <Panel
             onClick={() => setOpenSection("Agent Evidence")}
@@ -377,6 +375,12 @@ export default function Page() {
         isShow={openSection !== null}
         title={openSection ?? ""}
         onClose={() => setOpenSection(null)}
+      />
+
+      <LinkCreateIAModal
+        ias={iAs}
+        isShow={isShowIAs}
+        onClose={() => setIsShowIAs(false)}
       />
     </Container>
   );
