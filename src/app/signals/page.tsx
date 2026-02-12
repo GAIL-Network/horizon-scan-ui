@@ -21,6 +21,7 @@ import {
 } from "@/features/signals/models";
 import Button from "@/components/Button";
 import { GridPanel } from "@/components/GridPanel";
+import { GridPanels } from "@/components/GridPanels";
 
 export default function Page() {
   const { state: signals } = useSignals();
@@ -165,7 +166,7 @@ export default function Page() {
         </div>
       )}
 
-      <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+      <GridPanels>
         {filteredSignals?.map((signal) => (
           <GridPanel
             key={signal.id}
@@ -193,7 +194,7 @@ export default function Page() {
             </GridPanel.Footer>
           </GridPanel>
         ))}
-      </div>
+      </GridPanels>
     </Container>
   );
 }
