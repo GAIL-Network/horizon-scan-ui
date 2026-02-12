@@ -8,6 +8,7 @@ import { ModalBody, ModalFooter, ModalHeader } from "@/components/ModalParts";
 import { Signal } from "@/features/signals/models";
 import { useRouter } from "next/navigation";
 import { ImpactAssessment } from "../models";
+import { useState } from "react";
 
 type Props = {
   signal: Signal;
@@ -16,6 +17,7 @@ type Props = {
 
 export function LinkCreateIAModal({ signal, ias, onClose, ...rest }: Props) {
   const router = useRouter();
+  const [selectedIA, setSelectedIA] = useState<ImpactAssessment | null>(null);
 
   function handleCreate() {
     onClose?.();
@@ -24,18 +26,26 @@ export function LinkCreateIAModal({ signal, ias, onClose, ...rest }: Props) {
     );
   }
 
+  const handleClose = () => {
+    setSelectedIA(null);
+    onClose();
+  };
+
   return (
     <Modal
       {...rest}
       size="xxl"
-      onClose={onClose}
+      onClose={handleClose}
     >
       <ModalHeader>Link to or Create an Impact Assessment</ModalHeader>
 
-      <ModalBody>
+      <ModalBody className="animate-in slide-in-from-right fade-in relative duration-200">
         <GridPanels>
           {ias.map((ia) => (
-            <GridPanel key={ia.id}>
+            <GridPanel
+              key={ia.id}
+              onClick={() => setSelectedIA(ia)}
+            >
               <GridPanel.Header>
                 <GridPanel.Title>{ia.title}</GridPanel.Title>
               </GridPanel.Header>
@@ -43,28 +53,74 @@ export function LinkCreateIAModal({ signal, ias, onClose, ...rest }: Props) {
               <GridPanel.Body>{ia.description}</GridPanel.Body>
 
               <GridPanel.Footer>
-                <Button className="w-full">Link To Signal</Button>
+                <Button
+                  className="w-full"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  Link To Signal
+                </Button>
               </GridPanel.Footer>
             </GridPanel>
           ))}
         </GridPanels>
       </ModalBody>
 
-      <ModalFooter>
-        <Button
-          variant="secondary"
-          onClick={onClose}
-        >
-          Cancel
-        </Button>
+      {selectedIA && (
+        <div className="absolute inset-0 z-20 bg-white">
+          <div className="flex h-full flex-col">
+            {/* Header */}
+            <div className="flex items-center justify-between border-b p-4">
+              <h2 className="text-lg font-medium">{selectedIA.title}</h2>
 
-        <Button
-          variant="primary"
-          onClick={handleCreate}
-        >
-          Create a new Impact Assessment
-        </Button>
-      </ModalFooter>
+              <Button
+                variant="secondary"
+                onClick={() => setSelectedIA(null)}
+              >
+                Back
+              </Button>
+            </div>
+
+            {/* Content */}
+            <div className="flex-1 overflow-auto p-4">
+              <p className="text-sm whitespace-pre-wrap text-slate-700">
+                {selectedIA.description}
+              </p>
+            </div>
+
+            {/* Actions */}
+            <div className="border-t p-4">
+              <Button
+                className="w-full"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  e.preventDefault();
+                  // link action
+                }}
+              >
+                Link this Impact Assessment
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {!selectedIA && (
+        <ModalFooter>
+          <Button
+            variant="secondary"
+            onClick={handleClose}
+          >
+            Cancel
+          </Button>
+
+          <Button
+            variant="primary"
+            onClick={handleCreate}
+          >
+            Create a new Impact Assessment
+          </Button>
+        </ModalFooter>
+      )}
     </Modal>
   );
 }
