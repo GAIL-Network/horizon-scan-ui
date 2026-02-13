@@ -5,31 +5,31 @@ import { cn } from "@/lib/utils";
 import { Container } from "@/components/Container";
 import { Header } from "@/components/Header";
 import { Panel } from "@/components/Panel";
-import { useSignals } from "@/features/signals/hooks/useSignals";
+import { useChangeEvents } from "@/features/change-events/hooks/useChangeEvents";
 import {
   ObjectTypeBadge,
   RiskRagBadge,
-  SignalTypeBadge,
+  ChangeEventTypeBadge,
   TemporalStatusBadge,
-} from "@/features/signals/ui/signalBadges";
+} from "@/features/change-events/ui/changeEventBadges";
 import Link from "next/link";
 import {
-  SIGNAL_OBJECT_TYPES,
-  SIGNAL_RISK_RAG,
-  SIGNAL_TYPES,
-  SIGNAL_TEMPORAL_STATUSES,
-} from "@/features/signals/models";
+  CHANGE_EVENT_OBJECT_TYPES,
+  CHANGE_EVENT_RISK_RAG,
+  CHANGE_EVENT_TYPES,
+  CHANGE_EVENT_TEMPORAL_STATUSES,
+} from "@/features/change-events/models";
 import Button from "@/components/Button";
 import { GridPanel } from "@/components/GridPanel";
 import { GridPanels } from "@/components/GridPanels";
 
 export default function Page() {
-  const { state: signals } = useSignals();
+  const { state: changeEvents } = useChangeEvents();
   const [filters, setFilters] = useState<{
-    objectType?: (typeof SIGNAL_OBJECT_TYPES)[number];
-    signalType?: (typeof SIGNAL_TYPES)[number];
-    temporal?: (typeof SIGNAL_TEMPORAL_STATUSES)[number];
-    riskRag?: (typeof SIGNAL_RISK_RAG)[number];
+    objectType?: (typeof CHANGE_EVENT_OBJECT_TYPES)[number];
+    changeEventType?: (typeof CHANGE_EVENT_TYPES)[number];
+    temporal?: (typeof CHANGE_EVENT_TEMPORAL_STATUSES)[number];
+    riskRag?: (typeof CHANGE_EVENT_RISK_RAG)[number];
   }>({});
 
   function toggleFilter<K extends keyof typeof filters>(
@@ -42,15 +42,21 @@ export default function Page() {
     }));
   }
 
-  const filteredSignals = signals?.filter((signal) => {
-    if (filters.objectType && signal.objectType !== filters.objectType)
+  const filteredChangeEvents = changeEvents?.filter((changeEvent) => {
+    if (filters.objectType && changeEvent.objectType !== filters.objectType)
       return false;
 
-    if (filters.signalType && signal.type !== filters.signalType) return false;
+    if (
+      filters.changeEventType &&
+      changeEvent.eventType !== filters.changeEventType
+    )
+      return false;
 
-    if (filters.temporal && signal.temporal !== filters.temporal) return false;
+    if (filters.temporal && changeEvent.temporalStatus !== filters.temporal)
+      return false;
 
-    if (filters.riskRag && signal.riskRag !== filters.riskRag) return false;
+    if (filters.riskRag && changeEvent.riskRag !== filters.riskRag)
+      return false;
 
     return true;
   });
@@ -58,7 +64,7 @@ export default function Page() {
   return (
     <Container>
       <Panel>
-        <Header className="mb-0">Signals</Header>
+        <Header className="mb-0">Change Events</Header>
       </Panel>
 
       <Panel className="space-y-3">
@@ -68,7 +74,7 @@ export default function Page() {
             Object type:
           </span>
 
-          {SIGNAL_OBJECT_TYPES.map((value) => (
+          {CHANGE_EVENT_OBJECT_TYPES.map((value) => (
             <button
               key={value}
               onClick={() => toggleFilter("objectType", value)}
@@ -86,23 +92,23 @@ export default function Page() {
           ))}
         </div>
 
-        {/* Signal type */}
+        {/* Change Event type */}
         <div className="flex flex-wrap items-center gap-2">
           <span className="text-sm font-medium text-slate-500">
-            Signal type:
+            Change Event type:
           </span>
 
-          {SIGNAL_TYPES.map((value) => (
+          {CHANGE_EVENT_TYPES.map((value) => (
             <button
               key={value}
-              onClick={() => toggleFilter("signalType", value)}
+              onClick={() => toggleFilter("changeEventType", value)}
             >
-              <SignalTypeBadge
+              <ChangeEventTypeBadge
                 value={value}
                 className={cn(
                   "cursor-pointer",
-                  filters.signalType &&
-                    filters.signalType !== value &&
+                  filters.changeEventType &&
+                    filters.changeEventType !== value &&
                     "opacity-40",
                 )}
               />
@@ -114,7 +120,7 @@ export default function Page() {
         <div className="flex flex-wrap items-center gap-2">
           <span className="text-sm font-medium text-slate-500">Risk:</span>
 
-          {SIGNAL_RISK_RAG.map((value) => (
+          {CHANGE_EVENT_RISK_RAG.map((value) => (
             <button
               key={value}
               onClick={() => toggleFilter("riskRag", value)}
@@ -136,7 +142,7 @@ export default function Page() {
             Temporal Status:
           </span>
 
-          {SIGNAL_TEMPORAL_STATUSES.map((value) => (
+          {CHANGE_EVENT_TEMPORAL_STATUSES.map((value) => (
             <button
               key={value}
               onClick={() => toggleFilter("temporal", value)}
@@ -167,26 +173,26 @@ export default function Page() {
       )}
 
       <GridPanels>
-        {filteredSignals?.map((signal) => (
+        {filteredChangeEvents?.map((changeEvent) => (
           <GridPanel
-            key={signal.id}
-            href={`/signals/${signal.id}`}
+            key={changeEvent.id}
+            href={`/change-events/${changeEvent.id}`}
           >
             <GridPanel.Header>
-              <GridPanel.Title>{signal.title}</GridPanel.Title>
+              <GridPanel.Title>{changeEvent.title}</GridPanel.Title>
 
               <GridPanel.Meta>
-                <ObjectTypeBadge value={signal.objectType} />
-                <SignalTypeBadge value={signal.type} />
-                <RiskRagBadge value={signal.riskRag} />
-                <TemporalStatusBadge value={signal.temporal} />
+                <ObjectTypeBadge value={changeEvent.objectType} />
+                <ChangeEventTypeBadge value={changeEvent.eventType} />
+                <RiskRagBadge value={changeEvent.riskRag} />
+                <TemporalStatusBadge value={changeEvent.temporalStatus} />
               </GridPanel.Meta>
             </GridPanel.Header>
 
-            <GridPanel.Body>{signal.description}</GridPanel.Body>
+            <GridPanel.Body>{changeEvent.description}</GridPanel.Body>
 
             <GridPanel.Footer>
-              {signal.createdAt.toLocaleString()}
+              {changeEvent.createdAt.toLocaleString()}
             </GridPanel.Footer>
           </GridPanel>
         ))}

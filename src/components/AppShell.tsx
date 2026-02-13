@@ -8,7 +8,7 @@ import { Toaster } from "sonner";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
 import { AuthModalProvider } from "@/features/context/AuthModalContext";
 import { AuthModal } from "@/features/auth/components/AuthModal";
-import { SignalsProvider } from "@/context/SignalsProvider";
+import { ChangeEventsProvider } from "@/context/ChangeEventsProvider";
 
 export function AppShell({ children }: { children: React.ReactNode }) {
   return (
@@ -21,9 +21,9 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           position="top-right"
         />
 
-        <SignalsProvider>
+        <ChangeEventsProvider>
           <NuqsAdapter>{children}</NuqsAdapter>
-        </SignalsProvider>
+        </ChangeEventsProvider>
         <AuthModal />
       </AuthModalProvider>
     </UserProvider>

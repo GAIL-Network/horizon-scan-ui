@@ -8,7 +8,7 @@ import { Header } from "@/components/Header";
 import { Panel } from "@/components/Panel";
 import { TagPill } from "@/components/TagPill";
 
-import { useSignal } from "@/features/signals/hooks/useSignal";
+import { useChangeEvent } from "@/features/change-events/hooks/useChangeEvent";
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 
@@ -31,47 +31,49 @@ export default function NewImpactAssessmentClient() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const signalId = searchParams.get("signalId");
+  const changeEventId = searchParams.get("changeEventId");
 
-  const { state: signal } = useSignal(signalId ? { id: signalId } : null);
+  const { state: changeEvent } = useChangeEvent(
+    changeEventId ? { id: changeEventId } : null,
+  );
 
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
 
   useEffect(() => {
-    if (!signal) return;
+    if (!changeEvent) return;
 
-    setTitle((prev) => prev || signal.title);
-    setDescription((prev) => (prev || signal.description) ?? "");
-  }, [signal]);
+    setTitle((prev) => prev || changeEvent.title);
+    setDescription((prev) => (prev || changeEvent.description) ?? "");
+  }, [changeEvent]);
 
   function handleCancel() {
     router.back();
   }
 
   function handleCreate() {
-    if (!signal) return;
+    if (!changeEvent) return;
 
     console.log("Create IA", {
       title,
       description,
-      signalId: signal.id,
+      changeEventId: changeEvent.id,
     });
 
     // router.push(`/impact-assessments/${createdId}`);
   }
 
-  if (!signalId) {
+  if (!changeEventId) {
     return (
       <Container>
         <Panel>
-          <p className="text-sm text-slate-600">No signal specified.</p>
+          <p className="text-sm text-slate-600">No change event specified.</p>
         </Panel>
       </Container>
     );
   }
 
-  if (!signal) return null;
+  if (!changeEvent) return null;
 
   return (
     <Container className="gap-4">
@@ -79,7 +81,7 @@ export default function NewImpactAssessmentClient() {
         <Header className="mt-4 mb-8">New Impact Assessment</Header>
 
         <div className="flex items-center gap-2">
-          <TagPill value={signal.title} />
+          <TagPill value={changeEvent.title} />
           <span className="text-xs text-slate-500">linked automatically</span>
         </div>
 
@@ -136,7 +138,7 @@ export default function NewImpactAssessmentClient() {
             <Button
               variant="primary"
               onClick={handleCreate}
-              disabled={!title || !signal}
+              disabled={!title || !changeEvent}
             >
               Create Impact Assessment
             </Button>

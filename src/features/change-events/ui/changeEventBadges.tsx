@@ -3,16 +3,16 @@ import { EnumBadge } from "@/components/EnumBadge";
 import {
   OBJECT_TYPE_STYLES,
   RISK_RAG_STYLES,
-  SIGNAL_TYPE_STYLES,
+  CHANGE_EVENT_TYPE_STYLES,
   TEMPORAL_STATUS_STYLES,
-} from "./signalBadgeStyles";
+} from "./changeEventBadgeStyles";
 
 import {
-  SIGNAL_OBJECT_TYPES,
-  SIGNAL_RISK_RAG,
-  SIGNAL_TYPES,
-  SIGNAL_TEMPORAL_STATUSES,
-} from "@/features/signals/models";
+  CHANGE_EVENT_OBJECT_TYPES,
+  CHANGE_EVENT_RISK_RAG,
+  CHANGE_EVENT_TYPES,
+  CHANGE_EVENT_TEMPORAL_STATUSES,
+} from "@/features/change-events/models";
 
 /* ---------- Object type ---------- */
 
@@ -20,7 +20,7 @@ export function ObjectTypeBadge({
   value,
   className,
 }: {
-  value: (typeof SIGNAL_OBJECT_TYPES)[number];
+  value: (typeof CHANGE_EVENT_OBJECT_TYPES)[number];
   className?: string;
 }) {
   return (
@@ -32,20 +32,20 @@ export function ObjectTypeBadge({
   );
 }
 
-/* ---------- Signal type ---------- */
+/* ---------- Change Event type ---------- */
 
-export function SignalTypeBadge({
+export function ChangeEventTypeBadge({
   value,
   className,
 }: {
-  value: (typeof SIGNAL_TYPES)[number];
+  value: (typeof CHANGE_EVENT_TYPES)[number];
   className?: string;
 }) {
   return (
     <EnumBadge
       value={value}
-      className={cn(SIGNAL_TYPE_STYLES[value], className)}
-      title={`Signal type: ${value}`}
+      className={cn(CHANGE_EVENT_TYPE_STYLES[value], className)}
+      title={`Change Event type: ${value}`}
     />
   );
 }
@@ -56,7 +56,7 @@ export function TemporalStatusBadge({
   value,
   className,
 }: {
-  value: (typeof SIGNAL_TEMPORAL_STATUSES)[number];
+  value: (typeof CHANGE_EVENT_TEMPORAL_STATUSES)[number];
   className?: string;
 }) {
   return (
@@ -74,7 +74,7 @@ export function RiskRagBadge({
   value,
   className,
 }: {
-  value: (typeof SIGNAL_RISK_RAG)[number];
+  value: (typeof CHANGE_EVENT_RISK_RAG)[number];
   className?: string;
 }) {
   return (

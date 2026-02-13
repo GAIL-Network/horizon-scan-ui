@@ -1,3 +1,5 @@
+export type Obligation = string;
+
 export type ObligationApiMock = {
   id: string;
   text: string;

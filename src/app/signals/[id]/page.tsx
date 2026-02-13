@@ -7,15 +7,15 @@ import { Header } from "@/components/Header";
 import { List } from "@/components/List";
 import { TagPill } from "@/components/TagPill";
 import { Panel } from "@/components/Panel";
-import { useSignal } from "@/features/signals/hooks/useSignal";
+import { useChangeEvent } from "@/features/change-events/hooks/useChangeEvent";
 import { useParams } from "next/navigation";
 import MasonryColumns from "@/components/MasonryColumns";
 import {
   ObjectTypeBadge,
   RiskRagBadge,
-  SignalTypeBadge,
+  ChangeEventTypeBadge,
   TemporalStatusBadge,
-} from "@/features/signals/ui/signalBadges";
+} from "@/features/change-events/ui/changeEventBadges";
 import { CheckboxListItem } from "@/components/CheckboxListItem";
 import { useEffect, useState } from "react";
 import { Modal } from "@/components/Modal";
@@ -83,7 +83,7 @@ function ComingSoonBadge() {
 export default function Page() {
   const params = useParams<{ id: string }>();
   const { id } = params;
-  const { state: signal } = useSignal({ id });
+  const { state: changeEvent } = useChangeEvent({ id });
   const [isPriorityOpen, setPriorityOpen] = useState(false);
   const [isIgnoreOpen, setIgnoreOpen] = useState(false);
   const [openSection, setOpenSection] = useState<string | null>(null);
@@ -114,71 +114,75 @@ export default function Page() {
         </Button>
       </div>
       <Panel>
-        <Header className="mt-4 mb-8">Signal: {signal?.title}</Header>
+        <Header className="mt-4 mb-8">
+          Change Event: {changeEvent?.title}
+        </Header>
 
-        {signal && (
+        {changeEvent && (
           <div className="flex flex-col gap-2">
             <MasonryColumns gap={25}>
               <Field
                 label="Description"
-                value={signal.description}
+                value={changeEvent.description}
               />
 
               <Field
                 label={"Object type"}
-                value={<ObjectTypeBadge value={signal.objectType} />}
+                value={<ObjectTypeBadge value={changeEvent.objectType} />}
               />
 
               <Field
-                label="Signal type"
-                value={<SignalTypeBadge value={signal.type} />}
+                label="Change Event type"
+                value={<ChangeEventTypeBadge value={changeEvent.eventType} />}
               />
 
               <Field
                 label="Temporal type"
-                value={<TemporalStatusBadge value={signal.temporal} />}
+                value={
+                  <TemporalStatusBadge value={changeEvent.temporalStatus} />
+                }
               />
 
               <Field
                 label="Normalized status"
-                value={signal.normalizedStatus}
+                value={changeEvent.normalizedStatus}
               />
 
               <Field
                 label="SOP"
-                value={signal.sop}
+                value={changeEvent.sop}
               />
 
               <Field
                 label="Certainty"
-                value={signal.certainty}
+                value={changeEvent.certainty}
               />
 
               <Field
                 label="Magnitude"
-                value={signal.magnitude}
+                value={changeEvent.magnitude}
               />
 
               <Field
                 label="Risk RAG"
-                value={<RiskRagBadge value={signal.riskRag} />}
+                value={<RiskRagBadge value={changeEvent.riskRag} />}
               />
 
               {/*
             <Field
               label="Readiness Score"
-              value={signal.readinessScore}
+              value={changeEvent.readinessScore}
             />
 	    */}
 
               <Field
                 label="Source"
-                value={signal.source}
+                value={changeEvent.source}
               />
 
               <Field
                 label="Sources"
-                value={signal.sources
+                value={changeEvent.sources
                   .flatMap((source) =>
                     Object.entries(source).map(([k, v]) => `${k}: ${v}`),
                   )
@@ -189,7 +193,7 @@ export default function Page() {
                 label="Tags"
                 value={
                   <div className="flex flex-wrap gap-1">
-                    {signal.tags.map((tag) => (
+                    {changeEvent.tags.map((tag) => (
                       <TagPill
                         key={tag}
                         value={tag}
@@ -203,7 +207,7 @@ export default function Page() {
                 label="Obligations"
                 value={
                   <List>
-                    {signal.obligations.map((obligation) => (
+                    {changeEvent.obligations.map((obligation) => (
                       <CheckboxListItem key={obligation}>
                         {obligation}
                       </CheckboxListItem>
@@ -214,7 +218,7 @@ export default function Page() {
 
               <Field
                 label="Metadata"
-                value={Object.entries(signal.signalMetadata)
+                value={Object.entries(changeEvent.signalMetadata)
                   .map(([key, value]) => `${key}: ${String(value)}`)
                   .join(", ")}
               />
@@ -225,13 +229,13 @@ export default function Page() {
                 <label className="text-sm font-medium text-slate-500">
                   Created at:{" "}
                 </label>
-                {signal.createdAt.toLocaleString()}
+                {changeEvent.createdAt.toLocaleString()}
               </div>
               <div>
                 <label className="text-sm font-medium text-slate-500">
                   Updated at:{" "}
                 </label>
-                {signal.updatedAt.toLocaleString()}
+                {changeEvent.updatedAt.toLocaleString()}
               </div>
             </div>
           </div>
@@ -291,7 +295,7 @@ export default function Page() {
               className="w-full"
               onClick={() => setIsShowIAs(true)}
             >
-              Start Impact Assessment
+              Start Regulatory Impact Assessment
             </Button>
           </div>
 
@@ -324,7 +328,7 @@ export default function Page() {
 
         <ModalBody className="space-y-3">
           <p className="text-sm text-slate-600">
-            Priority controls how this signal is triaged and escalated.
+            Priority controls how this change event is triaged and escalated.
           </p>
 
           <div className="rounded border border-dashed p-3 text-sm text-slate-400">
@@ -346,11 +350,11 @@ export default function Page() {
         isShow={isIgnoreOpen}
         onClose={() => setIgnoreOpen(false)}
       >
-        <ModalHeader>Ignore Signal</ModalHeader>
+        <ModalHeader>Ignore Change Event</ModalHeader>
 
         <ModalBody className="space-y-3">
           <p className="text-sm text-slate-600">
-            Ignoring a signal removes it from active triage and follow-up.
+            Ignoring a change event removes it from active triage and follow-up.
           </p>
 
           <div className="rounded border border-dashed p-3 text-sm text-slate-400">
@@ -381,9 +385,9 @@ export default function Page() {
         onClose={() => setOpenSection(null)}
       />
 
-      {signal && (
+      {changeEvent && (
         <LinkCreateIAModal
-          signal={signal}
+          changeEvent={changeEvent}
           ias={iAs}
           isShow={isShowIAs}
           onClose={() => setIsShowIAs(false)}

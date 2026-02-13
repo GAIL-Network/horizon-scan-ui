@@ -3,6 +3,7 @@ import { ImpactAssessmentApi } from "../models";
 export const mockImpactAssessments: ImpactAssessmentApi[] = [
   {
     id: "c4f1a2e7-9b3d-4f8a-8c6e-2a9f7b1d3e45",
+    status: "open",
     title:
       "New Residency Verification Requirements under Spain-UK Double Taxation Agreement",
     description:
@@ -18,7 +19,7 @@ export const mockImpactAssessments: ImpactAssessmentApi[] = [
       is_verified: true,
       created_at: "2023-06-12T08:15:00Z",
     },
-    signals: [
+    change_events: [
       {
         id: "a2f3b1c4-7e8d-4c6a-9f12-1b3c4d5e6f7a",
         title: "Spain–UK DTA amended to tighten residency requirements",
@@ -48,6 +49,7 @@ export const mockImpactAssessments: ImpactAssessmentApi[] = [
 
   {
     id: "8e6d3c2b-1f4a-4b9d-a7c8-5e2f9d3a6b10",
+    status: "open",
     title:
       "New Residency Verification Requirements under Spain-UK Double Taxation Agreement",
     description:
@@ -63,7 +65,7 @@ export const mockImpactAssessments: ImpactAssessmentApi[] = [
       is_verified: true,
       created_at: "2023-06-12T08:15:00Z",
     },
-    signals: [
+    change_events: [
       {
         id: "c7b2d9f1-4e6a-4a5c-8d3e-9f1a2b3c4d5e",
         title: "HMRC issues guidance on Spain–UK residency documentation",
@@ -88,6 +90,7 @@ export const mockImpactAssessments: ImpactAssessmentApi[] = [
 
   {
     id: "3a9d5f2e-7c4b-4e8a-9d1f-6b2c8e5a7f90",
+    status: "closed",
     title:
       "Clarification of Tax Residency Criteria under UK-Spain Double Taxation Agreement",
     description:
@@ -103,7 +106,7 @@ export const mockImpactAssessments: ImpactAssessmentApi[] = [
       is_verified: true,
       created_at: "2022-11-03T13:40:00Z",
     },
-    signals: [
+    change_events: [
       {
         id: "9d1c6b5a-4f3e-4b8a-a2f7-3c5d6e8f9b1a",
         title: "Competent authorities clarify DTA tie-breaker rules",
@@ -128,6 +131,7 @@ export const mockImpactAssessments: ImpactAssessmentApi[] = [
 
   {
     id: "4a7b8c9e-1f3a-4e2d-9a7b-8c9e1f3a4e2d",
+    status: "open",
     title: "Impact Assessment: GMP Deviations in Sterile Manufacturing",
     description:
       "This impact assessment evaluates the regulatory and operational implications of repeated GMP deviations identified in the aseptic filling line...",
@@ -141,7 +145,7 @@ export const mockImpactAssessments: ImpactAssessmentApi[] = [
       is_verified: true,
       created_at: "2021-04-19T09:00:00Z",
     },
-    signals: [
+    change_events: [
       {
         id: "f4e2d9c7-6b5a-4a1e-9c3f-2d8e7b6a5c4f",
         title: "Repeated GMP deviations recorded in aseptic filling line",
@@ -166,6 +170,7 @@ export const mockImpactAssessments: ImpactAssessmentApi[] = [
 
   {
     id: "9c2d1f84-6b0a-4eaa-b3d9-2f7c1e8a6b0a",
+    status: "open",
     title: "Impact Assessment: Data Integrity Risks in GxP IT Systems",
     description:
       "This assessment analyzes the impact of identified data integrity vulnerabilities within computerized systems supporting GxP activities...",
@@ -179,7 +184,7 @@ export const mockImpactAssessments: ImpactAssessmentApi[] = [
       is_verified: true,
       created_at: "2020-09-07T16:25:00Z",
     },
-    signals: [
+    change_events: [
       {
         id: "7c1b5e9d-3a2f-4c8e-b6a9-5d7f3c1e2b4a",
         title: "Critical audit trail gaps identified in LIMS",

@@ -6,34 +6,44 @@ import { GridPanel } from "@/components/GridPanel";
 import { GridPanels } from "@/components/GridPanels";
 import { Modal, ModalProps } from "@/components/Modal";
 import { ModalBody, ModalFooter, ModalHeader } from "@/components/ModalParts";
-import { Signal } from "@/features/signals/models";
+import { ChangeEvent } from "@/features/change-events/models";
 import { useRouter } from "next/navigation";
 import { ImpactAssessment } from "../models";
 import { useEffect, useRef, useState } from "react";
-import { List } from "@/components/List";
-import { ListItem } from "@/components/ListItem";
 import { cn } from "@/lib/utils";
 import { ImpactAssessmentOverlay } from "./ImpactAssessmentOverlay";
 
 type Props = {
-  signal: Signal;
+  changeEvent: ChangeEvent;
   ias: ImpactAssessment[];
 } & Omit<ModalProps, "children">;
 
-export function LinkCreateIAModal({ signal, ias, onClose, ...rest }: Props) {
+export function LinkCreateIAModal({
+  changeEvent,
+  ias,
+  onClose,
+  ...rest
+}: Props) {
   const router = useRouter();
   const [selectedIA, setSelectedIA] = useState<ImpactAssessment | null>(null);
   const [query, setQuery] = useState("");
+  const [statusFilter, setStatusFilter] = useState<"all" | "open" | "closed">(
+    "all",
+  );
   const bodyRef = useRef<HTMLDivElement | null>(null);
   const lastGridScroll = useRef(0);
 
   const filteredIAs = ias.filter((ia) => {
-    const terms = query.toLowerCase().split(/\s+/).filter(Boolean);
+    // Status filter
+    if (statusFilter !== "all" && ia.status !== statusFilter) {
+      return false;
+    }
 
+    // Text search
+    const terms = query.toLowerCase().split(/\s+/).filter(Boolean);
     if (terms.length === 0) return true;
 
     const haystack = `${ia.title} ${ia.description}`.toLowerCase();
-
     return terms.every((term) => haystack.includes(term));
   });
 
@@ -44,13 +54,14 @@ export function LinkCreateIAModal({ signal, ias, onClose, ...rest }: Props) {
   function handleCreate() {
     onClose?.();
     router.push(
-      `/impact-assessments/new?signalId=${encodeURIComponent(signal.id)}`,
+      `/impact-assessments/new?changeEventId=${encodeURIComponent(changeEvent.id)}`,
     );
   }
 
   const handleClose = () => {
     setSelectedIA(null);
     setQuery("");
+    setStatusFilter("all");
     onClose();
   };
 
@@ -81,17 +92,53 @@ export function LinkCreateIAModal({ signal, ias, onClose, ...rest }: Props) {
         {/* Sticky filter bar */}
 
         {!selectedIA && (
-          <div className="sticky top-0 z-10 border-b bg-white px-6 py-3">
-            <input
-              type="search"
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              placeholder="Search impact assessments…"
-              className={cn(
-                "w-full rounded-md border px-3 py-2 text-sm",
-                "focus:ring-2 focus:ring-slate-300 focus:outline-none",
-              )}
-            />
+          <div className="sticky top-0 z-10 border-b bg-white px-6 py-4">
+            <div className="space-y-3">
+              {/* Search */}
+              <input
+                type="search"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder="Search impact assessments…"
+                className={cn(
+                  "w-full rounded-md border px-3 py-2 text-sm",
+                  "focus:ring-2 focus:ring-slate-300 focus:outline-none",
+                )}
+              />
+
+              {/* Status filter */}
+              <div className="flex items-center gap-3">
+                <span className="text-xs font-medium text-slate-500">
+                  Status
+                </span>
+
+                <div className="flex gap-1">
+                  {[
+                    { label: "All", value: "all" },
+                    { label: "Open", value: "open" },
+                    { label: "Closed", value: "closed" },
+                  ].map((option) => (
+                    <button
+                      key={option.value}
+                      type="button"
+                      onClick={() =>
+                        setStatusFilter(
+                          option.value as "all" | "open" | "closed",
+                        )
+                      }
+                      className={cn(
+                        "rounded-full px-3 py-1 text-xs font-medium transition",
+                        statusFilter === option.value
+                          ? "bg-slate-900 text-white"
+                          : "bg-slate-100 text-slate-600 hover:bg-slate-200",
+                      )}
+                    >
+                      {option.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
           </div>
         )}
 
@@ -137,7 +184,7 @@ export function LinkCreateIAModal({ signal, ias, onClose, ...rest }: Props) {
                         className="w-full"
                         onClick={(e) => e.stopPropagation()}
                       >
-                        Link Signal
+                        Link
                       </Button>
                     </GridPanel.Footer>
                   </GridPanel>

@@ -1,19 +1,19 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { Signal } from "../models";
-import { getSignal } from "../api";
+import { ChangeEvent } from "../models";
+import { getChangeEvent } from "../api";
 
 type Props = { id: string };
 
-export function useSignal(props: Props | null) {
-  const [state, setState] = useState<Signal | null>(null);
+export function useChangeEvent(props: Props | null) {
+  const [state, setState] = useState<ChangeEvent | null>(null);
 
   const id = props?.id;
 
   const refresh = useCallback(async (id: string) => {
-    const signal = await getSignal({ id });
-    setState(signal);
+    const changeEvent = await getChangeEvent({ id });
+    setState(changeEvent);
   }, []);
 
   useEffect(() => {

@@ -6,7 +6,7 @@ import { Panel } from "@/components/Panel";
 
 const PANEL_NAV_LINKS = [
   { href: "/work", label: "Overview" },
-  { href: "/work/signals", label: "Signals" },
+  { href: "/work/change-events", label: "Change Events" },
   { href: "/work/agent-outputs", label: "Agent Outputs" },
   { href: "/work/execution", label: "Execution" },
   { href: "/work/activity", label: "Activity" },
@@ -34,7 +34,7 @@ export default function Page() {
         <div className="col-span-12 flex flex-col gap-2">
           <Panel>Page Header</Panel>
           <Panel>Why it matters</Panel>
-          <Panel>Linked Signals</Panel>
+          <Panel>Linked Change Events</Panel>
           <Panel>Agent runs</Panel>
           <Panel>Execution Artefacts</Panel>
           <Panel>Activity</Panel>

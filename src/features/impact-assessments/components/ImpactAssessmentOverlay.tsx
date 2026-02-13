@@ -84,30 +84,30 @@ export function ImpactAssessmentOverlay({ ia, onBack }: Props) {
             </List>
           </section>
 
-          {/* Signals */}
+          {/* Change Events */}
           <section className="rounded-lg border bg-slate-50 p-4">
             <h3 className="mb-3 text-sm font-medium text-slate-900">
-              Linked signals
+              Linked change events
             </h3>
 
-            {ia.signals.length === 0 ? (
+            {ia.changeEvents.length === 0 ? (
               <p className="text-sm text-slate-500">
-                No signals linked to this impact assessment.
+                No change events linked to this impact assessment.
               </p>
             ) : (
               <List className="space-y-2">
-                {ia.signals.map((signal) => (
+                {ia.changeEvents.map((changeEvent) => (
                   <ListItem
-                    key={signal.id}
+                    key={changeEvent.id}
                     className="flex flex-col gap-1 rounded-md bg-white px-3 py-2 text-sm shadow-sm"
                   >
                     <span className="font-medium text-slate-900">
-                      {signal.title}
+                      {changeEvent.title}
                     </span>
 
                     <span className="text-xs text-slate-500">
                       Created{" "}
-                      {signal.createdAt.toLocaleDateString(undefined, {
+                      {changeEvent.createdAt.toLocaleDateString(undefined, {
                         year: "numeric",
                         month: "short",
                         day: "numeric",

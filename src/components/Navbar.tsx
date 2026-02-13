@@ -21,7 +21,7 @@ const LEFT_NAV_LINKS = [
     isComingSoon: true,
   },
   { href: "/changes", label: "Changes", isComingSoon: true },
-  { href: "/signals", label: "Signals", isComingSoon: false },
+  { href: "/change-events", label: "Change Events", isComingSoon: false },
   { href: "/programmes", label: "Programmes", isComingSoon: true },
   { href: "/work", label: "Work", isComingSoon: true },
   { href: "/reports", label: "Reports", isComingSoon: true },
