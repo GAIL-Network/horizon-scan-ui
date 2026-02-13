@@ -1,36 +1,25 @@
-import { z } from "zod";
+import { UserApi } from "../auth/dtos";
+import { User } from "../auth/models";
+import { ObligationApiMock, ObligationMock } from "../obligations/models";
+import { SignalApiMock, SignalMock } from "../signals/models";
 
-export const ImpactAssessmentObligationInputSchema = z.object({
-  id: z.uuid(),
-  text: z.string(),
-});
+export type ImpactAssessmentApi = {
+  id: string;
+  title: string;
+  description: string;
+  provenance: string;
+  why_matters: string;
+  obligations: ObligationApiMock[];
+  signals: SignalApiMock[];
+  owner: UserApi;
+};
 
-export type ImpactAssessmentObligation = z.infer<
-  typeof ImpactAssessmentObligationInputSchema
->;
-
-export const ImpactAssessmentInputSchema = z
-  .object({
-    id: z.uuid(),
-    title: z.string(),
-    description: z.string(),
-    provenance: z.string(),
-    why_matters: z.string(),
-    obligations: z.array(ImpactAssessmentObligationInputSchema),
-  })
-  .strict();
-
-export type ImpactAssessmentInput = z.infer<typeof ImpactAssessmentInputSchema>;
-
-export const ImpactAssessmentSchema = ImpactAssessmentInputSchema.transform(
-  (ia) => ({
-    id: ia.id,
-    title: ia.title,
-    description: ia.description,
-    provenance: ia.provenance,
-    whyMatters: ia.why_matters,
-    obligations: ia.obligations,
-  }),
-);
-
-export type ImpactAssessment = z.infer<typeof ImpactAssessmentSchema>;
+export type ImpactAssessment = Omit<
+  ImpactAssessmentApi,
+  "why_matters" | "obligations" | "signals" | "owner"
+> & {
+  whyMatters: string;
+  obligations: ObligationMock[];
+  signals: SignalMock[];
+  owner: User;
+};

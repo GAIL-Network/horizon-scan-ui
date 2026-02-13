@@ -13,6 +13,7 @@ import { useEffect, useRef, useState } from "react";
 import { List } from "@/components/List";
 import { ListItem } from "@/components/ListItem";
 import { cn } from "@/lib/utils";
+import { ImpactAssessmentOverlay } from "./ImpactAssessmentOverlay";
 
 type Props = {
   signal: Signal;
@@ -77,6 +78,23 @@ export function LinkCreateIAModal({ signal, ias, onClose, ...rest }: Props) {
         ref={bodyRef}
         className="relative h-[70vh] overflow-y-auto"
       >
+        {/* Sticky filter bar */}
+
+        {!selectedIA && (
+          <div className="sticky top-0 z-10 border-b bg-white px-6 py-3">
+            <input
+              type="search"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="Search impact assessments…"
+              className={cn(
+                "w-full rounded-md border px-3 py-2 text-sm",
+                "focus:ring-2 focus:ring-slate-300 focus:outline-none",
+              )}
+            />
+          </div>
+        )}
+
         <ModalBody className="animate-in slide-in-from-right fade-in relative duration-200">
           <div
             className={cn(
@@ -86,23 +104,6 @@ export function LinkCreateIAModal({ signal, ias, onClose, ...rest }: Props) {
                 : "opacity-100",
             )}
           >
-            {/* Sticky filter bar */}
-
-            {!selectedIA && (
-              <div className="sticky top-0 z-10 border-b bg-white px-6 py-3">
-                <input
-                  type="search"
-                  value={query}
-                  onChange={(e) => setQuery(e.target.value)}
-                  placeholder="Search impact assessments…"
-                  className={cn(
-                    "w-full rounded-md border px-3 py-2 text-sm",
-                    "focus:ring-2 focus:ring-slate-300 focus:outline-none",
-                  )}
-                />
-              </div>
-            )}
-
             {filteredIAs.length === 0 ? (
               <div className="px-6 py-8 text-center text-sm text-slate-500">
                 No impact assessments match your search.
@@ -148,80 +149,10 @@ export function LinkCreateIAModal({ signal, ias, onClose, ...rest }: Props) {
           {/* Detail (overlaid, but IN-CANVAS) */}
 
           {selectedIA && (
-            <div className="relative flex min-h-full flex-col bg-white">
-              {/* Header */}
-              <div className="flex items-center justify-between border-b px-6 py-4">
-                <div className="max-w-2xl">
-                  <h2 className="text-lg leading-tight font-semibold">
-                    {selectedIA.title}
-                  </h2>
-                </div>
-
-                <Button
-                  variant="secondary"
-                  onClick={handleBack}
-                >
-                  Back to list
-                </Button>
-              </div>
-
-              {/* Content */}
-
-              <div className="flex-1 px-6 py-6">
-                <div className="mx-auto max-w-2xl space-y-6">
-                  <section>
-                    <p className="text-sm leading-relaxed whitespace-pre-wrap text-slate-700">
-                      {selectedIA.description}
-                    </p>
-                  </section>
-
-                  <section className="rounded-lg border bg-slate-50 p-4">
-                    <h3 className="mb-1 text-sm font-medium text-slate-900">
-                      Why it matters
-                    </h3>
-                    <p className="text-sm text-slate-600">
-                      {selectedIA.whyMatters}
-                    </p>
-                  </section>
-
-                  <section className="rounded-lg border bg-slate-50 p-4">
-                    <h3 className="mb-1 text-sm font-medium text-slate-900">
-                      Provenance
-                    </h3>
-                    <p className="text-sm text-slate-600">
-                      {selectedIA.provenance}
-                    </p>
-                  </section>
-
-                  <section className="rounded-lg border bg-slate-50 p-4">
-                    <h3 className="mb-3 text-sm font-medium text-slate-900">
-                      Obligations
-                    </h3>
-
-                    <List className="space-y-2">
-                      {selectedIA.obligations.map((o) => (
-                        <ListItem
-                          key={o.id}
-                          className="flex gap-3 rounded-md bg-white px-3 py-2 text-sm shadow-sm"
-                        >
-                          <span className="mt-1 h-2 w-2 shrink-0 rounded-full bg-slate-400" />
-                          <span>{o.text}</span>
-                        </ListItem>
-                      ))}
-                    </List>
-                  </section>
-                </div>
-              </div>
-
-              {/* Actions */}
-              <div className="border-t px-6 py-4">
-                <div className="mx-auto max-w-2xl">
-                  <Button className="w-full">
-                    Link this Impact Assessment
-                  </Button>
-                </div>
-              </div>
-            </div>
+            <ImpactAssessmentOverlay
+              ia={selectedIA}
+              onBack={handleBack}
+            />
           )}
         </ModalBody>
       </div>

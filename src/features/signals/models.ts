@@ -37,3 +37,13 @@ export type SignalTemporalStatus = (typeof SIGNAL_TEMPORAL_STATUSES)[number];
  * (derived — no duplication)
  */
 export type Signal = z.infer<typeof SignalSchema>;
+
+export type SignalApiMock = {
+  id: string;
+  title: string;
+  created_at: string;
+};
+
+export type SignalMock = Omit<SignalApiMock, "created_at"> & {
+  createdAt: Date;
+};

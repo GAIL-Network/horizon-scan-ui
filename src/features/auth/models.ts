@@ -3,7 +3,7 @@ import type {
   UserRegistrationRequestDTO,
   UserRegistrationResponseDTO,
   UserLoginResponseDTO,
-  UserMeResponseDTO,
+  UserApi,
 } from "@/features/auth/dtos";
 
 export type RegistrationInput = UserRegistrationRequestDTO;
@@ -16,10 +16,7 @@ export type AuthSession = Omit<
   accessToken: string;
   tokenType: string;
 };
-export type CurrentUser = Omit<
-  UserMeResponseDTO,
-  "is_active" | "is_verified" | "created_at"
-> & {
+export type User = Omit<UserApi, "is_active" | "is_verified" | "created_at"> & {
   isActive: boolean;
   isVerified: boolean;
   createdAt: Date;

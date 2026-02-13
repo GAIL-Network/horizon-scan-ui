@@ -3,12 +3,12 @@
 
 import { useState } from "react";
 import { UserContext } from "./UserContext";
-import { LoginCredentials, CurrentUser } from "@/features/auth/models";
+import { LoginCredentials, User } from "@/features/auth/models";
 import { authToken } from "@/features/auth/authToken";
 import { getMe as getMeApi, loginUser as loginApi } from "@/features/auth/api";
 
 export function UserProvider({ children }: { children: React.ReactNode }) {
-  const [user, setUser] = useState<CurrentUser | null>(null);
+  const [user, setUser] = useState<User | null>(null);
 
   async function login(credentials: LoginCredentials): Promise<void> {
     const loginResponse = await loginApi(credentials);
