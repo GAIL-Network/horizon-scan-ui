@@ -22,8 +22,19 @@ type Props = {
 export function LinkCreateIAModal({ signal, ias, onClose, ...rest }: Props) {
   const router = useRouter();
   const [selectedIA, setSelectedIA] = useState<ImpactAssessment | null>(null);
+  const [query, setQuery] = useState("");
   const bodyRef = useRef<HTMLDivElement | null>(null);
   const lastGridScroll = useRef(0);
+
+  const filteredIAs = ias.filter((ia) => {
+    const terms = query.toLowerCase().split(/\s+/).filter(Boolean);
+
+    if (terms.length === 0) return true;
+
+    const haystack = `${ia.title} ${ia.description}`.toLowerCase();
+
+    return terms.every((term) => haystack.includes(term));
+  });
 
   const handleBack = () => {
     setSelectedIA(null);
@@ -38,6 +49,7 @@ export function LinkCreateIAModal({ signal, ias, onClose, ...rest }: Props) {
 
   const handleClose = () => {
     setSelectedIA(null);
+    setQuery("");
     onClose();
   };
 
@@ -74,40 +86,63 @@ export function LinkCreateIAModal({ signal, ias, onClose, ...rest }: Props) {
                 : "opacity-100",
             )}
           >
-            <GridPanels>
-              {ias.map((ia) => (
-                <GridPanel
-                  key={ia.id}
-                  onClick={() => {
-                    if (bodyRef.current) {
-                      lastGridScroll.current = bodyRef.current.scrollTop;
-                    }
-                    setSelectedIA(ia);
-                  }}
-                  className="cursor-pointer transition hover:shadow-md hover:ring-1 hover:ring-slate-200"
-                >
-                  <GridPanel.Header>
-                    <GridPanel.Title className="line-clamp-2">
-                      {ia.title}
-                    </GridPanel.Title>
-                  </GridPanel.Header>
+            {/* Sticky filter bar */}
 
-                  <GridPanel.Body className="line-clamp-3 text-sm text-slate-600">
-                    {ia.description}
-                  </GridPanel.Body>
+            {!selectedIA && (
+              <div className="sticky top-0 z-10 border-b bg-white px-6 py-3">
+                <input
+                  type="search"
+                  value={query}
+                  onChange={(e) => setQuery(e.target.value)}
+                  placeholder="Search impact assessments…"
+                  className={cn(
+                    "w-full rounded-md border px-3 py-2 text-sm",
+                    "focus:ring-2 focus:ring-slate-300 focus:outline-none",
+                  )}
+                />
+              </div>
+            )}
 
-                  <GridPanel.Footer>
-                    <Button
-                      variant="secondary"
-                      className="w-full"
-                      onClick={(e) => e.stopPropagation()}
-                    >
-                      Link Signal
-                    </Button>
-                  </GridPanel.Footer>
-                </GridPanel>
-              ))}
-            </GridPanels>
+            {filteredIAs.length === 0 ? (
+              <div className="px-6 py-8 text-center text-sm text-slate-500">
+                No impact assessments match your search.
+              </div>
+            ) : (
+              <GridPanels>
+                {filteredIAs.map((ia) => (
+                  <GridPanel
+                    key={ia.id}
+                    onClick={() => {
+                      if (bodyRef.current) {
+                        lastGridScroll.current = bodyRef.current.scrollTop;
+                      }
+                      setSelectedIA(ia);
+                    }}
+                    className="cursor-pointer transition hover:shadow-md hover:ring-1 hover:ring-slate-200"
+                  >
+                    <GridPanel.Header>
+                      <GridPanel.Title className="line-clamp-2">
+                        {ia.title}
+                      </GridPanel.Title>
+                    </GridPanel.Header>
+
+                    <GridPanel.Body className="line-clamp-3 text-sm text-slate-600">
+                      {ia.description}
+                    </GridPanel.Body>
+
+                    <GridPanel.Footer>
+                      <Button
+                        variant="secondary"
+                        className="w-full"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        Link Signal
+                      </Button>
+                    </GridPanel.Footer>
+                  </GridPanel>
+                ))}
+              </GridPanels>
+            )}
           </div>
 
           {/* Detail (overlaid, but IN-CANVAS) */}
