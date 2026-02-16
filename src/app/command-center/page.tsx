@@ -1,8 +1,34 @@
+"use client";
+
 import { Container } from "@/components/Container";
 import { Header } from "@/components/Header";
 import { Panel } from "@/components/Panel";
+import { useUser } from "@/features/auth/hooks/useUser";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 export default function Page() {
+  const router = useRouter();
+  const { user, loading } = useUser();
+
+  useEffect(() => {
+    if (loading) return;
+
+    if (!user) {
+      router.replace("/auth/login");
+      return;
+    }
+
+    if (!user.organisation) {
+      router.replace("/organisation/new");
+      return;
+    }
+  }, [user, loading, router]);
+
+  if (loading || !user || !user.organisation) {
+    return <div className="p-10">Loading…</div>;
+  }
+
   return (
     <Container>
       <Panel>
