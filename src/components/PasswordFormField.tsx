@@ -12,14 +12,13 @@ type Props = {
   isShowErrors: boolean;
 };
 
-const passwordSchema = z
-  .string()
-  .min(12, "Password must be at least 12 characters")
-  .regex(/[A-Z]/, "Password must contain an uppercase letter")
-  .regex(/[a-z]/, "Password must contain a lowercase letter")
-  .regex(/[0-9]/, "Password must contain a number")
-  .regex(/[^\w\s]/, "Password must contain a special character");
-
+const passwordSchema = z.string();
+// TODO
+// .min(12, "Password must be at least 12 characters")
+// .regex(/[A-Z]/, "Password must contain an uppercase letter")
+// .regex(/[a-z]/, "Password must contain a lowercase letter")
+// .regex(/[0-9]/, "Password must contain a number")
+// .regex(/[^\w\s]/, "Password must contain a special character")
 function validate(password: string): string | null {
   const result = passwordSchema.safeParse(password);
   return result.success ? null : result.error.issues[0].message;

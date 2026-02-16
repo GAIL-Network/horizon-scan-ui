@@ -1,13 +1,35 @@
-import { Container } from "@/components/Container";
-import { Header } from "@/components/Header";
-import { Panel } from "@/components/Panel";
+"use client";
 
-export default function Page() {
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { useUser } from "@/features/auth/hooks/useUser";
+
+export default function Home() {
+  const router = useRouter();
+  const { user, loading } = useUser();
+
+  useEffect(() => {
+    if (loading) return;
+
+    // not logged in
+    if (!user) {
+      router.replace("/auth/login");
+      return;
+    }
+
+    // logged in but no organisation
+    if (!user.organisation) {
+      router.replace("/organisation/new");
+      return;
+    }
+
+    // fully onboarded
+    router.replace("/command-center");
+  }, [user, loading, router]);
+
   return (
-    <Container>
-      <Panel>
-        <Header className="mb-0 flex">Welcome to Compliance Live</Header>
-      </Panel>
-    </Container>
+    <div className="flex h-screen items-center justify-center text-sm opacity-60">
+      Loading…
+    </div>
   );
 }
