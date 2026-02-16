@@ -21,7 +21,7 @@ export default function Home() {
       return;
     }
 
-    router.replace("/dashboard");
+    router.replace("/command-center");
   }, [user, loading, router]);
 
   return (
