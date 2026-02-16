@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useUser } from "@/features/auth/hooks/useUser";
 
@@ -30,11 +30,13 @@ export default function LoginPage() {
     }
   }
 
-  // if already logged in, bounce to root
-  if (!loading && user) {
-    router.replace("/");
-    return null;
-  }
+  useEffect(() => {
+    if (loading) return;
+
+    if (user) {
+      router.replace("/");
+    }
+  }, [user, loading, router]);
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-white">

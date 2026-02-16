@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useUser } from "@/features/auth/hooks/useUser";
 
-export default function Home() {
+export default function NewOrganisationPage() {
   const router = useRouter();
   const { user, loading } = useUser();
 
@@ -16,17 +16,17 @@ export default function Home() {
       return;
     }
 
-    if (!user.organisation) {
-      router.replace("/organisation/new");
-      return;
+    // already has org → leave onboarding
+    if (user.organisation) {
+      router.replace("/");
     }
-
-    router.replace("/dashboard");
   }, [user, loading, router]);
 
   return (
-    <div className="flex h-screen items-center justify-center text-sm opacity-60">
-      Loading…
+    <div className="mx-auto mt-20 max-w-md">
+      <h1 className="mb-4 text-xl font-semibold">Create organisation</h1>
+
+      {/* form goes here next */}
     </div>
   );
 }
