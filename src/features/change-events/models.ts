@@ -36,6 +36,8 @@ export type ChangeEvent = Omit<
   tags: string[];
   temporalStatus: ChangeEventTemporalStatus;
   updatedAt: Date;
+  whyMatters: string;
+  provenance: string;
 };
 
 /* =======================

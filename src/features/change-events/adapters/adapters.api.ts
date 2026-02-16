@@ -39,6 +39,8 @@ export function apiToChangeEvent(api: ChangeEventApi): ChangeEvent {
     tags: tags ? tags : [],
     temporalStatus: temporal,
     updatedAt: new Date(updated_at),
+    whyMatters: "",
+    provenance: "",
   };
 }
 

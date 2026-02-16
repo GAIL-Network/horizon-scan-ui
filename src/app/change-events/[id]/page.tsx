@@ -295,7 +295,7 @@ export default function Page() {
               className="w-full"
               onClick={() => setIsShowIAs(true)}
             >
-              Start Regulatory Impact Assessment
+              Link Regulatory Impact Assessment
             </Button>
           </div>
 
