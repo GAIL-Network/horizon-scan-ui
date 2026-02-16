@@ -5,6 +5,7 @@ import type {
   UserLoginResponseDTO,
   UserApi,
 } from "@/features/auth/dtos";
+import { Organisation } from "../organisation/models";
 
 export type RegistrationInput = UserRegistrationRequestDTO;
 export type RegisteredUser = UserRegistrationResponseDTO;
@@ -20,4 +21,5 @@ export type User = Omit<UserApi, "is_active" | "is_verified" | "created_at"> & {
   isActive: boolean;
   isVerified: boolean;
   createdAt: Date;
+  organisation: Organisation | null;
 };

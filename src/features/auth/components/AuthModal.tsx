@@ -8,10 +8,10 @@ import RegistrationForm from "./RegistrationForm";
 import { LoginCredentials, RegisteredUser, RegistrationInput } from "../models";
 import { ModalBody, ModalHeader } from "@/components/ModalParts";
 import { useState } from "react";
-import { useUser } from "@/hooks/useUser";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { useNewUser } from "../hooks/useNewUser";
+import { useUser } from "../hooks/useUser";
 
 export function AuthModal() {
   const { isOpen, mode, close } = useAuthModal();

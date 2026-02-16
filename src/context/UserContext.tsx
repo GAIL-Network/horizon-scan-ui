@@ -4,10 +4,7 @@ import type { LoginCredentials, User } from "@/features/auth/models";
 
 export interface UserContextValue {
   user: User | null;
-  actions: {
-    login: (credentials: LoginCredentials) => Promise<void>;
-    logout(): void;
-  };
+  setUser: React.Dispatch<React.SetStateAction<User | null>>;
 }
 
 export const UserContext = createContext<UserContextValue | null>(null);

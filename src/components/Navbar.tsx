@@ -3,11 +3,11 @@
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
-import { useUser } from "@/hooks/useUser";
 import { cn } from "@/lib/utils";
 import { NavLink } from "./NavLink";
 import Button from "./Button";
 import { useAuthModal } from "@/features/context/AuthModalContext";
+import { useUser } from "@/features/auth/hooks/useUser";
 
 interface NavbarProps {
   className?: string;

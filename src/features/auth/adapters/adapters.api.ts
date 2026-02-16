@@ -1,3 +1,4 @@
+import { apiToOrganisation } from "@/features/organisation/adapters.api";
 import {
   UserApi,
   UserLoginResponseDTO,
@@ -12,6 +13,8 @@ export function apiToUser(api: UserApi): User {
     isActive: is_active,
     isVerified: is_verified,
     createdAt: new Date(created_at),
+    organisation:
+      api.organsiation == null ? null : apiToOrganisation(api.organisation),
   };
 }
 
