@@ -4,5 +4,6 @@ export function apiToOrganisation(api: OrganisationApi): Organisation {
   return {
     id: api.id,
     name: api.name,
+    createdAt: new Date(api.createdAt),
   };
 }

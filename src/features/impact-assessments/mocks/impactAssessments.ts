@@ -15,9 +15,10 @@ export const mockImpactAssessments: ImpactAssessmentApi[] = [
     owner: {
       id: "1a2b3c4d-1111-4aaa-bbbb-1234567890ab",
       email: "regulatory.lead@company.com",
-      is_active: true,
-      is_verified: true,
-      created_at: "2023-06-12T08:15:00Z",
+      isActive: true,
+      isVerified: true,
+      createdAt: "2023-06-12T08:15:00Z",
+      organisation: null,
     },
     change_events: [
       {
@@ -61,9 +62,10 @@ export const mockImpactAssessments: ImpactAssessmentApi[] = [
     owner: {
       id: "1a2b3c4d-1111-4aaa-bbbb-1234567890ab",
       email: "regulatory.lead@company.com",
-      is_active: true,
-      is_verified: true,
-      created_at: "2023-06-12T08:15:00Z",
+      isActive: true,
+      isVerified: true,
+      createdAt: "2023-06-12T08:15:00Z",
+      organisation: null,
     },
     change_events: [
       {
@@ -102,9 +104,10 @@ export const mockImpactAssessments: ImpactAssessmentApi[] = [
     owner: {
       id: "7e9a2b1c-2222-4bbb-cccc-abcdef123456",
       email: "tax.policy@company.com",
-      is_active: true,
-      is_verified: true,
-      created_at: "2022-11-03T13:40:00Z",
+      isActive: true,
+      isVerified: true,
+      createdAt: "2022-11-03T13:40:00Z",
+      organisation: null,
     },
     change_events: [
       {
@@ -141,9 +144,10 @@ export const mockImpactAssessments: ImpactAssessmentApi[] = [
     owner: {
       id: "9f3c2b1a-3333-4ccc-dddd-fedcba654321",
       email: "quality.lead@company.com",
-      is_active: true,
-      is_verified: true,
-      created_at: "2021-04-19T09:00:00Z",
+      isActive: true,
+      isVerified: true,
+      createdAt: "2021-04-19T09:00:00Z",
+      organisation: null,
     },
     change_events: [
       {
@@ -180,9 +184,10 @@ export const mockImpactAssessments: ImpactAssessmentApi[] = [
     owner: {
       id: "c1d2e3f4-4444-4ddd-eeee-112233445566",
       email: "it.compliance@company.com",
-      is_active: true,
-      is_verified: true,
-      created_at: "2020-09-07T16:25:00Z",
+      isActive: true,
+      isVerified: true,
+      createdAt: "2020-09-07T16:25:00Z",
+      organisation: null,
     },
     change_events: [
       {

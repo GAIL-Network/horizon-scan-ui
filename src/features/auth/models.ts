@@ -17,9 +17,7 @@ export type AuthSession = Omit<
   accessToken: string;
   tokenType: string;
 };
-export type User = Omit<UserApi, "is_active" | "is_verified" | "created_at"> & {
-  isActive: boolean;
-  isVerified: boolean;
+export type User = Omit<UserApi, "createdAt" | "organisation"> & {
   createdAt: Date;
   organisation: Organisation | null;
 };

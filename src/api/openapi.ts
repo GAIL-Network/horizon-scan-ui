@@ -139,6 +139,18 @@ export interface components {
             /** Status */
             status: string;
         };
+        /** OrganisationSchema */
+        OrganisationSchema: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Name */
+            name: string;
+            /** Createdat */
+            createdAt: string;
+        };
         /**
          * RegulatoryProgramCreateRequest
          * @description Request body for creating a regulatory program.
@@ -210,15 +222,16 @@ export interface components {
              * Format: email
              */
             email: string;
-            /** Is Active */
-            is_active: boolean;
-            /** Is Verified */
-            is_verified: boolean;
+            /** Isactive */
+            isActive: boolean;
+            /** Isverified */
+            isVerified: boolean;
             /**
-             * Created At
+             * Createdat
              * Format: date-time
              */
-            created_at: string;
+            createdAt: string;
+            organisation: components["schemas"]["OrganisationSchema"] | null;
         };
         /**
          * UserRegistrationRequest

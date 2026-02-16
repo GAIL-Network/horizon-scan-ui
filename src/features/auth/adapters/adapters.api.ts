@@ -7,14 +7,12 @@ import {
 import { AuthSession, RegisteredUser, User } from "../models";
 
 export function apiToUser(api: UserApi): User {
-  const { is_active, is_verified, created_at, ...rest } = api;
+  const { createdAt, ...rest } = api;
   return {
     ...rest,
-    isActive: is_active,
-    isVerified: is_verified,
-    createdAt: new Date(created_at),
+    createdAt: new Date(createdAt),
     organisation:
-      api.organsiation == null ? null : apiToOrganisation(api.organisation),
+      api.organisation == null ? null : apiToOrganisation(api.organisation),
   };
 }
 
