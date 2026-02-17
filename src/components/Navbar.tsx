@@ -155,9 +155,14 @@ export function Navbar({ className }: NavbarProps) {
                     {user.organisation.name}
                   </div>
                 )}
+                {user?.role && (
+                  <div className="max-w-[160px] truncate text-xs opacity-60">
+                    {user.role}
+                  </div>
+                )}
               </>
             ) : (
-              <div className="text-sm">Login / Register</div>
+              <div className="text-sm">Register</div>
             )}
           </Button>
 
@@ -178,14 +183,6 @@ export function Navbar({ className }: NavbarProps) {
               </NavLink>
             ) : (
               <>
-                <Button
-                  onClick={() => {
-                    openAuthModal("login");
-                    closeMenus();
-                  }}
-                >
-                  Login
-                </Button>
                 <Button
                   onClick={() => {
                     openAuthModal("register");

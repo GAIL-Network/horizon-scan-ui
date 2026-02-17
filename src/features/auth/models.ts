@@ -1,3 +1,4 @@
+import { components } from "@/api/openapi";
 import type {
   UserLoginRequestDTO,
   UserRegistrationRequestDTO,
@@ -10,6 +11,9 @@ import { Organisation } from "../organisation/models";
 export type RegistrationInput = UserRegistrationRequestDTO;
 export type RegisteredUser = UserRegistrationResponseDTO;
 export type LoginCredentials = UserLoginRequestDTO;
+
+export type OrganisationRole = components["schemas"]["OrganisationRole"];
+
 export type AuthSession = Omit<
   UserLoginResponseDTO,
   "access_token" | "token_type"
@@ -20,4 +24,5 @@ export type AuthSession = Omit<
 export type User = Omit<UserApi, "createdAt" | "organisation"> & {
   createdAt: Date;
   organisation: Organisation | null;
+  role: OrganisationRole | null;
 };

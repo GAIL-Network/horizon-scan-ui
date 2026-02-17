@@ -61,6 +61,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/organisations/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Create Org */
+        post: operations["create_org_organisations__post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/regulatory-programs": {
         parameters: {
             query?: never;
@@ -139,18 +156,33 @@ export interface components {
             /** Status */
             status: string;
         };
-        /** OrganisationSchema */
-        OrganisationSchema: {
-            /**
-             * Id
-             * Format: uuid
-             */
+        /** OrganisationCreationRequest */
+        OrganisationCreationRequest: {
+            /** Name */
+            name: string;
+        };
+        /** OrganisationResponse */
+        OrganisationResponse: {
+            /** Id */
             id: string;
             /** Name */
             name: string;
-            /** Createdat */
+            /**
+             * Createdat
+             * Format: date-time
+             */
             createdAt: string;
+            /**
+             * Lastupdatedat
+             * Format: date-time
+             */
+            lastUpdatedAt: string;
         };
+        /**
+         * OrganisationRole
+         * @enum {string}
+         */
+        OrganisationRole: "owner" | "admin" | "staff" | "viewer";
         /**
          * RegulatoryProgramCreateRequest
          * @description Request body for creating a regulatory program.
@@ -217,21 +249,12 @@ export interface components {
              * Format: uuid
              */
             id: string;
-            /**
-             * Email
-             * Format: email
-             */
+            /** Email */
             email: string;
-            /** Isactive */
-            isActive: boolean;
-            /** Isverified */
-            isVerified: boolean;
-            /**
-             * Createdat
-             * Format: date-time
-             */
+            /** Createdat */
             createdAt: string;
-            organisation: components["schemas"]["OrganisationSchema"] | null;
+            organisation: components["schemas"]["OrganisationResponse"] | null;
+            role: components["schemas"]["OrganisationRole"] | null;
         };
         /**
          * UserRegistrationRequest
@@ -364,6 +387,39 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["UserMeResponse"];
+                };
+            };
+        };
+    };
+    create_org_organisations__post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["OrganisationCreationRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["OrganisationResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
                 };
             };
         };
