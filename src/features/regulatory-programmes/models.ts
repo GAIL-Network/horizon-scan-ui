@@ -1,4 +1,4 @@
-export type TkpApi = {
+export type RPApi = {
   id: string;
   name: string;
 
@@ -13,14 +13,14 @@ export type TkpApi = {
 
   key_dependency_topic_ids?: string[];
 
-  tracked_instruments: TkpTrackedInstrumentApi[];
-  documents: TkpDocumentApi[];
+  tracked_instruments: RPTrackedInstrumentApi[];
+  documents: RPDocumentApi[];
 
-  definitions?: TkpDefinitionApi[];
+  definitions?: RPDefinitionApi[];
   taxonomy?: Record<string, string[]>;
 
-  normative_statements: TkpNormativeStatementApi[];
-  process_models?: TkpProcessModelApi[];
+  normative_statements: RPNormativeStatementApi[];
+  process_models?: RPProcessModelApi[];
 
   owner?: string;
 
@@ -28,25 +28,25 @@ export type TkpApi = {
   updated_at: string; // ISO datetime
 };
 
-export type TkpTrackedInstrumentApi = {
+export type RPTrackedInstrumentApi = {
   id: string;
   name: string;
   description?: string;
 };
 
-export type TkpDocumentApi = {
+export type RPDocumentApi = {
   id: string;
   title: string;
   type?: string;
   url?: string;
 };
 
-export type TkpDefinitionApi = {
+export type RPDefinitionApi = {
   term: string;
   meaning: string;
 };
 
-export type TkpNormativeStatementApi = {
+export type RPNormativeStatementApi = {
   id: string;
   text: string;
 
@@ -56,23 +56,23 @@ export type TkpNormativeStatementApi = {
   notes?: string;
 };
 
-export type TkpProcessStepApi = {
+export type RPProcessStepApi = {
   id?: string;
   name: string;
   description?: string;
 };
 
-export type TkpProcessModelApi = {
+export type RPProcessModelApi = {
   id: string;
   name: string;
 
   trigger?: string;
   roles?: string[];
 
-  steps: TkpProcessStepApi[];
+  steps: RPProcessStepApi[];
 };
 
-export type Tkp = {
+export type RP = {
   id: string;
   name: string;
 
@@ -87,14 +87,14 @@ export type Tkp = {
 
   keyDependencyTopicIds?: string[];
 
-  trackedInstruments: TkpTrackedInstrument[];
-  documents: TkpDocument[];
+  trackedInstruments: RPTrackedInstrument[];
+  documents: RPDocument[];
 
-  definitions?: TkpDefinition[];
-  taxonomy?: TkpTaxonomy;
+  definitions?: RPDefinition[];
+  taxonomy?: RPTaxonomy;
 
-  normativeStatements: TkpNormativeStatement[];
-  processModels?: TkpProcessModel[];
+  normativeStatements: RPNormativeStatement[];
+  processModels?: RPProcessModel[];
 
   owner?: string;
 
@@ -102,31 +102,31 @@ export type Tkp = {
   updatedAt: Date;
 };
 
-export type TkpTrackedInstrument = {
+export type RPTrackedInstrument = {
   id: string;
   name: string;
   description?: string;
 };
 
-export type TkpDocument = {
+export type RPDocument = {
   id: string;
   title: string;
   type?: string; // pdf, html, guidance, policy etc
   url?: string;
 };
 
-export type TkpDefinition = {
+export type RPDefinition = {
   term: string;
   meaning: string;
 };
 
-export type TkpTaxonomy = Record<string, string[]>;
+export type RPTaxonomy = Record<string, string[]>;
 // {
 //   Actor: ["authorised person", "approver"],
 //   Channel: ["web", "email"]
 // }
 
-export type TkpNormativeStatement = {
+export type RPNormativeStatement = {
   id: string;
   text: string;
 
@@ -136,18 +136,18 @@ export type TkpNormativeStatement = {
   notes?: string;
 };
 
-export type TkpProcessStep = {
+export type RPProcessStep = {
   id?: string;
   name: string;
   description?: string;
 };
 
-export type TkpProcessModel = {
+export type RPProcessModel = {
   id: string;
   name: string;
 
   trigger?: string;
   roles?: string[];
 
-  steps: TkpProcessStep[];
+  steps: RPProcessStep[];
 };

@@ -1,6 +1,6 @@
-import { Tkp, TkpApi } from "./models";
+import { RP, RPApi } from "./models";
 
-export function apiToTkp(api: TkpApi): Tkp {
+export function apiToRP(api: RPApi): RP {
   return {
     id: api.id,
     name: api.name,
@@ -46,29 +46,29 @@ export function apiToTkp(api: TkpApi): Tkp {
   };
 }
 
-export function tkpToApi(tkp: Tkp): TkpApi {
+export function RPToApi(rp: RP): RPApi {
   return {
-    id: tkp.id,
-    name: tkp.name,
+    id: rp.id,
+    name: rp.name,
 
-    jurisdiction: tkp.jurisdiction,
-    regulators: tkp.regulators,
+    jurisdiction: rp.jurisdiction,
+    regulators: rp.regulators,
 
-    description: tkp.description,
-    primary_anchor: tkp.primaryAnchor,
+    description: rp.description,
+    primary_anchor: rp.primaryAnchor,
 
-    scope_in: tkp.scopeIn,
-    scope_out: tkp.scopeOut,
+    scope_in: rp.scopeIn,
+    scope_out: rp.scopeOut,
 
-    key_dependency_topic_ids: tkp.keyDependencyTopicIds,
+    key_dependency_topic_ids: rp.keyDependencyTopicIds,
 
-    tracked_instruments: tkp.trackedInstruments,
-    documents: tkp.documents,
+    tracked_instruments: rp.trackedInstruments,
+    documents: rp.documents,
 
-    definitions: tkp.definitions,
-    taxonomy: tkp.taxonomy,
+    definitions: rp.definitions,
+    taxonomy: rp.taxonomy,
 
-    normative_statements: tkp.normativeStatements.map((ns) => ({
+    normative_statements: rp.normativeStatements.map((ns) => ({
       id: ns.id,
       text: ns.text,
       strength: ns.strength === "mustNot" ? "must_not" : ns.strength,
@@ -76,7 +76,7 @@ export function tkpToApi(tkp: Tkp): TkpApi {
       notes: ns.notes,
     })),
 
-    process_models: tkp.processModels?.map((pm) => ({
+    process_models: rp.processModels?.map((pm) => ({
       id: pm.id,
       name: pm.name,
       trigger: pm.trigger,
@@ -84,9 +84,9 @@ export function tkpToApi(tkp: Tkp): TkpApi {
       steps: pm.steps,
     })),
 
-    owner: tkp.owner,
+    owner: rp.owner,
 
-    created_at: tkp.createdAt.toISOString(),
-    updated_at: tkp.updatedAt.toISOString(),
+    created_at: rp.createdAt.toISOString(),
+    updated_at: rp.updatedAt.toISOString(),
   };
 }

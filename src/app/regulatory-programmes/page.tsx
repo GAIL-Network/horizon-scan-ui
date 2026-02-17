@@ -7,32 +7,32 @@ import { Panel } from "@/components/Panel";
 import { GridPanel } from "@/components/GridPanel";
 import { GridPanels } from "@/components/GridPanels";
 import Button from "@/components/Button";
-import { useTkps } from "@/features/tkp/hooks/useTkps";
+import { useRPs } from "@/features/regulatory-programmes/hooks/useRPs";
 
 export default function Page() {
-  const { state: tkps } = useTkps();
+  const { state: rps } = useRPs();
 
   const [jurisdiction, setJurisdiction] = useState<string | undefined>();
   const [regulator, setRegulator] = useState<string | undefined>();
 
   const jurisdictions = Array.from(
-    new Set(tkps?.map((t) => t.jurisdiction) ?? []),
+    new Set(rps?.map((t) => t.jurisdiction) ?? []),
   );
 
   const regulators = Array.from(
-    new Set(tkps?.flatMap((t) => t.regulators) ?? []),
+    new Set(rps?.flatMap((t) => t.regulators) ?? []),
   );
 
-  const filtered = tkps?.filter((tkp) => {
-    if (jurisdiction && tkp.jurisdiction !== jurisdiction) return false;
-    if (regulator && !tkp.regulators.includes(regulator)) return false;
+  const filtered = rps?.filter((rp) => {
+    if (jurisdiction && rp.jurisdiction !== jurisdiction) return false;
+    if (regulator && !rp.regulators.includes(regulator)) return false;
     return true;
   });
 
   return (
     <Container>
       <Panel>
-        <Header className="mb-0">Topic Knowledge Packs</Header>
+        <Header className="mb-0">Regulatory Programme Knowledge Packs</Header>
       </Panel>
 
       {/* Filters */}
@@ -94,17 +94,17 @@ export default function Page() {
 
       {/* Grid */}
       <GridPanels>
-        {filtered?.map((tkp) => (
+        {filtered?.map((rp) => (
           <GridPanel
-            key={tkp.id}
-            href={`/tkps/${tkp.id}`}
+            key={rp.id}
+            href={`/regulatory-programmes/${rp.id}`}
           >
             <GridPanel.Header>
-              <GridPanel.Title>{tkp.name}</GridPanel.Title>
+              <GridPanel.Title>{rp.name}</GridPanel.Title>
 
               <GridPanel.Meta>
-                <span className="text-xs opacity-70">{tkp.jurisdiction}</span>
-                {tkp.regulators.map((r) => (
+                <span className="text-xs opacity-70">{rp.jurisdiction}</span>
+                {rp.regulators.map((r) => (
                   <span
                     key={r}
                     className="text-xs opacity-70"
@@ -116,11 +116,11 @@ export default function Page() {
             </GridPanel.Header>
 
             <GridPanel.Body>
-              {tkp.description ?? "No description"}
+              {rp.description ?? "No description"}
             </GridPanel.Body>
 
             <GridPanel.Footer>
-              Updated {tkp.updatedAt.toLocaleDateString()}
+              Updated {rp.updatedAt.toLocaleDateString()}
             </GridPanel.Footer>
           </GridPanel>
         ))}

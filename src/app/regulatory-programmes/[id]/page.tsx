@@ -3,20 +3,20 @@
 import { Container } from "@/components/Container";
 import { Header } from "@/components/Header";
 import { Panel } from "@/components/Panel";
-import { useTkp } from "@/features/tkp/hooks/useTkp";
+import { useRP } from "@/features/regulatory-programmes/hooks/useRP";
 import { useParams } from "next/navigation";
 
 export default function Page() {
   const params = useParams<{ id: string }>();
   const { id } = params;
 
-  const { state, actions } = useTkp({ id });
+  const { state, actions } = useRP({ id });
 
   if (state.loading) {
     return (
       <Container>
         <Panel>
-          <Header className="mb-0">Loading TKP…</Header>
+          <Header className="mb-0">Loading Regulatory Programme…</Header>
         </Panel>
       </Container>
     );
@@ -35,14 +35,14 @@ export default function Page() {
 
   if (!state.data) return null;
 
-  const tkp = state.data;
+  const rp = state.data;
 
   return (
     <Container>
       {/* Header */}
       <Panel>
         <div className="flex items-center justify-between">
-          <Header className="mb-0">{tkp.name}</Header>
+          <Header className="mb-0">{rp.name}</Header>
 
           <button
             onClick={actions.refresh}
@@ -53,10 +53,10 @@ export default function Page() {
         </div>
 
         <p className="mt-2 text-sm opacity-70">
-          {tkp.jurisdiction} • {tkp.regulators.join(", ")}
+          {rp.jurisdiction} • {rp.regulators.join(", ")}
         </p>
 
-        {tkp.description && <p className="mt-3 text-sm">{tkp.description}</p>}
+        {rp.description && <p className="mt-3 text-sm">{rp.description}</p>}
       </Panel>
 
       <div className="grid grid-cols-12 gap-2">
@@ -65,7 +65,7 @@ export default function Page() {
           <Panel>
             <Header className="mb-2">Scope In</Header>
             <ul className="list-disc pl-5 text-sm">
-              {tkp.scopeIn.map((item) => (
+              {rp.scopeIn.map((item) => (
                 <li key={item}>{item}</li>
               ))}
             </ul>
@@ -76,7 +76,7 @@ export default function Page() {
           <Panel>
             <Header className="mb-2">Scope Out</Header>
             <ul className="list-disc pl-5 text-sm">
-              {tkp.scopeOut.map((item) => (
+              {rp.scopeOut.map((item) => (
                 <li key={item}>{item}</li>
               ))}
             </ul>
@@ -89,7 +89,7 @@ export default function Page() {
             <Header className="mb-3">Key Rules</Header>
 
             <div className="flex flex-col gap-2">
-              {tkp.normativeStatements.map((ns) => (
+              {rp.normativeStatements.map((ns) => (
                 <div
                   key={ns.id}
                   className="rounded border p-3 text-sm"
@@ -105,13 +105,13 @@ export default function Page() {
         </div>
 
         {/* Documents */}
-        {tkp.documents.length > 0 && (
+        {rp.documents.length > 0 && (
           <div className="col-span-12">
             <Panel>
               <Header className="mb-2">Documents</Header>
 
               <ul className="text-sm">
-                {tkp.documents.map((doc) => (
+                {rp.documents.map((doc) => (
                   <li key={doc.id}>
                     {doc.url ? (
                       <a

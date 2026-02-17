@@ -1,34 +1,35 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Tkp, TkpApi } from "../models";
-import { apiToTkp } from "../adapters.api";
+import { RP, RPApi } from "../models";
+import { apiToRP } from "../adapters.api";
 
-const USE_MOCK = process.env.NEXT_PUBLIC_USE_MOCK_TKP === "true";
+const USE_MOCK = process.env.NEXT_PUBLIC_USE_MOCK_RP === "true";
 
 type State = {
-  data?: Tkp[];
+  data?: RP[];
   loading: boolean;
   error?: string;
 };
 
-export function useTkps() {
+export function useRPs() {
   const [state, setState] = useState<State>({
     data: undefined,
     loading: true,
   });
 
-  async function loadFromApi(): Promise<Tkp[]> {
-    const res = await fetch("/api/tkps");
-    if (!res.ok) throw new Error("Failed to fetch TKPs");
+  async function loadFromApi(): Promise<RP[]> {
+    const res = await fetch("/api/regulatory-programmes");
+    if (!res.ok) throw new Error("Failed to fetch Regulatory Programmes");
 
-    const json: TkpApi[] = await res.json();
-    return json.map(apiToTkp);
+    const json: RPApi[] = await res.json();
+    return json.map(apiToRP);
   }
 
-  async function loadFromMock(): Promise<Tkp[]> {
-    const mod = await import("@/features/tkp/mock/tkps");
-    return mod.mockTkps;
+  async function loadFromMock(): Promise<RP[]> {
+    const mod =
+      await import("@/features/regulatory-programmes/mock/regulatory-programmes");
+    return mod.mockRPs;
   }
 
   async function load() {
@@ -46,7 +47,7 @@ export function useTkps() {
       setState({
         data: undefined,
         loading: false,
-        error: err?.message ?? "Failed to load TKPs",
+        error: err?.message ?? "Failed to load Regulatory Programmes",
       });
     }
   }

@@ -40,7 +40,7 @@ set +a
 : "${NEXT_PUBLIC_COMPLIANCE_LIVE_API_BASE_URL:?Missing NEXT_PUBLIC_COMPLIANCE_LIVE_API_BASE_URL}"
 : "${NEXT_PUBLIC_HORIZON_SCAN_API_BASE_URL:?Missing NEXT_PUBLIC_HORIZON_SCAN_API_BASE_URL}"
 : "${NEXT_PUBLIC_USE_MOCK_IA:?Missing NEXT_PUBLIC_USE_MOCK_IA}"
-: "${NEXT_PUBLIC_USE_MOCK_TKP:?Missing NEXT_PUBLIC_USE_MOCK_TKP}"
+: "${NEXT_PUBLIC_USE_MOCK_RP:?Missing NEXT_PUBLIC_USE_MOCK_RP}"
 
 # ---- Safety: never allow mocks in prod ----
 if [ "$ENVIRONMENT" = "prod" ] && [ "$NEXT_PUBLIC_USE_MOCK_IA" = "true" ]; then
@@ -48,8 +48,8 @@ if [ "$ENVIRONMENT" = "prod" ] && [ "$NEXT_PUBLIC_USE_MOCK_IA" = "true" ]; then
   exit 1
 fi
 
-if [ "$ENVIRONMENT" = "prod" ] && [ "$NEXT_PUBLIC_USE_MOCK_TKP" = "true" ]; then
-  echo "❌ Refusing to deploy with TKP mocks enabled in prod"
+if [ "$ENVIRONMENT" = "prod" ] && [ "$NEXT_PUBLIC_USE_MOCK_RP" = "true" ]; then
+  echo "❌ Refusing to deploy with RP mocks enabled in prod"
   exit 1
 fi
 
@@ -64,7 +64,7 @@ docker build \
   --build-arg NEXT_PUBLIC_COMPLIANCE_LIVE_API_BASE_URL="$NEXT_PUBLIC_COMPLIANCE_LIVE_API_BASE_URL" \
   --build-arg NEXT_PUBLIC_HORIZON_SCAN_API_BASE_URL="$NEXT_PUBLIC_HORIZON_SCAN_API_BASE_URL" \
   --build-arg NEXT_PUBLIC_USE_MOCK_IA="$NEXT_PUBLIC_USE_MOCK_IA" \
-  --build-arg NEXT_PUBLIC_USE_MOCK_TKP="$NEXT_PUBLIC_USE_MOCK_TKP" \
+  --build-arg NEXT_PUBLIC_USE_MOCK_RP="$NEXT_PUBLIC_USE_MOCK_RP" \
   -t "$ECR_REPO:$IMAGE_TAG" \
   "$PROJECT_ROOT"
 

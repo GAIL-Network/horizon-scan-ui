@@ -1,7 +1,7 @@
-// /mock/tkps.ts
-import { Tkp } from "../models";
+// /mock/regulatory-programmes.ts
+import { RP } from "../models";
 
-export const mockTkps: Tkp[] = [
+export const mockRPs: RP[] = [
   {
     id: "adf320c9-cb1d-4c13-8c10-99bb517a83e5",
     name: "UK Crypto Promotions (COBS 4.12A)",
