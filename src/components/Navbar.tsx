@@ -1,7 +1,7 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 import { cn } from "@/lib/utils";
 import { NavLink } from "./NavLink";
@@ -32,8 +32,7 @@ const LEFT_NAV_LINKS = [
 ];
 
 const comingSoonPanelClass =
-  "relative cursor-pointer border border-orange-300 bg-orange-50/40 " +
-  "hover:bg-orange-50 transition";
+  "relative border border-orange-300 bg-orange-50/40 hover:bg-orange-50";
 
 export function Navbar({ className }: NavbarProps) {
   const pathname = usePathname();
@@ -42,12 +41,9 @@ export function Navbar({ className }: NavbarProps) {
 
   const [isLeftOpen, setIsLeftOpen] = useState(false);
   const [isRightOpen, setIsRightOpen] = useState(false);
+  const navRef = useRef<HTMLElement>(null);
 
-  useEffect(() => {
-    closeMenus();
-  }, [pathname]);
-
-  const isLoggedIn = Boolean(user);
+  const isLoggedIn = Boolean(user && user.organisation);
 
   const closeMenus = () => {
     setIsLeftOpen(false);
@@ -59,104 +55,148 @@ export function Navbar({ className }: NavbarProps) {
       ? pathname === href
       : pathname === href || pathname.startsWith(`${href}/`);
 
+  // close on route change
+  useEffect(closeMenus, [pathname]);
+
+  // close on outside click
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (!navRef.current) return;
+      if (!navRef.current.contains(e.target as Node)) closeMenus();
+    }
+
+    function handleEsc(e: KeyboardEvent) {
+      if (e.key === "Escape") closeMenus();
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("keydown", handleEsc);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("keydown", handleEsc);
+    };
+  }, []);
+
   return (
     <nav
+      ref={navRef}
       className={cn(
-        "border-b border-slate-500",
-        "relative z-50 flex min-h-20 w-full bg-slate-600",
+        "border-b border-slate-500 bg-slate-700 text-white",
+        "sticky top-0 z-50 w-full",
         className,
       )}
     >
-      <div className="relative flex w-full items-center justify-between gap-2 px-2">
-        {/* Left toggle (mobile) */}
-        <Button
-          className="sm:hidden"
-          onClick={() => {
-            setIsLeftOpen((v) => !v);
-            setIsRightOpen(false);
-          }}
-        >
-          Menu
-        </Button>
-
-        <div
-          className={cn(
-            "absolute top-full left-0 z-50 w-full p-2",
-            "flex-col gap-1",
-            "sm:static sm:flex sm:w-auto sm:flex-row sm:p-0",
-            isLeftOpen ? "flex" : "hidden sm:flex",
-          )}
-        >
-          {/* Left nav */}
-          {LEFT_NAV_LINKS.map(({ href, label, exact, isComingSoon }) => (
-            <NavLink
-              className={cn(isComingSoon && comingSoonPanelClass)}
-              key={href}
-              href={href}
-              isSelected={isSelected(href, exact)}
-              onClick={closeMenus}
+      <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3">
+        {/* LEFT SECTION */}
+        <div className="flex items-center gap-3">
+          {/* mobile menu toggle */}
+          {isLoggedIn && (
+            <Button
+              className="sm:hidden"
+              onClick={() => {
+                setIsLeftOpen((v) => !v);
+                setIsRightOpen(false);
+              }}
             >
-              {label}
-            </NavLink>
-          ))}
+              Menu
+            </Button>
+          )}
+
+          {/* Brand */}
+          <div className="font-semibold tracking-tight text-white">
+            Compliance<span className="opacity-70">Live</span>
+          </div>
         </div>
 
-        {/* Right toggle (mobile) */}
-        <Button
-          className="flex flex-col items-end gap-1"
-          onClick={() => {
-            setIsRightOpen((v) => !v);
-            setIsLeftOpen(false);
-          }}
-        >
-          <div>Account</div>
+        {/* CENTER NAV */}
+        {isLoggedIn && (
+          <div
+            className={cn(
+              "absolute top-full left-0 z-50 w-full bg-slate-700 p-2 shadow-lg",
+              "flex-col gap-1 sm:static sm:flex sm:w-auto sm:flex-row sm:bg-transparent sm:p-0 sm:shadow-none",
+              isLeftOpen ? "flex" : "hidden sm:flex",
+            )}
+          >
+            {LEFT_NAV_LINKS.map(({ href, label, exact, isComingSoon }) => (
+              <NavLink
+                key={href}
+                href={href}
+                isSelected={isSelected(href, exact)}
+                onClick={closeMenus}
+                className={cn(
+                  "rounded px-3 py-2 text-sm transition",
+                  "hover:bg-white/10",
+                  isSelected(href, exact) && "bg-white/10",
+                  isComingSoon && comingSoonPanelClass,
+                )}
+              >
+                {label}
+              </NavLink>
+            ))}
+          </div>
+        )}
 
-          {user && (
-            <>
-              <div className="text-xs">{user.email}</div>
-              {user.organisation?.name && (
-                <div className="max-w-[160px] truncate text-xs opacity-70">
-                  {user.organisation.name}
-                </div>
-              )}
-            </>
-          )}
-        </Button>
-        <div
-          className={cn(
-            "absolute top-full right-0 z-50 bg-gray-100 p-2",
-            "flex-col gap-1",
-            isRightOpen ? "flex" : "hidden",
-          )}
-        >
-          {isLoggedIn ? (
-            <NavLink
-              href="/auth/logout"
-              isSelected={isSelected("/auth/logout", true)}
-              onClick={closeMenus}
-            >
-              Logout
-            </NavLink>
-          ) : (
-            <>
-              <Button
-                onClick={() => {
-                  openAuthModal("register");
-                  closeMenus();
-                }}
+        {/* RIGHT ACCOUNT */}
+        <div className="relative">
+          <Button
+            className="flex flex-col items-end gap-0 text-right"
+            onClick={() => {
+              setIsRightOpen((v) => !v);
+              setIsLeftOpen(false);
+            }}
+          >
+            {isLoggedIn ? (
+              <>
+                <div className="text-sm font-medium">Account</div>
+                <div className="text-xs opacity-80">{user?.email}</div>
+                {user?.organisation?.name && (
+                  <div className="max-w-[160px] truncate text-xs opacity-60">
+                    {user.organisation.name}
+                  </div>
+                )}
+              </>
+            ) : (
+              <div className="text-sm">Login / Register</div>
+            )}
+          </Button>
+
+          {/* dropdown */}
+          <div
+            className={cn(
+              "absolute right-0 mt-2 w-44 rounded-md border border-gray-200 bg-white p-2 shadow-xl",
+              "flex flex-col gap-1 text-sm text-black",
+              isRightOpen ? "flex" : "hidden",
+            )}
+          >
+            {isLoggedIn ? (
+              <NavLink
+                href="/auth/logout"
+                onClick={closeMenus}
               >
-                Registration
-              </Button>
-              <Button
-                onClick={() => {
-                  openAuthModal("login");
-                  closeMenus();
-                }}
-              >
-                Login
-              </Button>
-            </>
-          )}
+                Logout
+              </NavLink>
+            ) : (
+              <>
+                <Button
+                  onClick={() => {
+                    openAuthModal("login");
+                    closeMenus();
+                  }}
+                >
+                  Login
+                </Button>
+                <Button
+                  onClick={() => {
+                    openAuthModal("register");
+                    closeMenus();
+                  }}
+                >
+                  Register
+                </Button>
+              </>
+            )}
+          </div>
         </div>
       </div>
     </nav>

@@ -28,7 +28,6 @@ export function AuthModal() {
     setIsLoading(true);
     try {
       await userActions.login(credentials);
-      router.replace("/command-center");
       close();
       return true;
     } catch (error) {

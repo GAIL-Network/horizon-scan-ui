@@ -26,7 +26,6 @@ export function useUser() {
   async function login(credentials: LoginCredentials): Promise<void> {
     const loginResponse = await loginUser(credentials);
     authToken.set(loginResponse.accessToken);
-    await fetchMe();
   }
 
   function logout() {

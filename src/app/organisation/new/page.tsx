@@ -13,21 +13,6 @@ export default function NewOrganisationPage() {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // 🔐 route protection
-  useEffect(() => {
-    if (loading) return;
-
-    if (!user) {
-      router.replace("/auth/login");
-      return;
-    }
-
-    if (user.organisation) {
-      router.replace("/");
-      return;
-    }
-  }, [user, loading, router]);
-
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError(null);

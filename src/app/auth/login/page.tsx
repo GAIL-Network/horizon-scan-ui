@@ -19,10 +19,9 @@ export default function LoginPage() {
     setSubmitting(true);
 
     try {
-      await actions.login({ email, password });
-
-      // after login always go to root
-      router.push("/");
+      const credentials = { email, password };
+      await actions.login(credentials);
+      await actions.fetchMe(); // or refreshUser()
     } catch (err: any) {
       setError(err?.message ?? "Login failed");
     } finally {
