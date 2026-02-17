@@ -182,7 +182,7 @@ export interface components {
          * OrganisationRole
          * @enum {string}
          */
-        OrganisationRole: "owner" | "admin" | "staff" | "viewer";
+        OrganisationRole: "OWNER" | "ADMIN" | "STAFF" | "VIEWER";
         /**
          * RegulatoryProgramCreateRequest
          * @description Request body for creating a regulatory program.
