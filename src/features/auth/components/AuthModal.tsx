@@ -40,9 +40,7 @@ export function AuthModal() {
     }
   };
 
-  const handleRegister = async (
-    user: RegistrationInput,
-  ): Promise<RegisteredUser> => {
+  const handleRegister = async (user: RegistrationInput): Promise<void> => {
     setIsLoading(true);
     const promise = newUserActions.createNewUser(user);
 
@@ -53,12 +51,21 @@ export function AuthModal() {
         err instanceof Error ? err.message : "There was an error.",
     });
     try {
-      const result = await promise;
-      close();
-      router.replace("/auth/registration");
-      return result;
+      await promise;
+      const credentials: LoginCredentials = {
+        email: user.email,
+        password: user.password,
+      };
+      try {
+        await userActions.login(credentials);
+        router.replace("/");
+      } catch (err) {
+        console.error("Auto-login after register failed", err);
+        router.replace("/auth/login");
+      }
     } finally {
       setIsLoading(false);
+      close();
     }
   };
 
