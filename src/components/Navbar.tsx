@@ -109,7 +109,16 @@ export function Navbar({ className }: NavbarProps) {
         >
           <div>Account</div>
 
-          {user && <div className="text-xs">{user.email}</div>}
+          {user && (
+            <>
+              <div className="text-xs">{user.email}</div>
+              {user.organisation?.name && (
+                <div className="max-w-[160px] truncate text-xs opacity-70">
+                  {user.organisation.name}
+                </div>
+              )}
+            </>
+          )}
         </Button>
         <div
           className={cn(
