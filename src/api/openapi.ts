@@ -78,6 +78,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/organisations/{organisation_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Organisation With Users */
+        get: operations["get_organisation_with_users_organisations__organisation_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/regulatory-programs": {
         parameters: {
             query?: never;
@@ -183,6 +200,25 @@ export interface components {
          * @enum {string}
          */
         OrganisationRole: "OWNER" | "ADMIN" | "STAFF" | "VIEWER";
+        /** OrganisationWithUsersResponse */
+        OrganisationWithUsersResponse: {
+            /** Id */
+            id: string;
+            /** Name */
+            name: string;
+            /**
+             * Createdat
+             * Format: date-time
+             */
+            createdAt: string;
+            /**
+             * Lastupdatedat
+             * Format: date-time
+             */
+            lastUpdatedAt: string;
+            /** Users */
+            users: components["schemas"]["UserResponse"][];
+        };
         /**
          * RegulatoryProgramCreateRequest
          * @description Request body for creating a regulatory program.
@@ -286,6 +322,21 @@ export interface components {
              * @description Email address of the person being creating the account.
              */
             email: string;
+        };
+        /** UserResponse */
+        UserResponse: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Email */
+            email: string;
+            /**
+             * Createdat
+             * Format: date-time
+             */
+            createdAt: string;
         };
         /** ValidationError */
         ValidationError: {
@@ -411,6 +462,37 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["OrganisationResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_organisation_with_users_organisations__organisation_id__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                organisation_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["OrganisationWithUsersResponse"];
                 };
             };
             /** @description Validation Error */

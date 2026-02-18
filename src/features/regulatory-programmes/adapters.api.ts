@@ -1,3 +1,4 @@
+import { apiToDate } from "@/lib/datetime";
 import { RP, RPApi } from "./models";
 
 export function apiToRP(api: RPApi): RP {
@@ -41,8 +42,8 @@ export function apiToRP(api: RPApi): RP {
 
     owner: api.owner,
 
-    createdAt: new Date(api.created_at),
-    updatedAt: new Date(api.updated_at),
+    createdAt: apiToDate(api.created_at),
+    updatedAt: apiToDate(api.updated_at),
   };
 }
 

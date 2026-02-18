@@ -5,7 +5,7 @@ import { ErrorState } from "@/components/ErrorState";
 import { Header } from "@/components/Header";
 import { LoadingComponent } from "@/components/LoadingComponent";
 import { Panel } from "@/components/Panel";
-import { useOrganisation } from "@/features/organisation/hooks/useOrganisation";
+import { useOrganisationWithUsers } from "@/features/organisation/hooks/useOrganisationWithUsers";
 import { useParams } from "next/navigation";
 
 export default function Page() {
@@ -17,7 +17,7 @@ export default function Page() {
     actions,
     isLoading,
     error,
-  } = useOrganisation(id);
+  } = useOrganisationWithUsers(id);
 
   if (isLoading) return <LoadingComponent isLoading />;
 

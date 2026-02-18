@@ -4,13 +4,28 @@ import {
   UserLoginResponseDTO,
   UserRegistrationResponseDTO,
 } from "../dtos";
-import { AuthSession, RegisteredUser, User } from "../models";
+import {
+  AuthSession,
+  RegisteredUser,
+  User,
+  UserBase,
+  UserBaseApi,
+} from "../models";
+import { apiToDate } from "@/lib/datetime";
+
+export function apiToUserBase(api: UserBaseApi): UserBase {
+  return {
+    id: api.id,
+    email: api.email,
+    createdAt: apiToDate(api.createdAt),
+  };
+}
 
 export function apiToUser(api: UserApi): User {
   const { createdAt, ...rest } = api;
   return {
     ...rest,
-    createdAt: new Date(createdAt),
+    createdAt: apiToDate(createdAt),
     organisation:
       api.organisation == null ? null : apiToOrganisation(api.organisation),
   };

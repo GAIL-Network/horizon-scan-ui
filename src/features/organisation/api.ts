@@ -1,6 +1,11 @@
 import { apiFetch } from "@/api/fetcher";
-import type { Organisation, OrganisationApi } from "./models";
-import { apiToOrganisation } from "./adapters.api";
+import type {
+  Organisation,
+  OrganisationApi,
+  OrganisationWithUsers,
+  OrganisationWithUsersApi,
+} from "./models";
+import { apiToOrganisation, apiToOrganisationWithUsers } from "./adapters.api";
 
 export async function createOrganisation(
   name: string,
@@ -20,4 +25,15 @@ export async function fetchOrganisation(
     { method: "GET" },
   );
   return response == null ? null : apiToOrganisation(response);
+}
+
+export async function fetchOrganisationWithUsers(
+  id: string,
+): Promise<OrganisationWithUsers | null> {
+  const response = await apiFetch<OrganisationWithUsersApi | null>(
+    "compliance",
+    `/organisations/${id}/users`,
+    { method: "GET" },
+  );
+  return response == null ? null : apiToOrganisationWithUsers(response);
 }

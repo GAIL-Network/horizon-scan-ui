@@ -21,6 +21,15 @@ export type AuthSession = Omit<
   accessToken: string;
   tokenType: string;
 };
+
+export type UserBaseApi = components["schemas"]["UserResponse"];
+
+export type UserBase = {
+  id: string;
+  email: string;
+  createdAt: Date;
+};
+
 export type User = Omit<UserApi, "createdAt" | "organisation"> & {
   createdAt: Date;
   organisation: Organisation | null;
