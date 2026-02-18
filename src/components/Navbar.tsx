@@ -92,7 +92,7 @@ export function Navbar({ className }: NavbarProps) {
         {/* LEFT SECTION */}
         <div className="flex items-center gap-3">
           {/* mobile menu toggle */}
-          {isLoggedIn && (
+          {isOnboarded && (
             <Button
               className="sm:hidden"
               onClick={() => {
@@ -111,7 +111,7 @@ export function Navbar({ className }: NavbarProps) {
         </div>
 
         {/* CENTER NAV */}
-        {isLoggedIn && (
+        {isOnboarded && (
           <div
             className={cn(
               "absolute top-full left-0 z-50 w-full bg-slate-700 p-2 shadow-lg",
