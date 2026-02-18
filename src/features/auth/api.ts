@@ -68,7 +68,7 @@ export async function fetchUsers({
 }: {
   organisation: Organisation;
 }): Promise<UserBase[]> {
-  const usersApi = await apiFetch<UserBaseApi[]>("compliance", "/users", {
+  const usersApi = await apiFetch<UserBaseApi[]>("compliance", "/auth/users", {
     method: "GET",
     query: { organisation_id: organisation.id },
   });

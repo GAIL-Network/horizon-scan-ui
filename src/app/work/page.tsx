@@ -2,6 +2,7 @@ import { Container } from "@/components/Container";
 import { Header } from "@/components/Header";
 import { NavLink } from "@/components/NavLink";
 import { NavPanel } from "@/components/NavPanel";
+import { PageHeader } from "@/components/PageHeader";
 import { Panel } from "@/components/Panel";
 
 const PANEL_NAV_LINKS = [
@@ -15,9 +16,9 @@ const PANEL_NAV_LINKS = [
 export default function Page() {
   return (
     <Container>
-      <Panel>
-        <Header className="mb-0 flex">Impact Assessment Detail</Header>
-      </Panel>
+      <PageHeader>
+        <Header>Impact Assessment Detail</Header>
+      </PageHeader>
 
       <NavPanel className="flex gap-1 p-2">
         {PANEL_NAV_LINKS.map(({ href, label }) => (

@@ -8,6 +8,7 @@ import { GridPanel } from "@/components/GridPanel";
 import { GridPanels } from "@/components/GridPanels";
 import Button from "@/components/Button";
 import { useRPs } from "@/features/regulatory-programmes/hooks/useRPs";
+import { PageHeader } from "@/components/PageHeader";
 
 export default function Page() {
   const { state: rps } = useRPs();
@@ -31,9 +32,9 @@ export default function Page() {
 
   return (
     <Container>
-      <Panel>
-        <Header className="mb-0">Regulatory Programme Knowledge Packs</Header>
-      </Panel>
+      <PageHeader>
+        <Header>Regulatory Programme Knowledge Packs</Header>
+      </PageHeader>
 
       {/* Filters */}
       <Panel className="space-y-3">

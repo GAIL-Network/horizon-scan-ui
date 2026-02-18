@@ -2,14 +2,15 @@
 
 import { Container } from "@/components/Container";
 import { Header } from "@/components/Header";
+import { PageHeader } from "@/components/PageHeader";
 import { Panel } from "@/components/Panel";
 
 export default function Page() {
   return (
     <Container>
-      <Panel>
-        <Header className="mb-0 flex">Command Centre</Header>
-      </Panel>
+      <PageHeader>
+        <Header>Command Center</Header>
+      </PageHeader>
 
       <div className="grid grid-cols-12 gap-2">
         <div className="col-span-12 flex flex-col gap-2 md:col-span-8">

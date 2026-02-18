@@ -2,6 +2,7 @@
 
 import { Container } from "@/components/Container";
 import { Header } from "@/components/Header";
+import { PageHeader } from "@/components/PageHeader";
 import { Panel } from "@/components/Panel";
 import { useRP } from "@/features/regulatory-programmes/hooks/useRP";
 import { useParams } from "next/navigation";
@@ -39,19 +40,11 @@ export default function Page() {
 
   return (
     <Container>
-      {/* Header */}
+      <PageHeader>
+        <Header>{rp.name}</Header>
+      </PageHeader>
+
       <Panel>
-        <div className="flex items-center justify-between">
-          <Header className="mb-0">{rp.name}</Header>
-
-          <button
-            onClick={actions.refresh}
-            className="text-sm opacity-70 hover:opacity-100"
-          >
-            Refresh
-          </button>
-        </div>
-
         <p className="mt-2 text-sm opacity-70">
           {rp.jurisdiction} • {rp.regulators.join(", ")}
         </p>
