@@ -45,6 +45,7 @@ export function Navbar({ className }: NavbarProps) {
 
   const isLoggedIn = Boolean(user);
   const isOnboarded = Boolean(user && user?.organisation);
+  const isAdmin = Boolean(user?.role == "ADMIN" || user?.role == "OWNER");
 
   const closeMenus = () => {
     setIsLeftOpen(false);
@@ -177,33 +178,35 @@ export function Navbar({ className }: NavbarProps) {
               isRightOpen ? "flex" : "hidden",
             )}
           >
-            {isLoggedIn && !isOnboarded ? (
-              <Button
-                onClick={() => {
-                  closeMenus();
-                  window.location.href = "/auth/logout";
-                }}
-              >
-                Logout
-              </Button>
-            ) : isLoggedIn ? (
-              <NavLink
-                href="/auth/logout"
-                onClick={closeMenus}
-              >
-                Logout
-              </NavLink>
-            ) : (
+            {isLoggedIn ? (
               <>
+                {isOnboarded && isAdmin && (
+                  <NavLink
+                    href={`/organisation/${user?.organisation?.id}`}
+                    onClick={closeMenus}
+                  >
+                    {user?.organisation?.name}
+                  </NavLink>
+                )}
+
                 <Button
                   onClick={() => {
-                    openAuthModal("register");
                     closeMenus();
+                    window.location.href = "/auth/logout";
                   }}
                 >
-                  Register
+                  Logout
                 </Button>
               </>
+            ) : (
+              <Button
+                onClick={() => {
+                  openAuthModal("register");
+                  closeMenus();
+                }}
+              >
+                Register
+              </Button>
             )}
           </div>
         </div>
