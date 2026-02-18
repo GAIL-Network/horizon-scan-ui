@@ -189,14 +189,12 @@ export function Navbar({ className }: NavbarProps) {
                   </NavLink>
                 )}
 
-                <Button
-                  onClick={() => {
-                    closeMenus();
-                    window.location.href = "/auth/logout";
-                  }}
+                <NavLink
+                  href={`/auth/logout`}
+                  onClick={closeMenus}
                 >
                   Logout
-                </Button>
+                </NavLink>
               </>
             ) : (
               <Button

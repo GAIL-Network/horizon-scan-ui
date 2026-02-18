@@ -1,6 +1,7 @@
 "use client";
 
 import { Container } from "@/components/Container";
+import { ErrorState } from "@/components/ErrorState";
 import { Header } from "@/components/Header";
 import { LoadingComponent } from "@/components/LoadingComponent";
 import { Panel } from "@/components/Panel";
@@ -11,9 +12,18 @@ export default function Page() {
   const params = useParams<{ id: string }>();
   const { id } = params;
 
-  const { state: organisation, actions, isLoading } = useOrganisation(id);
+  const {
+    state: organisation,
+    actions,
+    isLoading,
+    error,
+  } = useOrganisation(id);
 
-  if (!organisation) return <LoadingComponent isLoading={isLoading} />;
+  if (isLoading) return <LoadingComponent isLoading />;
+
+  if (error) return <ErrorState message={error} />;
+
+  if (!organisation) return <ErrorState message="Organisation not found" />;
 
   return (
     <Container>
