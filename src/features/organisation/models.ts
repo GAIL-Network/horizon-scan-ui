@@ -1,6 +1,6 @@
 import { components } from "@/api/openapi";
 
-export type OrganisationApi = components["schemas"]["OrganisationSchema"];
+export type OrganisationApi = components["schemas"]["OrganisationResponse"];
 
 export type Organisation = {
   id: string;
