@@ -182,7 +182,7 @@ export function Navbar({ className }: NavbarProps) {
               <>
                 {isOnboarded && isAdmin && (
                   <NavLink
-                    href={`/organisation/${user?.organisation?.id}`}
+                    href={`/organisations/${user?.organisation?.id}`}
                     onClick={closeMenus}
                   >
                     {user?.organisation?.name}
