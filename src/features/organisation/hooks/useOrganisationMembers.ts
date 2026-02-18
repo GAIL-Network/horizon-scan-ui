@@ -3,33 +3,33 @@ import { fetchMembers } from "../api";
 import { notifyError } from "@/lib/notifications";
 import { OrganisationalMember } from "@/features/auth/models";
 
-export function useOrganisationMembers(id: string) {
-  const [state, setState] = useState<OrganisationalMember[] | null>(null);
+export function useOrganisationMembers(organisationId: string) {
+  const [state, setState] = useState<OrganisationalMember[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!id) return;
+    if (!organisationId) return;
 
     const run = async () => {
       setIsLoading(true);
       setError(null);
 
       try {
-        const organisation = await fetchMembers(id);
-        setState(organisation);
+        const members = await fetchMembers(organisationId);
+        setState(members);
       } catch (err) {
-        setError("Failed to load organisation");
-        notifyError("Failed to load organisation");
+        setError("Failed to load organisation members.");
+        notifyError("Failed to load organisation members.");
         console.error(err);
-        setState(null);
+        setState([]);
       } finally {
         setIsLoading(false);
       }
     };
 
     run();
-  }, [id]);
+  }, [organisationId]);
 
   const actions = {};
   return { state, actions, isLoading, error };

@@ -27,15 +27,13 @@ export async function fetchOrganisation(
   return response == null ? null : apiToOrganisation(response);
 }
 
-export async function fetchMembers(
-  id: string,
-): Promise<OrganisationMember[] | null> {
+export async function fetchMembers(id: string): Promise<OrganisationMember[]> {
   const response = await apiFetch<OrganisationMemberApi[] | null>(
     "compliance",
     `/organisations/${id}/members`,
     { method: "GET" },
   );
   return response == null
-    ? null
+    ? []
     : response.map((memberApi) => apiToOrganisationMember(memberApi));
 }

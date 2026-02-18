@@ -8,11 +8,9 @@ import { ListItem } from "@/components/ListItem";
 import { LoadingComponent } from "@/components/LoadingComponent";
 import { PageHeader } from "@/components/PageHeader";
 import { Panel } from "@/components/Panel";
-import { Section } from "@/components/Section";
-import { useOrganisationUsers } from "@/features/auth/hooks/useBaseUsers";
 import { useOrganisation } from "@/features/organisation/hooks/useOrganisation";
+import { useOrganisationMembers } from "@/features/organisation/hooks/useOrganisationMembers";
 import { useParams } from "next/navigation";
-import { useEffect } from "react";
 
 export default function Page() {
   const params = useParams<{ id: string }>();
@@ -21,23 +19,30 @@ export default function Page() {
   const {
     state: organisation,
     isLoading: isLoadingOrganisation,
-    error,
+    error: organisationError,
   } = useOrganisation(id);
 
   const {
-    state: users,
-    actions: usersActions,
-    isLoading: isLoadingUsers,
-  } = useOrganisationUsers();
+    state: members,
+    isLoading: isLoadingMembers,
+    error: membersError,
+  } = useOrganisationMembers(id);
 
-  useEffect(() => {
-    if (!organisation) return;
-    usersActions.fetchUsers({ organisation });
-  }, [organisation?.id, usersActions]);
+  // ───────────────── Loading ─────────────────
+  if (isLoadingOrganisation || isLoadingMembers) {
+    return <LoadingComponent isLoading />;
+  }
 
-  if (isLoadingOrganisation) return <LoadingComponent isLoading />;
-  if (error) return <ErrorState message={error} />;
-  if (!organisation) return <ErrorState message="Organisation not found" />;
+  // ───────────────── Errors ─────────────────
+  if (organisationError) return <ErrorState message={organisationError} />;
+  if (membersError) return <ErrorState message={membersError} />;
+
+  if (!organisation) {
+    return <ErrorState message="Organisation not found" />;
+  }
+
+  // members should default to [] in hook
+  const safeMembers = members ?? [];
 
   return (
     <Container>
@@ -48,36 +53,34 @@ export default function Page() {
         </span>
       </PageHeader>
 
-      {/* ───────── Users ───────── */}
+      {/* ───────── Members ───────── */}
       <Panel>
         <div className="mb-5 flex items-center justify-between">
-          <h2 className="text-lg font-semibold">Users</h2>
+          <h2 className="text-lg font-semibold">Members</h2>
           <span className="text-muted-foreground text-sm">
-            {users.length} member{users.length !== 1 ? "s" : ""}
+            {safeMembers.length} member{safeMembers.length !== 1 ? "s" : ""}
           </span>
         </div>
 
-        {isLoadingUsers ? (
-          <LoadingComponent isLoading />
-        ) : users.length === 0 ? (
+        {safeMembers.length === 0 ? (
           <div className="text-muted-foreground py-6 text-center text-sm">
-            No users in this organisation yet
+            No members in this organisation yet
           </div>
         ) : (
           <List>
-            {users.map((user) => (
-              <ListItem key={user.id}>
+            {safeMembers.map((member) => (
+              <ListItem key={member.user.id}>
                 <div className="flex items-center justify-between">
-                  <span className="font-medium">{user.email}</span>
+                  <span className="font-medium">{member.user.email}</span>
 
                   <select
                     className="rounded border px-2 py-1 text-sm"
-                    defaultValue="ADMIN"
+                    defaultValue={member.role}
                   >
-                    <option>OWNER</option>
-                    <option>ADMIN</option>
-                    <option>STAFF</option>
-                    <option>VIEWER</option>
+                    <option value="OWNER">OWNER</option>
+                    <option value="ADMIN">ADMIN</option>
+                    <option value="STAFF">STAFF</option>
+                    <option value="VIEWER">VIEWER</option>
                   </select>
                 </div>
               </ListItem>
