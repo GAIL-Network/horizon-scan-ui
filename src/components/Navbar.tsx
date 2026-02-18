@@ -43,7 +43,8 @@ export function Navbar({ className }: NavbarProps) {
   const [isRightOpen, setIsRightOpen] = useState(false);
   const navRef = useRef<HTMLElement>(null);
 
-  const isLoggedIn = Boolean(user && user.organisation);
+  const isLoggedIn = Boolean(user);
+  const isOnboarded = Boolean(user && user?.organisation);
 
   const closeMenus = () => {
     setIsLeftOpen(false);
@@ -150,12 +151,14 @@ export function Navbar({ className }: NavbarProps) {
               <>
                 <div className="text-sm font-medium">Account</div>
                 <div className="text-xs opacity-80">{user?.email}</div>
-                {user?.organisation?.name && (
+
+                {isOnboarded && user?.organisation?.name && (
                   <div className="max-w-[160px] truncate text-xs opacity-60">
                     {user.organisation.name}
                   </div>
                 )}
-                {user?.role && (
+
+                {isOnboarded && user?.role && (
                   <div className="max-w-[160px] truncate text-xs opacity-60">
                     {user.role}
                   </div>
@@ -174,7 +177,16 @@ export function Navbar({ className }: NavbarProps) {
               isRightOpen ? "flex" : "hidden",
             )}
           >
-            {isLoggedIn ? (
+            {isLoggedIn && !isOnboarded ? (
+              <Button
+                onClick={() => {
+                  closeMenus();
+                  window.location.href = "/auth/logout";
+                }}
+              >
+                Logout
+              </Button>
+            ) : isLoggedIn ? (
               <NavLink
                 href="/auth/logout"
                 onClick={closeMenus}
