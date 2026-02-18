@@ -5,8 +5,10 @@ import { ErrorState } from "@/components/ErrorState";
 import { Header } from "@/components/Header";
 import { LoadingComponent } from "@/components/LoadingComponent";
 import { Panel } from "@/components/Panel";
-import { useOrganisationWithUsers } from "@/features/organisation/hooks/useOrganisationWithUsers";
+import { useOrganisationUsers } from "@/features/auth/hooks/useBaseUsers";
+import { useOrganisation } from "@/features/organisation/hooks/useOrganisation";
 import { useParams } from "next/navigation";
+import { useEffect } from "react";
 
 export default function Page() {
   const params = useParams<{ id: string }>();
@@ -14,12 +16,24 @@ export default function Page() {
 
   const {
     state: organisation,
-    actions,
-    isLoading,
+    actions: organisationActions,
+    isLoading: isLoadingOrganisation,
     error,
-  } = useOrganisationWithUsers(id);
+  } = useOrganisation(id);
 
-  if (isLoading) return <LoadingComponent isLoading />;
+  const {
+    state: users,
+    actions: usersActions,
+    isLoading: isLoadingUsers,
+  } = useOrganisationUsers();
+
+  useEffect(() => {
+    if (organisation == null) return;
+
+    usersActions.fetchUsers({ organisation });
+  }, [organisation?.id, usersActions]);
+
+  if (isLoadingOrganisation) return <LoadingComponent isLoading />;
 
   if (error) return <ErrorState message={error} />;
 

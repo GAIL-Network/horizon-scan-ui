@@ -4,18 +4,26 @@ import type {
   UserRegistrationResponseDTO,
   UserApi,
 } from "./dtos";
-import type {
-  RegistrationInput,
-  RegisteredUser,
-  LoginCredentials,
-  AuthSession,
-  User,
+import {
+  type RegistrationInput,
+  type RegisteredUser,
+  type LoginCredentials,
+  type AuthSession,
+  type User,
+  type UserBase,
+  UserBaseApi,
 } from "./models";
 import {
   serializeCreateUser,
   serializeLoginCredentials,
 } from "./adapters/serializers";
-import { apiToLogin, apiToNewUser, apiToUser } from "./adapters/adapters.api";
+import {
+  apiToLogin,
+  apiToNewUser,
+  apiToUser,
+  apiToUserBase,
+} from "./adapters/adapters.api";
+import { Organisation } from "../organisation/models";
 
 export async function createNewUser(
   newUser: RegistrationInput,
@@ -53,4 +61,17 @@ export async function getMe(): Promise<User> {
     method: "GET",
   });
   return apiToUser(meDTO);
+}
+
+export async function fetchUsers({
+  organisation,
+}: {
+  organisation: Organisation;
+}): Promise<UserBase[]> {
+  const usersApi = await apiFetch<UserBaseApi[]>("compliance", "/users", {
+    method: "GET",
+    query: { organisation_id: organisation.id },
+  });
+  const users = usersApi.map(apiToUserBase);
+  return users;
 }
