@@ -1,5 +1,6 @@
 import { apiFetch } from "@/api/fetcher";
-import type { OrganisationApi } from "./models";
+import type { Organisation, OrganisationApi } from "./models";
+import { apiToOrganisation } from "./adapters.api";
 
 export async function createOrganisation(
   name: string,
@@ -8,4 +9,15 @@ export async function createOrganisation(
     method: "POST",
     body: JSON.stringify({ name }),
   });
+}
+
+export async function fetchOrganisation(
+  id: string,
+): Promise<Organisation | null> {
+  const response = await apiFetch<OrganisationApi | null>(
+    "compliance",
+    `/organisations/${id}`,
+    { method: "GET" },
+  );
+  return response == null ? null : apiToOrganisation(response);
 }
