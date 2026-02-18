@@ -6,14 +6,12 @@ import { LoadingComponent } from "@/components/LoadingComponent";
 import { Panel } from "@/components/Panel";
 import { useOrganisation } from "@/features/organisation/hooks/useOrganisation";
 import { useParams } from "next/navigation";
-import { useState } from "react";
 
 export default function Page() {
   const params = useParams<{ id: string }>();
-  const [isLoading, setIsLoading] = useState<boolean>(true);
   const { id } = params;
 
-  const { state: organisation, actions } = useOrganisation(id);
+  const { state: organisation, actions, isLoading } = useOrganisation(id);
 
   if (!organisation) return <LoadingComponent isLoading={isLoading} />;
 
