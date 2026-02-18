@@ -22,12 +22,24 @@ export type AuthSession = Omit<
   tokenType: string;
 };
 
-export type UserBaseApi = components["schemas"]["UserResponse"];
+export type UserBaseApi = components["schemas"]["UserSchema"];
 
 export type UserBase = {
   id: string;
   email: string;
   createdAt: Date;
+};
+
+export type UserPublicApi = UserBaseApi;
+
+export type UserPublic = UserBase;
+
+export type OrganisationalMemberApi =
+  components["schemas"]["OrganisationMemberSchema"];
+
+export type OrganisationalMember = {
+  role: OrganisationRole;
+  user: UserPublic;
 };
 
 export type User = Omit<UserApi, "createdAt" | "organisation"> & {

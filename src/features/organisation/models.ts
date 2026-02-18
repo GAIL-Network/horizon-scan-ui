@@ -1,10 +1,7 @@
 import { components } from "@/api/openapi";
-import { UserBase } from "../auth/models";
+import { OrganisationRole, UserBase } from "../auth/models";
 
 export type OrganisationApi = components["schemas"]["OrganisationResponse"];
-
-export type OrganisationWithUsersApi =
-  components["schemas"]["OrganisationWithUsersResponse"];
 
 export type Organisation = {
   id: string;
@@ -12,10 +9,10 @@ export type Organisation = {
   createdAt: Date;
 };
 
-export type OrganisationWithUsers = {
-  id: string;
-  name: string;
-  createdAt: Date;
-  lastUpdatedAt: Date;
-  users: UserBase[];
+export type OrganisationMemberApi =
+  components["schemas"]["OrganisationMemberSchema"];
+
+export type OrganisationMember = {
+  user: UserBase;
+  role: OrganisationRole;
 };

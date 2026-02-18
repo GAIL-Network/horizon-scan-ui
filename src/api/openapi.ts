@@ -61,6 +61,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/auth/users": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Users */
+        get: operations["users_auth_users_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/organisations/": {
         parameters: {
             query?: never;
@@ -78,15 +95,15 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/organisations/{organisation_id}": {
+    "/organisations/{organisation_id}/members": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        /** Get Organisation With Users */
-        get: operations["get_organisation_with_users_organisations__organisation_id__get"];
+        /** Get Organisation Members */
+        get: operations["get_organisation_members_organisations__organisation_id__members_get"];
         put?: never;
         post?: never;
         delete?: never;
@@ -178,6 +195,14 @@ export interface components {
             /** Name */
             name: string;
         };
+        /**
+         * OrganisationMemberSchema
+         * @description Response schema for a member.
+         */
+        OrganisationMemberSchema: {
+            user: components["schemas"]["UserSchema"];
+            role: components["schemas"]["OrganisationRole"];
+        };
         /** OrganisationResponse */
         OrganisationResponse: {
             /** Id */
@@ -200,25 +225,6 @@ export interface components {
          * @enum {string}
          */
         OrganisationRole: "OWNER" | "ADMIN" | "STAFF" | "VIEWER";
-        /** OrganisationWithUsersResponse */
-        OrganisationWithUsersResponse: {
-            /** Id */
-            id: string;
-            /** Name */
-            name: string;
-            /**
-             * Createdat
-             * Format: date-time
-             */
-            createdAt: string;
-            /**
-             * Lastupdatedat
-             * Format: date-time
-             */
-            lastUpdatedAt: string;
-            /** Users */
-            users: components["schemas"]["UserResponse"][];
-        };
         /**
          * RegulatoryProgramCreateRequest
          * @description Request body for creating a regulatory program.
@@ -323,8 +329,8 @@ export interface components {
              */
             email: string;
         };
-        /** UserResponse */
-        UserResponse: {
+        /** UserSchema */
+        UserSchema: {
             /**
              * Id
              * Format: uuid
@@ -442,6 +448,37 @@ export interface operations {
             };
         };
     };
+    users_auth_users_get: {
+        parameters: {
+            query: {
+                organisation_id: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UserSchema"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     create_org_organisations__post: {
         parameters: {
             query?: never;
@@ -475,7 +512,7 @@ export interface operations {
             };
         };
     };
-    get_organisation_with_users_organisations__organisation_id__get: {
+    get_organisation_members_organisations__organisation_id__members_get: {
         parameters: {
             query?: never;
             header?: never;
@@ -492,7 +529,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["OrganisationWithUsersResponse"];
+                    "application/json": components["schemas"]["OrganisationMemberSchema"][];
                 };
             };
             /** @description Validation Error */

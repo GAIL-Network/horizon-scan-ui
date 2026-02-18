@@ -2,10 +2,10 @@ import { apiFetch } from "@/api/fetcher";
 import type {
   Organisation,
   OrganisationApi,
-  OrganisationWithUsers,
-  OrganisationWithUsersApi,
+  OrganisationMember,
+  OrganisationMemberApi,
 } from "./models";
-import { apiToOrganisation, apiToOrganisationWithUsers } from "./adapters.api";
+import { apiToOrganisation, apiToOrganisationMember } from "./adapters.api";
 
 export async function createOrganisation(
   name: string,
@@ -27,13 +27,15 @@ export async function fetchOrganisation(
   return response == null ? null : apiToOrganisation(response);
 }
 
-export async function fetchOrganisationWithUsers(
+export async function fetchMembers(
   id: string,
-): Promise<OrganisationWithUsers | null> {
-  const response = await apiFetch<OrganisationWithUsersApi | null>(
+): Promise<OrganisationMember[] | null> {
+  const response = await apiFetch<OrganisationMemberApi[] | null>(
     "compliance",
-    `/organisations/${id}/users`,
+    `/organisations/${id}/members`,
     { method: "GET" },
   );
-  return response == null ? null : apiToOrganisationWithUsers(response);
+  return response == null
+    ? null
+    : response.map((memberApi) => apiToOrganisationMember(memberApi));
 }

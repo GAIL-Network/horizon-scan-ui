@@ -69,6 +69,16 @@ export default function Page() {
               <ListItem key={user.id}>
                 <div className="flex items-center justify-between">
                   <span className="font-medium">{user.email}</span>
+
+                  <select
+                    className="rounded border px-2 py-1 text-sm"
+                    defaultValue="ADMIN"
+                  >
+                    <option>OWNER</option>
+                    <option>ADMIN</option>
+                    <option>STAFF</option>
+                    <option>VIEWER</option>
+                  </select>
                 </div>
               </ListItem>
             ))}

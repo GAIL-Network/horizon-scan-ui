@@ -1,11 +1,11 @@
 import { apiToDate } from "@/lib/datetime";
-import { apiToUserBase } from "../auth/adapters/adapters.api";
 import {
   Organisation,
   OrganisationApi,
-  OrganisationWithUsers,
-  OrganisationWithUsersApi,
+  OrganisationMember,
+  OrganisationMemberApi,
 } from "./models";
+import { apiToUser, apiToUserBase } from "../auth/adapters/adapters.api";
 
 export function apiToOrganisation(api: OrganisationApi): Organisation {
   return {
@@ -15,14 +15,11 @@ export function apiToOrganisation(api: OrganisationApi): Organisation {
   };
 }
 
-export function apiToOrganisationWithUsers(
-  api: OrganisationWithUsersApi,
-): OrganisationWithUsers {
+export function apiToOrganisationMember(
+  api: OrganisationMemberApi,
+): OrganisationMember {
   return {
-    id: api.id,
-    name: api.name,
-    createdAt: apiToDate(api.createdAt),
-    lastUpdatedAt: apiToDate(api.lastUpdatedAt),
-    users: api.users.map(apiToUserBase),
+    user: apiToUserBase(api.user),
+    role: api.role,
   };
 }

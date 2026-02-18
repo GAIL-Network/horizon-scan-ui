@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import { OrganisationWithUsers } from "../models";
-import { fetchOrganisationWithUsers } from "../api";
+import { fetchMembers } from "../api";
 import { notifyError } from "@/lib/notifications";
+import { OrganisationalMember } from "@/features/auth/models";
 
-export function useOrganisationWithUsers(id: string) {
-  const [state, setState] = useState<OrganisationWithUsers | null>(null);
+export function useOrganisationMembers(id: string) {
+  const [state, setState] = useState<OrganisationalMember[] | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -16,7 +16,7 @@ export function useOrganisationWithUsers(id: string) {
       setError(null);
 
       try {
-        const organisation = await fetchOrganisationWithUsers(id);
+        const organisation = await fetchMembers(id);
         setState(organisation);
       } catch (err) {
         setError("Failed to load organisation");
