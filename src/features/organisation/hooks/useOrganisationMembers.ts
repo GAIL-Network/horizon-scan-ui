@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { fetchMembers } from "../api";
 import { notifyError } from "@/lib/notifications";
 import { OrganisationalMember } from "@/features/auth/models";
-import { OrganisationRole } from "../models";
+import { Organisation, OrganisationRole } from "../models";
 import { api } from "@/features/memberships/api";
 
 export function useOrganisationMembers(organisationId: string) {
@@ -37,6 +37,7 @@ export function useOrganisationMembers(organisationId: string) {
     async (
       member: OrganisationalMember,
       role: OrganisationRole,
+      organisation: Organisation,
     ): Promise<OrganisationalMember> => {
       // optimistic update
       setState((prev) =>
@@ -44,7 +45,7 @@ export function useOrganisationMembers(organisationId: string) {
       );
 
       try {
-        const updatedMember = await api.changeRole(member, role);
+        const updatedMember = await api.changeRole(member, role, organisation);
         return updatedMember;
       } catch (err) {
         notifyError("Failed to update role");

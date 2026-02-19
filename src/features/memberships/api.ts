@@ -1,14 +1,15 @@
 import { getClient } from "@/api/client";
 import { OrganisationalMember } from "../auth/models";
-import { OrganisationRole } from "../organisation/models";
+import { Organisation, OrganisationRole } from "../organisation/models";
 import { toChangeRoleApi } from "./adapters.api";
 import { apiToOrganisationMember } from "../organisation/adapters.api";
 
 export async function changeRole(
   member: OrganisationalMember,
   role: OrganisationRole,
+  organisation: Organisation,
 ): Promise<OrganisationalMember> {
-  const payload = toChangeRoleApi({ member, role });
+  const payload = toChangeRoleApi({ member, role, organisation });
   const { data: updatedMemberApi, error } = await getClient("compliance").PATCH(
     "/memberships/change-role",
     { body: payload },

@@ -12,7 +12,7 @@ import { OrganisationalMember } from "@/features/auth/models";
 import { OrganisationRoleSelector } from "@/features/memberships/components/OrganisationRoleSelector";
 import { useOrganisation } from "@/features/organisation/hooks/useOrganisation";
 import { useOrganisationMembers } from "@/features/organisation/hooks/useOrganisationMembers";
-import { OrganisationRole } from "@/features/organisation/models";
+import { Organisation, OrganisationRole } from "@/features/organisation/models";
 import { useParams } from "next/navigation";
 
 export default function Page() {
@@ -35,9 +35,10 @@ export default function Page() {
   const handleChangeOrganisationRole = async (
     member: OrganisationalMember,
     role: OrganisationRole,
+    organisation: Organisation,
   ) => {
     // call membership action
-    await memberAactions.changeRole(member, role);
+    await memberAactions.changeRole(member, role, organisation);
   };
 
   // ───────────────── Loading ─────────────────
