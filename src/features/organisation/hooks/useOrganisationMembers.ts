@@ -38,8 +38,24 @@ export function useOrganisationMembers(organisationId: string) {
       member: OrganisationalMember,
       role: OrganisationRole,
     ): Promise<OrganisationalMember> => {
-      const updatedMember = await api.changeRole(member, role);
-      return updatedMember;
+      // optimistic update
+      setState((prev) =>
+        prev.map((m) => (m.user.id === member.user.id ? { ...m, role } : m)),
+      );
+
+      try {
+        const updatedMember = await api.changeRole(member, role);
+        return updatedMember;
+      } catch (err) {
+        notifyError("Failed to update role");
+
+        // revert if API fails
+        setState((prev) =>
+          prev.map((m) => (m.user.id === member.user.id ? member : m)),
+        );
+
+        throw err;
+      }
     },
     [],
   );
