@@ -78,6 +78,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/memberships/change-role": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** Change Organisation Role */
+        patch: operations["change_organisation_role_memberships_change_role_patch"];
+        trace?: never;
+    };
     "/organisations/": {
         parameters: {
             query?: never;
@@ -89,6 +106,23 @@ export interface paths {
         put?: never;
         /** Create Org */
         post: operations["create_org_organisations__post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/organisations/{organisation_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Organisation */
+        get: operations["get_organisation_organisations__organisation_id__get"];
+        put?: never;
+        post?: never;
         delete?: never;
         options?: never;
         head?: never;
@@ -177,6 +211,20 @@ export interface paths {
 export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
+        /** ChangeRoleSchema */
+        ChangeRoleSchema: {
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /**
+             * Organisation Id
+             * Format: uuid
+             */
+            organisation_id: string;
+            role: components["schemas"]["OrganisationRole"];
+        };
         /** HTTPValidationError */
         HTTPValidationError: {
             /** Detail */
@@ -225,6 +273,26 @@ export interface components {
          * @enum {string}
          */
         OrganisationRole: "OWNER" | "ADMIN" | "STAFF" | "VIEWER";
+        /** OrganisationSchema */
+        OrganisationSchema: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Name */
+            name: string;
+            /**
+             * Createdat
+             * Format: date-time
+             */
+            createdAt: string;
+            /**
+             * Lastupdatedat
+             * Format: date-time
+             */
+            lastUpdatedAt: string;
+        };
         /**
          * RegulatoryProgramCreateRequest
          * @description Request body for creating a regulatory program.
@@ -295,7 +363,7 @@ export interface components {
             email: string;
             /** Createdat */
             createdAt: string;
-            organisation: components["schemas"]["OrganisationResponse"] | null;
+            organisation: components["schemas"]["OrganisationSchema"] | null;
             role: components["schemas"]["OrganisationRole"] | null;
         };
         /**
@@ -479,6 +547,39 @@ export interface operations {
             };
         };
     };
+    change_organisation_role_memberships_change_role_patch: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ChangeRoleSchema"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["OrganisationMemberSchema"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     create_org_organisations__post: {
         parameters: {
             query?: never;
@@ -499,6 +600,37 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["OrganisationResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_organisation_organisations__organisation_id__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                organisation_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["OrganisationSchema"];
                 };
             };
             /** @description Validation Error */

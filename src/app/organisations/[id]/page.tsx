@@ -14,10 +14,13 @@ import { useOrganisation } from "@/features/organisation/hooks/useOrganisation";
 import { useOrganisationMembers } from "@/features/organisation/hooks/useOrganisationMembers";
 import { Organisation, OrganisationRole } from "@/features/organisation/models";
 import { useParams } from "next/navigation";
+import { useState } from "react";
 
 export default function Page() {
   const params = useParams<{ id: string }>();
   const { id } = params;
+
+  const [updatingUserId, setUpdatingUserId] = useState<string | null>(null);
 
   const {
     state: organisation,
@@ -27,7 +30,7 @@ export default function Page() {
 
   const {
     state: members,
-    actions: memberAactions,
+    actions: memberActions,
     isLoading: isLoadingMembers,
     error: membersError,
   } = useOrganisationMembers(id);
@@ -35,10 +38,15 @@ export default function Page() {
   const handleChangeOrganisationRole = async (
     member: OrganisationalMember,
     role: OrganisationRole,
-    organisation: Organisation,
   ) => {
-    // call membership action
-    await memberAactions.changeRole(member, role, organisation);
+    if (!organisation) return;
+
+    setUpdatingUserId(member.user.id);
+    try {
+      await memberActions.changeRole(member, role, organisation);
+    } finally {
+      setUpdatingUserId(null);
+    }
   };
 
   // ───────────────── Loading ─────────────────
@@ -85,8 +93,10 @@ export default function Page() {
               <ListItem key={member.user.id}>
                 <div className="flex items-center justify-between">
                   <span className="font-medium">{member.user.email}</span>
+
                   <OrganisationRoleSelector
                     value={member.role}
+                    disabled={updatingUserId === member.user.id}
                     onChange={(role) =>
                       handleChangeOrganisationRole(member, role)
                     }

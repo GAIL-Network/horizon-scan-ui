@@ -1,6 +1,6 @@
 "use client";
 
-import { Selector, SelectItem } from "@/components/Selector";
+import { Selector, SelectItem, SelectorProps } from "@/components/Selector";
 import {
   OrganisationRole,
   ORGANISATION_ROLES,
@@ -14,12 +14,15 @@ const ROLE_OPTIONS: RoleOption[] = ORGANISATION_ROLES.map((role) => ({
   label: role, // UI label (replace later with nicer labels if desired)
 }));
 
-type Props = {
+type Props = Omit<
+  SelectorProps<RoleOption>,
+  "value" | "onChange" | "options"
+> & {
   value: OrganisationRole;
   onChange: (role: OrganisationRole) => void;
 };
 
-export function OrganisationRoleSelector({ value, onChange }: Props) {
+export function OrganisationRoleSelector({ value, onChange, ...rest }: Props) {
   const selected = ROLE_OPTIONS.find((opt) => opt.value === value) ?? null;
 
   return (
@@ -27,6 +30,7 @@ export function OrganisationRoleSelector({ value, onChange }: Props) {
       value={selected}
       options={ROLE_OPTIONS}
       onChange={(opt) => onChange(opt.value)}
+      {...rest}
     />
   );
 }
