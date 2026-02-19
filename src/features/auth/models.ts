@@ -6,13 +6,11 @@ import type {
   UserLoginResponseDTO,
   UserApi,
 } from "@/features/auth/dtos";
-import { Organisation } from "../organisation/models";
+import { Organisation, OrganisationRole } from "../organisation/models";
 
 export type RegistrationInput = UserRegistrationRequestDTO;
 export type RegisteredUser = UserRegistrationResponseDTO;
 export type LoginCredentials = UserLoginRequestDTO;
-
-export type OrganisationRole = components["schemas"]["OrganisationRole"];
 
 export type AuthSession = Omit<
   UserLoginResponseDTO,

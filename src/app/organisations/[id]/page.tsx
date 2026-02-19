@@ -1,6 +1,7 @@
 "use client";
 
 import { Container } from "@/components/Container";
+import { Selector } from "@/components/Selector";
 import { ErrorState } from "@/components/ErrorState";
 import { Header } from "@/components/Header";
 import { List } from "@/components/List";
@@ -11,6 +12,7 @@ import { Panel } from "@/components/Panel";
 import { useOrganisation } from "@/features/organisation/hooks/useOrganisation";
 import { useOrganisationMembers } from "@/features/organisation/hooks/useOrganisationMembers";
 import { useParams } from "next/navigation";
+import { ORGANISATION_ROLES } from "@/features/organisation/models";
 
 export default function Page() {
   const params = useParams<{ id: string }>();
@@ -73,15 +75,19 @@ export default function Page() {
                 <div className="flex items-center justify-between">
                   <span className="font-medium">{member.user.email}</span>
 
-                  <select
+                  <Selector
                     className="rounded border px-2 py-1 text-sm"
-                    defaultValue={member.role}
+                    value={member.role}
                   >
-                    <option value="OWNER">OWNER</option>
-                    <option value="ADMIN">ADMIN</option>
-                    <option value="STAFF">STAFF</option>
-                    <option value="VIEWER">VIEWER</option>
-                  </select>
+                    {ORGANISATION_ROLES.map((role) => (
+                      <option
+                        key={role}
+                        value={role}
+                      >
+                        {role}
+                      </option>
+                    ))}
+                  </Selector>
                 </div>
               </ListItem>
             ))}
