@@ -1,7 +1,6 @@
 "use client";
 
 import { Container } from "@/components/Container";
-import { Selector } from "@/components/Selector";
 import { ErrorState } from "@/components/ErrorState";
 import { Header } from "@/components/Header";
 import { List } from "@/components/List";
@@ -9,10 +8,12 @@ import { ListItem } from "@/components/ListItem";
 import { LoadingComponent } from "@/components/LoadingComponent";
 import { PageHeader } from "@/components/PageHeader";
 import { Panel } from "@/components/Panel";
+import { OrganisationalMember } from "@/features/auth/models";
+import { OrganisationRoleSelector } from "@/features/memberships/components/OrganisationRoleSelector";
 import { useOrganisation } from "@/features/organisation/hooks/useOrganisation";
 import { useOrganisationMembers } from "@/features/organisation/hooks/useOrganisationMembers";
+import { OrganisationRole } from "@/features/organisation/models";
 import { useParams } from "next/navigation";
-import { ORGANISATION_ROLES } from "@/features/organisation/models";
 
 export default function Page() {
   const params = useParams<{ id: string }>();
@@ -29,6 +30,13 @@ export default function Page() {
     isLoading: isLoadingMembers,
     error: membersError,
   } = useOrganisationMembers(id);
+
+  const handleChangeOrganisationRole = (
+    member: OrganisationalMember,
+    role: OrganisationRole,
+  ) => {
+    // call membership action
+  };
 
   // ───────────────── Loading ─────────────────
   if (isLoadingOrganisation || isLoadingMembers) {
@@ -74,20 +82,12 @@ export default function Page() {
               <ListItem key={member.user.id}>
                 <div className="flex items-center justify-between">
                   <span className="font-medium">{member.user.email}</span>
-
-                  <Selector
-                    className="rounded border px-2 py-1 text-sm"
+                  <OrganisationRoleSelector
                     value={member.role}
-                  >
-                    {ORGANISATION_ROLES.map((role) => (
-                      <option
-                        key={role}
-                        value={role}
-                      >
-                        {role}
-                      </option>
-                    ))}
-                  </Selector>
+                    onChange={(role) =>
+                      handleChangeOrganisationRole(member, role)
+                    }
+                  />
                 </div>
               </ListItem>
             ))}
