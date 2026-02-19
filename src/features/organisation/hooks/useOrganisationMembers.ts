@@ -1,7 +1,9 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { fetchMembers } from "../api";
 import { notifyError } from "@/lib/notifications";
 import { OrganisationalMember } from "@/features/auth/models";
+import { OrganisationRole } from "../models";
+import { api } from "@/features/memberships/api";
 
 export function useOrganisationMembers(organisationId: string) {
   const [state, setState] = useState<OrganisationalMember[]>([]);
@@ -31,6 +33,22 @@ export function useOrganisationMembers(organisationId: string) {
     run();
   }, [organisationId]);
 
-  const actions = {};
+  const changeRole = useCallback(
+    async (
+      member: OrganisationalMember,
+      role: OrganisationRole,
+    ): Promise<OrganisationalMember> => {
+      const updatedMember = await api.changeRole(member, role);
+      return updatedMember;
+    },
+    [],
+  );
+
+  const actions = useMemo(
+    () => ({
+      changeRole,
+    }),
+    [],
+  );
   return { state, actions, isLoading, error };
 }

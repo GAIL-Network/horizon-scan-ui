@@ -27,15 +27,17 @@ export default function Page() {
 
   const {
     state: members,
+    actions: memberAactions,
     isLoading: isLoadingMembers,
     error: membersError,
   } = useOrganisationMembers(id);
 
-  const handleChangeOrganisationRole = (
+  const handleChangeOrganisationRole = async (
     member: OrganisationalMember,
     role: OrganisationRole,
   ) => {
     // call membership action
+    await memberAactions.changeRole(member, role);
   };
 
   // ───────────────── Loading ─────────────────
