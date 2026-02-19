@@ -47,12 +47,17 @@ export function useOrganisationMembers(organisationId: string) {
       try {
         const updatedMember = await api.changeRole(member, role, organisation);
         return updatedMember;
-      } catch (err) {
-        notifyError("Failed to update role");
+      } catch (err: unknown) {
+        const message = err instanceof Error ? err.message : String(err);
 
-        // revert if API fails
+        notifyError(message);
+        console.error(err);
+
+        // revert role safely
         setState((prev) =>
-          prev.map((m) => (m.user.id === member.user.id ? member : m)),
+          prev.map((m) =>
+            m.user.id === member.user.id ? { ...m, role: member.role } : m,
+          ),
         );
 
         throw err;
