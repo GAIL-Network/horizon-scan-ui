@@ -12,15 +12,18 @@ import { OrganisationalMember } from "@/features/auth/models";
 import { OrganisationRoleSelector } from "@/features/memberships/components/OrganisationRoleSelector";
 import { useOrganisation } from "@/features/organisation/hooks/useOrganisation";
 import { useOrganisationMembers } from "@/features/organisation/hooks/useOrganisationMembers";
-import { Organisation, OrganisationRole } from "@/features/organisation/models";
+import { OrganisationRole } from "@/features/organisation/models";
 import { useParams } from "next/navigation";
 import { useState } from "react";
+import { toast } from "sonner";
 
 export default function Page() {
   const params = useParams<{ id: string }>();
   const { id } = params;
 
   const [updatingUserId, setUpdatingUserId] = useState<string | null>(null);
+  const [inviteEmail, setInviteEmail] = useState("");
+  const [isInviting, setIsInviting] = useState(false);
 
   const {
     state: organisation,
@@ -46,6 +49,21 @@ export default function Page() {
       await memberActions.changeRole(member, role, organisation);
     } finally {
       setUpdatingUserId(null);
+    }
+  };
+
+  const handleInvite = async () => {
+    if (!organisation || !inviteEmail.trim()) return;
+
+    setIsInviting(true);
+    try {
+      await memberActions.invite(organisation.id, inviteEmail.trim());
+      setInviteEmail("");
+      toast.success("Invitation sent");
+    } catch {
+      toast.error("Failed to send invite");
+    } finally {
+      setIsInviting(false);
     }
   };
 
@@ -106,6 +124,36 @@ export default function Page() {
             ))}
           </List>
         )}
+      </Panel>
+
+      {/* ───────── Invite Members ───────── */}
+      <Panel className="mb-6">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <h2 className="text-lg font-semibold">Invite member</h2>
+            <p className="text-muted-foreground text-sm">
+              Send an invitation to join this organisation
+            </p>
+          </div>
+
+          <div className="flex w-full gap-3 sm:w-auto">
+            <input
+              type="email"
+              value={inviteEmail}
+              onChange={(e) => setInviteEmail(e.target.value)}
+              placeholder="email@example.com"
+              className="w-full rounded-md border px-3 py-2 text-sm focus:ring-2 focus:ring-slate-400 focus:outline-none"
+            />
+
+            <button
+              onClick={handleInvite}
+              disabled={isInviting || !inviteEmail.trim()}
+              className="rounded-md bg-slate-800 px-4 py-2 text-sm text-white disabled:opacity-50"
+            >
+              {isInviting ? "Inviting..." : "Invite"}
+            </button>
+          </div>
+        </div>
       </Panel>
     </Container>
   );

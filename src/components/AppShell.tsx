@@ -10,6 +10,7 @@ import { AuthModalProvider } from "@/features/context/AuthModalContext";
 import { AuthModal } from "@/features/auth/components/AuthModal";
 import { ChangeEventsProvider } from "@/context/ChangeEventsProvider";
 import { AuthGate } from "./AuthGate";
+import { NavSide } from "./NavSide";
 
 export function AppShell({ children }: { children: React.ReactNode }) {
   return (
@@ -18,8 +19,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         <ChangeEventsProvider>
           <NuqsAdapter>
             <AuthGate>
-              <Navbar />
-              {children}
+              <NavSide>{children}</NavSide>
             </AuthGate>
           </NuqsAdapter>
         </ChangeEventsProvider>

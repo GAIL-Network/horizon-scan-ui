@@ -42,6 +42,7 @@ export function Navbar({ className }: NavbarProps) {
   const [isLeftOpen, setIsLeftOpen] = useState(false);
   const [isRightOpen, setIsRightOpen] = useState(false);
   const navRef = useRef<HTMLElement>(null);
+  const ref = useRef<HTMLDivElement>(null);
 
   const isLoggedIn = Boolean(user);
   const isOnboarded = Boolean(user && user?.organisation);
@@ -140,7 +141,10 @@ export function Navbar({ className }: NavbarProps) {
         )}
 
         {/* RIGHT ACCOUNT */}
-        <div className="relative">
+        <div
+          ref={ref}
+          className="relative"
+        >
           <Button
             className="flex flex-col items-end gap-0 text-right"
             onClick={() => {

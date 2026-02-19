@@ -61,9 +61,17 @@ export function useOrganisationMembers(organisationId: string) {
     [],
   );
 
+  const invite = useCallback(
+    async (organisationId: string, inviteEmail: string) => {
+      console.log("invite");
+    },
+    [],
+  );
+
   const actions = useMemo(
     () => ({
       changeRole,
+      invite,
     }),
     [],
   );
