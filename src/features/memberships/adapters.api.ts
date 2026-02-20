@@ -15,8 +15,6 @@ export function toChangeRoleApi({
   organisation: Organisation;
 }): ChangeRoleApi {
   return {
-    user_id: member.user.id,
-    organisation_id: organisation.id,
     role,
   };
 }

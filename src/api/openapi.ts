@@ -147,6 +147,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/organisations/{organisation_id}/members/{member_id}/role": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** Patch Organisation Member */
+        patch: operations["patch_organisation_member_organisations__organisation_id__members__member_id__role_patch"];
+        trace?: never;
+    };
     "/regulatory-programs": {
         parameters: {
             query?: never;
@@ -214,16 +231,6 @@ export interface components {
     schemas: {
         /** ChangeRoleSchema */
         ChangeRoleSchema: {
-            /**
-             * User Id
-             * Format: uuid
-             */
-            user_id: string;
-            /**
-             * Organisation Id
-             * Format: uuid
-             */
-            organisation_id: string;
             role: components["schemas"]["OrganisationRole"];
         };
         /** HTTPValidationError */
@@ -702,6 +709,42 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["OrganisationMemberSchema"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    patch_organisation_member_organisations__organisation_id__members__member_id__role_patch: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                organisation_id: string;
+                member_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ChangeRoleSchema"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["OrganisationMemberSchema"];
                 };
             };
             /** @description Validation Error */

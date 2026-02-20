@@ -17,7 +17,7 @@ export const mockImpactAssessments: ImpactAssessmentApi[] = [
       email: "regulatory.lead@company.com",
       createdAt: "2023-06-12T08:15:00Z",
       organisation: null,
-      role: "OWNER",
+      role: "org_admin",
     },
     change_events: [
       {
@@ -63,7 +63,7 @@ export const mockImpactAssessments: ImpactAssessmentApi[] = [
       email: "regulatory.lead@company.com",
       createdAt: "2023-06-12T08:15:00Z",
       organisation: null,
-      role: "OWNER",
+      role: "org_admin",
     },
     change_events: [
       {
@@ -104,7 +104,7 @@ export const mockImpactAssessments: ImpactAssessmentApi[] = [
       email: "tax.policy@company.com",
       createdAt: "2022-11-03T13:40:00Z",
       organisation: null,
-      role: "OWNER",
+      role: "org_admin",
     },
     change_events: [
       {
@@ -143,7 +143,7 @@ export const mockImpactAssessments: ImpactAssessmentApi[] = [
       email: "quality.lead@company.com",
       createdAt: "2021-04-19T09:00:00Z",
       organisation: null,
-      role: "ADMIN",
+      role: "org_admin",
     },
     change_events: [
       {
@@ -182,7 +182,7 @@ export const mockImpactAssessments: ImpactAssessmentApi[] = [
       email: "it.compliance@company.com",
       createdAt: "2020-09-07T16:25:00Z",
       organisation: null,
-      role: "STAFF",
+      role: "contributor",
     },
     change_events: [
       {

@@ -2,7 +2,6 @@
 "use client";
 
 import React from "react";
-import { Navbar } from "@/components/Navbar";
 import { UserProvider } from "@/context/UserProvider";
 import { Toaster } from "sonner";
 import { NuqsAdapter } from "nuqs/adapters/next/app";

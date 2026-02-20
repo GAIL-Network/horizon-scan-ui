@@ -10,10 +10,17 @@ export async function changeRole(
   organisation: Organisation,
 ): Promise<OrganisationalMember> {
   console.log(organisation);
-  const payload = toChangeRoleApi({ member, role, organisation });
   const { data: updatedMemberApi, error } = await getClient("compliance").PATCH(
-    "/memberships/change-role",
-    { body: payload },
+    "/organisations/{organisation_id}/members/{member_id}/role",
+    {
+      params: {
+        path: {
+          organisation_id: organisation.id,
+          member_id: member.user.id,
+        },
+      },
+      body: { role },
+    },
   );
 
   if (error) {

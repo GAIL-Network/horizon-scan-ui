@@ -2,11 +2,10 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Menu, X } from "lucide-react";
+import { Menu } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { NavLink } from "@/components/NavLink";
-import Button from "@/components/Button";
 import { useAuthModal } from "@/features/context/AuthModalContext";
 import { useUser } from "@/features/auth/hooks/useUser";
 
@@ -23,8 +22,6 @@ export function NavSide({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const { user } = useUser();
   const { open: openAuthModal } = useAuthModal();
-
-  console.log(user);
 
   const [open, setOpen] = useState(false);
   const [accountOpen, setAccountOpen] = useState(false);
