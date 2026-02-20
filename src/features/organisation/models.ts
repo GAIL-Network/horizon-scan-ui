@@ -12,10 +12,13 @@ export type Organisation = {
 export type OrganisationRole = components["schemas"]["OrganisationRole"];
 
 export const ORGANISATION_ROLES: OrganisationRole[] = [
-  "OWNER",
-  "ADMIN",
-  "STAFF",
-  "VIEWER",
+  "org_admin",
+  "manager",
+  "contributor",
+  "reviewer",
+  "viewer",
+  "learner",
+  "auditor",
 ];
 
 export type OrganisationMemberApi =

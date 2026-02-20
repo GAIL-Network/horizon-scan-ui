@@ -126,7 +126,8 @@ export interface paths {
         delete?: never;
         options?: never;
         head?: never;
-        patch?: never;
+        /** Update Organisation */
+        patch: operations["update_organisation_organisations__organisation_id__patch"];
         trace?: never;
     };
     "/organisations/{organisation_id}/members": {
@@ -272,13 +273,10 @@ export interface components {
          * OrganisationRole
          * @enum {string}
          */
-        OrganisationRole: "OWNER" | "ADMIN" | "STAFF" | "VIEWER";
+        OrganisationRole: "org_admin" | "manager" | "contributor" | "reviewer" | "viewer" | "learner" | "auditor";
         /** OrganisationSchema */
         OrganisationSchema: {
-            /**
-             * Id
-             * Format: uuid
-             */
+            /** Id */
             id: string;
             /** Name */
             name: string;
@@ -292,6 +290,11 @@ export interface components {
              * Format: date-time
              */
             lastUpdatedAt: string;
+        };
+        /** OrganisationUpdateSchema */
+        OrganisationUpdateSchema: {
+            /** Name */
+            name: string;
         };
         /**
          * RegulatoryProgramCreateRequest
@@ -549,7 +552,9 @@ export interface operations {
     };
     change_organisation_role_memberships_change_role_patch: {
         parameters: {
-            query?: never;
+            query: {
+                organisation_id: string;
+            };
             header?: never;
             path?: never;
             cookie?: never;
@@ -623,6 +628,41 @@ export interface operations {
             cookie?: never;
         };
         requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["OrganisationSchema"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    update_organisation_organisations__organisation_id__patch: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                organisation_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["OrganisationUpdateSchema"];
+            };
+        };
         responses: {
             /** @description Successful Response */
             200: {

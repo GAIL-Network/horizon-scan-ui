@@ -24,12 +24,15 @@ export function NavSide({ children }: { children: React.ReactNode }) {
   const { user } = useUser();
   const { open: openAuthModal } = useAuthModal();
 
+  console.log(user);
+
   const [open, setOpen] = useState(false);
   const [accountOpen, setAccountOpen] = useState(false);
 
-  const isLoggedIn = Boolean(user);
   const isOnboarded = Boolean(user?.organisation);
-  const isAdmin = Boolean(user?.role === "ADMIN" || user?.role === "OWNER");
+  const isAdmin = Boolean(
+    user?.role === "org_admin" || user?.role === "manager",
+  );
 
   const isSelected = (href: string, exact?: boolean) =>
     exact
